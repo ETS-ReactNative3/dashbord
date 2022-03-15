@@ -283,6 +283,7 @@ class Widget extends React.Component {
           )}
           {customDropDown && (
             <div className={`${s.widgetControls} widget-controls`}>
+              
             <UncontrolledDropdown>
               <DropdownToggle
                 tag="span"
@@ -298,13 +299,41 @@ class Widget extends React.Component {
                     <strong>9</strong>
                   </span>
                 </DropdownItem>
+
+                <DropdownItem onClick={this.handleReload} title="Reload">
+                  Quotidien &nbsp;&nbsp;
+                </DropdownItem>
+
+                <DropdownItem onClick={this.handleReload} title="Reload">
+                  Hebdomadaire &nbsp;&nbsp;
+                </DropdownItem>
+
+                <DropdownItem onClick={this.handleReload} title="Reload">
+                  Semestre &nbsp;&nbsp;
+                </DropdownItem>
+
+                <DropdownItem onClick={this.handleReload} title="Reload">
+                  Trimestre &nbsp;&nbsp;
+                </DropdownItem>
+
+                <DropdownItem onClick={this.handleReload} title="Reload">
+                  Annee &nbsp;&nbsp;
+                </DropdownItem>
+
+                <DropdownItem onClick={this.handleReload} title="Reload">
+                  Autre &nbsp;&nbsp;
+                </DropdownItem>
+
                 
                 <DropdownItem onClick={this.handleFullscreen} title={!fullscreened ? "Full Screen" : "Restore"}>{!fullscreened ? "Fullscreen" : "Restore"} </DropdownItem>
+                
                 <DropdownItem divider />
                 {!fullscreened && (!prompt ? <DropdownItem onClick={this.handleClose} title="Close">Close</DropdownItem>
                 : <DropdownItem onClick={this.toggleModal} title="Close">Close</DropdownItem>)}
               </DropdownMenu>
             </UncontrolledDropdown>
+
+
             </div>
           )}
         {

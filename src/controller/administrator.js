@@ -3,6 +3,19 @@ import axios from "axios";
 
 const route = '/administrators';
 
+
+export async function addAdministrator(administrateur)  {
+    const url = BASE_URL+`${route}/`;
+    const response = await axios.get(url, administrateur);
+
+    if (response.status === 200) {
+        console.log('Administrateur cree');
+    } else {
+        console.log('Error');
+    }
+}
+
+
 export async function login(username, password)  {
     if (username.length > 0 && password.length > 0) {
 
