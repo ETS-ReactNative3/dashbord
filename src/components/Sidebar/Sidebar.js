@@ -239,7 +239,8 @@ class Sidebar extends React.Component {
               }
               header="Statistiques"
               isHeader
-              index="main"
+              //index="main"
+              link="/app/ui/charts"
             >
               <img
                 src={settingsIcon}
@@ -256,6 +257,7 @@ class Sidebar extends React.Component {
               header="Evenements"
               isHeader
               index="main"
+              link="/app/ui/icons"
             >
               <img
                 src={settingsIcon}
