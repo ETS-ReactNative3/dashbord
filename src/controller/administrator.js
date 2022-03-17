@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 
 const route = '/administrators';
 
+//
+
 export async function addAdministrator(administrateur)  {
     const url = BASE_URL+`${route}/`;
     const response = await axios.put(url, administrateur);
