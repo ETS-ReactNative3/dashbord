@@ -932,19 +932,19 @@ class Dashboard extends React.Component {
                     //   });
                     // })
 
-                    response.then(value => {
-                      value.forEach(transaction => {
-                        console.log(transaction);
-                      })
-                      // setState({ 
-                      //   ...state,
-                      //   [tran]: value, 
-                      //  });
-                      // this.setState({transactions: value})
-                      console.log('*******************************');
-                      console.log(value);
-                      console.log('*******************************');
-                    })
+                    // response.then(value => {
+                    //   value.forEach(transaction => {
+                    //     console.log(transaction);
+                    //   })
+                    //   // setState({ 
+                    //   //   ...state,
+                    //   //   [tran]: value, 
+                    //   //  });
+                    //   // this.setState({transactions: value})
+                    //   console.log('*******************************');
+                    //   console.log(value);
+                    //   console.log('*******************************');
+                    // })
                   // // response.then(value => {
                   // //   var index = 0;
                   // //   return (value.forEach(transaction => {
