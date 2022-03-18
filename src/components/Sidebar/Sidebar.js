@@ -24,12 +24,15 @@ import logoutIcon from "../../images/logout.svg";
 import accountIcon from "../../images/account.svg";
 
 
-import statisticIcon from "../../images/pie-chart.svg";
-
 
 import intercashImage from '../../images/appimage/logo.png'
 
 class Sidebar extends React.Component {
+
+  static statisticIcon = "<i class='fa fa-bar-chart-o'></i>";
+
+
+
   static propTypes = {
     sidebarStatic: PropTypes.bool,
     sidebarOpened: PropTypes.bool,
@@ -233,7 +236,7 @@ class Sidebar extends React.Component {
               )}
             </LinksGroup>
 
-          <LinksGroup
+          <LinksGroup style= {{margin: "0px", padding: "0px"}}
               onActiveSidebarItemChange={activeItem =>
                 this.props.dispatch(changeActiveSidebarItem(activeItem))
               }
@@ -242,12 +245,8 @@ class Sidebar extends React.Component {
               //index="main"
               link="/app/ui/charts"
             >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                width={"20px"}
-                height={"20px"}
-              />
+            <i class = "fa fa-bar-chart-o"></i>
+      
             </LinksGroup>
 
             <LinksGroup
@@ -259,12 +258,7 @@ class Sidebar extends React.Component {
               index="main"
               link="/app/ui/icons"
             >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                width={"20px"}
-                height={"20px"}
-              />
+            <i class="fa fa-calendar"></i>
             </LinksGroup>
 
             <LinksGroup
@@ -275,12 +269,8 @@ class Sidebar extends React.Component {
               isHeader
               index="main"
             >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                width={"20px"}
-                height={"20px"}
-              />
+            <i class = "fa fa-institution"></i>
+
             </LinksGroup>
 
             <LinksGroup
@@ -291,12 +281,7 @@ class Sidebar extends React.Component {
               isHeader
               index="main"
             >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                width={"20px"}
-                height={"20px"}
-              />
+              <i class = "fa fa-building"></i>
             </LinksGroup>
 
             <LinksGroup
@@ -307,12 +292,7 @@ class Sidebar extends React.Component {
               isHeader
               index="main"
             >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                width={"20px"}
-                height={"20px"}
-              />
+              <i class="fa fa-film"></i>
             </LinksGroup>
 
             <hr />
@@ -320,16 +300,11 @@ class Sidebar extends React.Component {
                 onActiveSidebarItemChange={activeItem =>
                   this.props.dispatch(changeActiveSidebarItem(activeItem))
                 }
-                header="Log"
+                header="Logs"
                 isHeader
                 index="main"
               >
-                <img
-                  src={settingsIcon}
-                  alt="lightDashboard"
-                  width={"20px"}
-                  height={"20px"}
-                />
+                <i class = "fa fa-navicon"></i>
               </LinksGroup>
 
               <LinksGroup
@@ -340,12 +315,7 @@ class Sidebar extends React.Component {
               isHeader
               index="main"
               >
-                <img
-                  src={settingsIcon}
-                  alt="lightDashboard"
-                  width={"20px"}
-                  height={"20px"}
-                />
+                <i class = "fa fa-book"></i>
               </LinksGroup>
 
             <hr />
@@ -358,14 +328,9 @@ class Sidebar extends React.Component {
               isHeader
               index="main"
             >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                width={"20px"}
-                height={"20px"}
-              />
+              <i class = "fa fa-cogs"></i>
             </LinksGroup>
-            <LinksGroup
+            {/* <LinksGroup
               onActiveSidebarItemChange={activeItem =>
                 this.props.dispatch(changeActiveSidebarItem(activeItem))
               }
@@ -374,12 +339,12 @@ class Sidebar extends React.Component {
             >
               <img
                 src={accountIcon}
-                alt="lightDashboard"
+                alt="lightAccount"
                 width={"20px"}
                 height={"20px"}
               />
-            </LinksGroup>
-            <LinksGroup
+            </LinksGroup> */}
+            {/* <LinksGroup
               onActiveSidebarItemChange={activeItem =>
                 this.props.dispatch(changeActiveSidebarItem(activeItem))
               }
@@ -402,7 +367,7 @@ class Sidebar extends React.Component {
                   height={"20px"}
                 />
               )}
-            </LinksGroup>
+            </LinksGroup> */}
           </ul>
 
 

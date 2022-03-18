@@ -15,7 +15,7 @@ import s from "./BreadcrumbHistory.module.scss";
 
 class BreadcrumbHistory extends Component {
   state = {
-    date: "15 Jan 2020",
+    date: new Date().toDateString(),
   };
   renderBreadCrumbs = () => {
     let route = this.props.url
@@ -61,9 +61,11 @@ class BreadcrumbHistory extends Component {
                     {this.state.date}&nbsp;&nbsp;
                   </DropdownToggle>
                   <DropdownMenu>
-                    <DropdownItem>14 Jan 2020</DropdownItem>
-                    <DropdownItem>13 Jan 2020</DropdownItem>
-                    <DropdownItem>12 Jan 2020</DropdownItem>
+                    <DropdownItem>Quotidien</DropdownItem>
+                    <DropdownItem>Hebdomadaire</DropdownItem>
+                    <DropdownItem>Trimestre</DropdownItem>
+                    <DropdownItem>Semestre</DropdownItem>
+                    <DropdownItem>Annee</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledButtonDropdown>
                 <Button color={"danger"} className={`${s.btnShadow}`}>

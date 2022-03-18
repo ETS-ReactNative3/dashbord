@@ -10,6 +10,7 @@ import logoutIcon from "../../../images/logout.svg";
 import accountIcon from "../../../images/account.svg";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
+import { user } from "../../../config/session";
 
 class MessagesDemo extends React.Component {
   constructor(props) {
@@ -22,8 +23,8 @@ class MessagesDemo extends React.Component {
   render() {
     return (
       <ListGroup className={[s.listGroupAccount, "thin-scroll"].join(" ")}>
-        <p className={`${s.listGroupTitleAccount}`}>Sara Smith</p>
-        <p className={`${s.listGroupSubtitleAccount}`}>Sara_smith@gmail.com</p>
+        <p className={`${s.listGroupTitleAccount}`}>{user.username.toUpperCase()}</p>
+        <p className={`${s.listGroupSubtitleAccount}`}>{user.email}</p>
         <ListGroupItem className={`${s.listGroupItemAccount} mt-3`}>
           <img src={settingsIcon} alt="settings" className={"mr-2"} /> Settings
         </ListGroupItem>

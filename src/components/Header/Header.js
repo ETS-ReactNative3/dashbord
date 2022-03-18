@@ -33,8 +33,10 @@ import messages from "../../images/messages.svg";
 import lightMessages from "../../images/messages-filled.svg";
 import arrowUnactive from '../../images/Arrow 6.svg'
 import arrowActive from '../../images/Arrow 5.svg'
-
 import s from "./Header.module.scss"; // eslint-disable-line css-modules/no-unused-class
+
+
+// import { user } from "../../../config/session";
 
 class Header extends React.Component {
   static propTypes = {
@@ -254,6 +256,7 @@ class Header extends React.Component {
               <Notifications />
             </DropdownMenu>
           </Dropdown>
+
           <Dropdown
             isOpen={this.state.messagesOpen}
             toggle={this.toggleMessages}
@@ -286,6 +289,8 @@ class Header extends React.Component {
                 </>
               )}
             </DropdownToggle>
+
+
             <DropdownMenu
               right
               className={`${s.notificationsWrapper} py-0 animated animated-fast fadeInUp`}
@@ -293,6 +298,7 @@ class Header extends React.Component {
               <Notifications notificationsTabSelected={2} />
             </DropdownMenu>
           </Dropdown>
+          
           <Dropdown nav className={`${s.notificationsMenu}`} isOpen={this.state.accountOpen}
                     toggle={this.toggleAccount}>
             <DropdownToggle
@@ -308,12 +314,14 @@ class Header extends React.Component {
                 {<span>{firstUserLetter}</span>}
               </span>
             </DropdownToggle>
+
             <DropdownMenu
                 right
                 className={`${s.notificationsWrapper} py-0 animated animated-fast fadeInUp`}
             >
               <Notifications notificationsTabSelected={4} />
             </DropdownMenu>
+
           </Dropdown>
         </Nav>
       </Navbar>
