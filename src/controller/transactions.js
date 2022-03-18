@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import {BASE_URL} from "../config/http";
+import {BASE_URL, HEADERS} from "../config/http";
 
 
 const route = '/transactions';
@@ -11,24 +11,21 @@ var typeTransaction = {
     4:"Vente"
   }
 
-  useEffect(() => {
-    getTransactions();
-  }, []);
+  
 
   export async function getTransactions () {
     const url = BASE_URL+`${route}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
-            return response;
-        }
+          return response.data; 
+        } 
   }
 
   export async function getTransaction (id) {
     const url = BASE_URL+`${route}/${id}`;
     const response = await axios.get(url);
     if (response.status === 200) {
-        return response;
-    }
+        return response.data  }
   }
 
   export async function createTransaction (transaction) {

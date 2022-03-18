@@ -1,7 +1,7 @@
 import axios from "axios";
 const route = "/participants";
 
-
+ 
 export async function createParticipant(participant) {
     const url = BASE_URL+`${route}/`;
     const response = await axios.put(url,{

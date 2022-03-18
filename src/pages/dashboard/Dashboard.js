@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Table } from "reactstrap";
 
 import usersImg from "../../images/usersImg.svg";
@@ -7,6 +7,7 @@ import totalSale from "../../images/total-sale.svg";
 import orders from "../../images/orders.svg";
 import stocksImg from "../../images/stocks.svg";
 import stocksDownImg from "../../images/stocksDown.svg";
+import transactions, { getTransactions } from "../../controller/transactions";
 
 import { chartData } from "./chartsMock";
 
@@ -81,6 +82,17 @@ const orderValueOverride = {
     },
   },
 };
+
+
+var typeTransaction = {
+  1: "Dépot",
+  2: "Transfert",
+  3: "Achat",
+  4: "Vente"
+} 
+
+
+var transactionsList = [];
 
 const convertionRateOverride = {
   series: [
@@ -363,7 +375,10 @@ const splineArea = {
 };
 
 class Dashboard extends React.Component {
+
   constructor() {
+
+
     super();
     this.forceUpdate = this.forceUpdate.bind(this)
   }
@@ -373,7 +388,9 @@ class Dashboard extends React.Component {
     area: { ...area },
     area2: { ...area2 },
     splineArea: { ...splineArea },
+    transactions: [],
   };
+
 
   componentDidMount() {
     window.addEventListener("resize", this.forceUpdate.bind(this))
@@ -384,6 +401,30 @@ class Dashboard extends React.Component {
   }
 
   render() {
+
+    // const [transaction, setTransaction] = useState([]);
+    const response = getTransactions();
+    // var transactionsList = [];
+
+    // response.then(value => {
+    //   value.forEach(transaction => {
+    //     console.log('transactionId: '+transaction.id);      
+    //   })
+    //   // this.setState({transactions: value})
+    // });
+
+    
+
+    // console.log('*******************************');
+    // console.log('transactionsList: '+transactionsList);
+    // console.log('*******************************');
+
+    console.log('*******************************');
+    console.log('this.state.transactions: '+this.state.transactions);
+    console.log('*******************************');
+
+    // setTransaction(response.data);
+    
     return (
       <div className={s.root}>
         <Row>
@@ -455,7 +496,7 @@ class Dashboard extends React.Component {
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
-              <Col sm={8} className={"d-flex align-items-center"}>
+                <Col sm={8} className={"d-flex align-items-center"}>
                   <h6 className={"fw-semi-bold mb-0"}>5 824</h6>
                 </Col>
                 <Col
@@ -872,13 +913,161 @@ class Dashboard extends React.Component {
                       Type
                     </th>
                     <th key={7} scope="col" className={"pl-0"}>
-                    Status
+                      Status
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-dark">
-                  <tr key={0}>
-                    <td className={"pl-0 fw-normal"}>1</td>
+                {
+                    // response.then(value => {
+                    //   value.forEach(transaction => {
+                    //     transactionsList.push(transaction);
+                    //     this.setState({transactions: transactionsList})
+                      
+                    //   })
+
+                    // getTransactions().then(response => {
+                    //   this.setState({
+                    //     transaction: response.transaction,
+                    //   });
+                    // })
+
+                    response.then(value => {
+                      value.forEach(transaction => {
+                        console.log(transaction);
+                      })
+                      // setState({ 
+                      //   ...state,
+                      //   [tran]: value, 
+                      //  });
+                      // this.setState({transactions: value})
+                      console.log('*******************************');
+                      console.log(value);
+                      console.log('*******************************');
+                    })
+                  // // response.then(value => {
+                  // //   var index = 0;
+                  // //   return (value.forEach(transaction => {
+                  // //     // return (
+                  // //       {
+                  // //         <tr key={index}>
+                  // //           <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
+                  // //           <th style={{ textAlign: "center" }}>{transaction.id}</th>
+                  // //           <td style={{ textAlign: "center" }}>{transaction.amount}</td>
+                  // //           <td style={{ textAlign: "center" }}>{transaction.sender_account_id}</td>
+                  // //           <td style={{ textAlign: "center" }}>{transaction.sender_phone}</td>
+                  // //           <td style={{ textAlign: "center" }}>{transaction.receiver_account_id}</td>
+                  // //           <td style={{ textAlign: "center" }}>{transaction.receiver_phone}</td>
+                  // //           <td style={{ textAlign: "center" }}>{(transaction.creation_date).slice(0, 10)}</td>
+                  // //           <td style={{ textAlign: "center" }}>{(transaction.creation_date).slice(11, 19)}</td>
+                  // //           <td style={{ textAlign: "center" }}>{typeTransaction[transaction.transaction_type_id]}</td>
+                  // //         </tr>
+                  //       }
+                  //     // );
+                  //     index++; 
+                  //   }))
+                  //   // this.setState({transactions: value})
+                  // })
+
+                  // response && response.map((item, index) => {
+                  //     return (
+                  //       <tr key={index}>
+                  //         <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
+                  //         <th style={{ textAlign: "center" }}>{item.id}</th>
+                  //         <td style={{ textAlign: "center" }}>{item.amount}</td>
+                  //         <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
+                  //         <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
+                  //         <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
+                  //         <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
+                  //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
+                  //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
+                  //         <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
+                  //       </tr>
+                  //     );
+                  //   })
+                
+                  // response.then((transactionsList) => {
+
+                  //   this.setState({
+                  //     transactions: transactionsList
+                  //   })
+
+                    // transactions && transactions.map((item, index) => {
+                    //   return (
+                    //     <tr key={index}>
+                    //       <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
+                    //       <th style={{ textAlign: "center" }}>{item.id}</th>
+                    //       <td style={{ textAlign: "center" }}>{item.amount}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
+                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
+                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
+                    //       <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
+                    //     </tr>
+                    //   );
+                    // })
+
+                    
+                    // console.log("response.value =>",value)
+                    // var i = 0;
+
+                    // for(var transaction in transactions) {
+                    //   console.log("compteur",value)
+                    //   <tr>
+                    //   <td className={"pl-0 fw-normal"}>1</td>
+                    //   <td className={"pl-0 fw-normal"}>Kate Claus</td>
+                    //   <td className={"pl-0 fw-normal"}>Professionel</td>
+                    //   <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
+                    //   <td className={"pl-0 fw-normal"}>10 Jan 2020</td>
+                    //   <td className={"pl-0 fw-normal"}>8 400 F CFA</td>
+                    //   <td className={"pl-0 fw-normal"}>Depot</td>
+                    //   <td className={"pl-0 text-success fw-normal"}>Succes</td>
+                    // </tr>
+                    // }
+
+                  
+
+                    // var cpt = 0;
+                    // for(var transaction in transactions) {
+                    //     <tr key={index}>
+                    //       <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
+                    //       <th style={{ textAlign: "center" }}>{item.id}</th>
+                    //       <td style={{ textAlign: "center" }}>{item.amount}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
+                    //       <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
+                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
+                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
+                    //       <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
+                    //     </tr>
+                    // }
+
+                    //   transactions && transactions.map((item, index) => {
+                    //     return (
+                    //       <tr key={index}>
+                    //         <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
+                    //         <th style={{ textAlign: "center" }}>{item.id}</th>
+                    //         <td style={{ textAlign: "center" }}>{item.amount}</td>
+                    //         <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
+                    //         <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
+                    //         <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
+                    //         <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
+                    //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
+                    //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
+                    //         <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
+                    //       </tr>
+                    //     );
+                    //   })
+                  // })
+
+                  
+                  }
+
+                  {/* <tr key={0}> 
+                  <td className={"pl-0 fw-normal"}>1</td>
                     <td className={"pl-0 fw-normal"}>Kate Claus</td>
                     <td className={"pl-0 fw-normal"}>Professionel</td>
                     <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
@@ -926,7 +1115,7 @@ class Dashboard extends React.Component {
                     <td className={"pl-0 fw-normal"}>9 400 F CFA</td>
                     <td className={"pl-0 fw-thin"}>Depot</td>
                     <td className={"pl-0 text-success fw-normal"}>Succes</td> 
-                  </tr>
+                  </tr> */}
                 </tbody>
               </Table>
             </Widget>
@@ -981,7 +1170,7 @@ class Dashboard extends React.Component {
                     <td className={"pl-0 fw-normal"}>
                       <i className={`fa fa-circle text-success mr-3`} />
                       8 400 F CFA
-                      </td>
+                    </td>
                     <td className={"pl-0 text-success fw-normal"}> No Limit </td>
                     <td className={"pl-0 fw-normal"}>Depot</td>
                   </tr>
@@ -1167,9 +1356,9 @@ class Dashboard extends React.Component {
             </Widget>
           </Col>
         </Row> */}
-        
+
       </div>
-    );
+      );
   }
 }
 
