@@ -244,6 +244,12 @@ class Sidebar extends React.Component {
               isHeader
               //index="main"
               link="/app/ui/charts"
+              // link="/app/ui/icons"
+              // link="/app/ui/charts"
+              // link="/app/tables"
+              // link="/app/ui"
+              // link="/app/ui/notifications"
+              // link="/app/ui/maps"
             >
             <i class = "fa fa-bar-chart-o"></i>
       
@@ -255,8 +261,8 @@ class Sidebar extends React.Component {
               }
               header="Evenements"
               isHeader
-              index="main"
-              link="/app/ui/icons"
+              index="evenement"
+              link="/app/administration/evenement"
             >
             <i class="fa fa-calendar"></i>
             </LinksGroup>
@@ -267,7 +273,8 @@ class Sidebar extends React.Component {
               }
               header="Etablissements"
               isHeader
-              index="main"
+              // index="main"
+              link="/app/tables"
             >
             <i class = "fa fa-institution"></i>
 
@@ -279,7 +286,8 @@ class Sidebar extends React.Component {
               }
               header="Partenaires"
               isHeader
-              index="main"
+              // index="main"
+              link="/app/ui/charts"
             >
               <i class = "fa fa-building"></i>
             </LinksGroup>
@@ -290,7 +298,8 @@ class Sidebar extends React.Component {
               }
               header="Films"
               isHeader
-              index="main"
+              // index="main"
+              link="/app/typography"
             >
               <i class="fa fa-film"></i>
             </LinksGroup>
@@ -302,7 +311,8 @@ class Sidebar extends React.Component {
                 }
                 header="Logs"
                 isHeader
-                index="main"
+                // index="main"
+                link="/app/ui/icons"
               >
                 <i class = "fa fa-navicon"></i>
               </LinksGroup>
@@ -313,7 +323,8 @@ class Sidebar extends React.Component {
               }
               header="Journaux"
               isHeader
-              index="main"
+              // index="main"
+              link="/app/tables"
               >
                 <i class = "fa fa-book"></i>
               </LinksGroup>
@@ -327,6 +338,7 @@ class Sidebar extends React.Component {
               header="Settings"
               isHeader
               index="main"
+              link="/app/ui/notifications"
             >
               <i class = "fa fa-cogs"></i>
             </LinksGroup>

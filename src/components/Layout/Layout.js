@@ -24,6 +24,10 @@ import Icons from "../../pages/icons";
 import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
 
+// Administration
+import Evenement from "../../administration/evenement/Evenement";
+
+
 class Layout extends React.Component {
   static propTypes = {
     sidebarStatic: PropTypes.bool,
@@ -125,6 +129,14 @@ class Layout extends React.Component {
                     />
                     <Route path={"/app/ui/icons"} component={Icons} />
                     <Route path={"/app/ui/charts"} component={Charts} />
+
+
+                    <Route
+                      path={"/app/administration/evenement"}
+                      component={Evenement}
+                    />
+
+
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>
