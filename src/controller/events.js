@@ -1,21 +1,21 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import {BASE_URL} from "../config/http";
+import {BASE_URL, HEADERS} from "../config/http";
 
 
 const route = '/events';
 
 
-  useEffect(() => {
-    getEvents();
-  }, []);
+  // useEffect(() => {
+  //   getEvents();
+  // }, []);
 
   export async function getEvents () {
     const url = BASE_URL+`${route}`;
-    const response = await axios.get(url);
-        if (response.status === 200) {
-            return response;
-        }
+    const response = await axios.get(url, {headers:HEADERS});
+    if (response.status === 200) {
+      return response;
+    }
   }
 
   export async function getEvent (id) {

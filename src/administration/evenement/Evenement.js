@@ -1,20 +1,19 @@
 import React from "react";
 import { Row, Col, Table,  Button, Badge } from "reactstrap";
+import { chartData } from "./chartsMock";
+import Widget from "../../components/Widget";
+import s from "./Evenement.module.scss";
 
+
+import { getEvents, getEvent } from "../../controller/events";
+
+// import ApexChart from "react-apexcharts";
 // import usersImg from "../../images/usersImg.svg";
 // import smileImg from "../../images/smileImg.svg";
 // import totalSale from "../../images/total-sale.svg";
 // import orders from "../../images/orders.svg";
 // import stocksImg from "../../images/stocks.svg";
 // import stocksDownImg from "../../images/stocksDown.svg";
-
-import { chartData } from "./chartsMock";
-
-import Widget from "../../components/Widget";
-
-import s from "./Evenement.module.scss";
-// import ApexChart from "react-apexcharts";
-
 //people
 // import p1 from "../../images/people/p1.png";
 // import p2 from "../../images/people/p2.png";
@@ -377,6 +376,10 @@ class Evenement extends React.Component {
     splineArea: { ...splineArea },
   };
 
+  status = ['wating', 'inprogress']
+  events = getEvents();
+  
+
   componentDidMount() {
     window.addEventListener("resize", this.forceUpdate.bind(this))
   }
@@ -386,6 +389,11 @@ class Evenement extends React.Component {
   }
 
   render() {
+    this.events.then((value) => {
+      localStorage.setItem('events',JSON.stringify(value.data));
+    });
+    const response = JSON.parse(localStorage.getItem('events'));
+
     return (
       <div className={s.root}>
         <Row>
@@ -445,96 +453,32 @@ class Evenement extends React.Component {
                   </tr>
                 </thead>
                 <tbody className="text-dark">
-                  <tr key={0}>
-                    <td className={"pl-0 fw-normal"}>1</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-warning fw-normal"}>waiting</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
-                      <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
-                    </td>
-                  </tr>
-                  <tr key={1}>
-                  <td className={"pl-0 fw-normal"}>2</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-warning fw-normal"}>waiting</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
-                      <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
-                    </td>
-                  </tr>
-                  <tr key={2}>
-                  <td className={"pl-0 fw-normal"}>3</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-warning fw-normal"}>waiting</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
-                      <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
-                    </td>
-                  </tr>
-                  <tr key={3}>
-                  <td className={"pl-0 fw-normal"}>4</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-warning fw-normal"}>waiting</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
-                      <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
-                    </td>
-                  </tr>
-                  <tr key={4}>
-                  <td className={"pl-0 fw-normal"}>5</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-warning fw-normal"}>waiting</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
-                      <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
-                    </td>
-                  </tr>
+                  {
+                    response.map((event, index) => { 
+                      if (event.status === 'waiting') {
+                        return ( 
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.name}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.organizer}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.limit_registration}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.location +'('+event.city+')'}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.starting_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.ending_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.publishing_start_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.publishing_end_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.category}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.account_id}</td>
+                            <td className={"pl-0 text-warning fw-normal"}>{event.status}</td>
+                            <td className={"pl-0 fw-normal"}>
+                              <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
+                              <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
+                            </td>                          
+                          </tr>
+                        );
+                      }
+                    })
+                  }
                 </tbody>
               </Table>
             </Widget>
@@ -590,76 +534,28 @@ class Evenement extends React.Component {
                   </tr>
                 </thead>
                 <tbody className="text-dark">
-                <tr key={0}>
-                    <td className={"pl-0 fw-normal"}>1</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-success fw-normal"}>In progress</td>
-                  </tr>
-                  <tr key={1}>
-                  <td className={"pl-0 fw-normal"}>2</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-success fw-normal"}>In progress</td>
-                  </tr>
-                  <tr key={2}>
-                  <td className={"pl-0 fw-normal"}>3</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-primary fw-normal"}>comming</td>
-                  </tr>
-                  <tr key={3}>
-                  <td className={"pl-0 fw-normal"}>4</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-primary fw-normal"}>comming</td>
-                  </tr>
-                  <tr key={4}>
-                  <td className={"pl-0 fw-normal"}>5</td>
-                    <td className={"pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"pl-0 fw-normal"}>M. X</td>
-                    <td className={"pl-0 fw-normal"}>Non definit</td>
-                    <td className={"pl-0 fw-normal"}>CENASA</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-info fw-normal"}><del>Passed</del></td>
-                  </tr>
+                  {
+                    response.map((event, index) => { 
+                      if (event.is_valid === 1) {
+                        return ( 
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.name}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.organizer}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.limit_registration}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.location +'('+event.city+')'}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.starting_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.ending_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.publishing_start_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.publishing_end_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.category}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.account_id}</td>
+                            <td  className={"pl-0 text-warning fw-normal"}>{event.status}</td>                          
+                          </tr>
+                        );
+                      }
+                    })
+                  }
                 </tbody>
               </Table>
             </Widget>
@@ -715,76 +611,28 @@ class Evenement extends React.Component {
                   </tr>
                 </thead>
                 <tbody className="text-dark">
-                <tr key={0}>
-                    <td className={"text-center pl-0 fw-normal"}>1</td>
-                    <td className={"text-center pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"text-center pl-0 fw-normal"}>M. X</td>
-                    <td className={"text-center pl-0 fw-normal"}>Non definit</td>
-                    <td className={"text-center pl-0 fw-normal"}>CENASA</td>
-                    <td className={"text-center pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"text-center pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"text-center pl-0 text-danger fw-normal"}>Denied</td>
-                  </tr>
-                  <tr key={1}>
-                  <td className={"text-center pl-0 fw-normal"}>2</td>
-                    <td className={"text-center pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"text-center pl-0 fw-normal"}>M. X</td>
-                    <td className={"text-center pl-0 fw-normal"}>Non definit</td>
-                    <td className={"text-center pl-0 fw-normal"}>CENASA</td>
-                    <td className={"text-center pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"text-center pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"text-center pl-0 text-danger fw-normal"}>Cancelled</td>
-                  </tr>
-                  <tr key={2}>
-                  <td className={"text-center pl-0 fw-normal"}>3</td>
-                  <td className={"text-center pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"text-center pl-0 fw-normal"}>M. X</td>
-                    <td className={"text-center pl-0 fw-normal"}>Non definit</td>
-                    <td className={"text-center pl-0 fw-normal"}>CENASA</td>
-                    <td className={"text-center pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"text-center pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Denied</td>
-                  </tr>
-                  <tr key={3}>
-                  <td className={"text-center pl-0 fw-normal"}>4</td>
-                  <td className={"text-center pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"text-center pl-0 fw-normal"}>M. X</td>
-                    <td className={"text-center pl-0 fw-normal"}>Non definit</td>
-                    <td className={"text-center pl-0 fw-normal"}>CENASA</td>
-                    <td className={"text-center pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"text-center pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Cancelled</td>
-                  </tr>
-                  <tr key={4}>
-                  <td className={"text-center pl-0 fw-normal"}>5</td>
-                  <td className={"text-center pl-0 fw-normal"}>KOUNDE</td>
-                    <td className={"text-center pl-0 fw-normal"}>M. X</td>
-                    <td className={"text-center pl-0 fw-normal"}>Non definit</td>
-                    <td className={"text-center pl-0 fw-normal"}>CENASA</td>
-                    <td className={"text-center pl-0 fw-normal"}>10 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>3 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>17 Jan 2023</td>
-                    <td className={"text-center pl-0 fw-normal"}>FESTIVAL</td>
-                    <td className={"text-center pl-0 fw-normal"}>Brian Smith</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Cancelled</td>
-                  </tr>
+                  {
+                    response.map((event, index) => { 
+                      if (event.status !== 'waiting' && event.is_valid === 0) {
+                        return ( 
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.name}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.organizer}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.limit_registration}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.location +'('+event.city+')'}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.starting_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.ending_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.publishing_start_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.publishing_end_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.category}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.account_id}</td>
+                            <td  className={"pl-0 text-warning fw-normal"}>{event.status}</td>                          
+                          </tr>
+                        );
+                      }
+                    })
+                  }  
                 </tbody>
               </Table>
             </Widget>
