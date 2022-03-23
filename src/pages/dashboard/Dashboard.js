@@ -424,7 +424,7 @@ class Dashboard extends React.Component {
     
     {
       nbUser = 0;  
-      respons.map((user, index) => {   
+      respons && respons.map((user, index) => {   
         nbUser++;  
       })       
     }
@@ -473,7 +473,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
       nbComptClassic = 0;
       nbComptPro = 0;
       
-      reponse.map((account, index) => { 
+      response && reponse.map((account, index) => { 
 
         if(TypeAccount[account.account_type_id] == "Classique"){
           nbComptClassic++
@@ -1013,7 +1013,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                 <tbody className="text-dark">
                  
                 {
-                    respons.map((user, index) => {           
+                    respons && respons.map((user, index) => {           
                         return ( 
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
@@ -1089,7 +1089,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                 <tbody className="text-dark">
                  
                 {
-                    response.map((transaction, index) => {   
+                    response && response.map((transaction, index) => {   
                         return ( 
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
@@ -1160,7 +1160,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                 <tbody className="text-dark" style={{ overflow: 'auto'}}>
 
                 {
-                    reponse.map((account, index) => {                      
+                    reponse && reponse.map((account, index) => {                      
                         return ( 
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
