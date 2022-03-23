@@ -338,7 +338,7 @@ class Sidebar extends React.Component {
               header="Settings"
               isHeader
               index="main"
-              link="/app/ui/notifications"
+              link="/app/administration/administrator"
             >
               <i class = "fa fa-cogs"></i>
             </LinksGroup>

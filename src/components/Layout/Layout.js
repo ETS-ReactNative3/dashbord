@@ -26,6 +26,7 @@ import Charts from "../../pages/charts";
 
 // Administration
 import Evenement from "../../administration/evenement/Evenement";
+import Administrator from "../../administration/administrator/Administrator";
 
 
 class Layout extends React.Component {
@@ -131,10 +132,8 @@ class Layout extends React.Component {
                     <Route path={"/app/ui/charts"} component={Charts} />
 
 
-                    <Route
-                      path={"/app/administration/evenement"}
-                      component={Evenement}
-                    />
+                    <Route path={"/app/administration/evenement"} component={Evenement} />
+                    <Route path={"/app/administration/administrator"} component={Administrator} />
 
 
                   </Switch>

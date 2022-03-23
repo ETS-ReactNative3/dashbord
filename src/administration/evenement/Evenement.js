@@ -377,7 +377,7 @@ class Evenement extends React.Component {
   };
 
   status = ['wating', 'inprogress']
-  events = getEvents();
+  promise = getEvents();
   
 
   componentDidMount() {
@@ -389,10 +389,10 @@ class Evenement extends React.Component {
   }
 
   render() {
-    this.events.then((value) => {
-      localStorage.setItem('events',JSON.stringify(value.data));
+    this.promise.then((events) => {
+      localStorage.setItem('events',JSON.stringify(events.data));
     });
-    const response = JSON.parse(localStorage.getItem('events'));
+    const events = JSON.parse(localStorage.getItem('events'));
 
     return (
       <div className={s.root}>
@@ -454,7 +454,7 @@ class Evenement extends React.Component {
                 </thead>
                 <tbody className="text-dark">
                   {
-                    response.map((event, index) => { 
+                    events && events.map((event, index) => { 
                       if (event.status === 'waiting') {
                         return ( 
                           <tr key={index++}>
@@ -463,7 +463,7 @@ class Evenement extends React.Component {
                             <td className={"pl-0 fw-normal text-center"}>{event.organizer}</td>
                             <td className={"pl-0 fw-normal text-center"}>{event.limit_registration}</td>
                             <td className={"pl-0 fw-normal text-center"}>{event.location +'('+event.city+')'}</td>
-                            <td className={"pl-0 fw-normal text-center"}>{event.starting_date}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{event.starting_date.toString()}</td>
                             <td className={"pl-0 fw-normal text-center"}>{event.ending_date}</td>
                             <td className={"pl-0 fw-normal text-center"}>{event.publishing_start_date}</td>
                             <td className={"pl-0 fw-normal text-center"}>{event.publishing_end_date}</td>
@@ -535,7 +535,7 @@ class Evenement extends React.Component {
                 </thead>
                 <tbody className="text-dark">
                   {
-                    response.map((event, index) => { 
+                    events && events.map((event, index) => { 
                       if (event.is_valid === 1) {
                         return ( 
                           <tr key={index++}>
@@ -612,7 +612,7 @@ class Evenement extends React.Component {
                 </thead>
                 <tbody className="text-dark">
                   {
-                    response.map((event, index) => { 
+                    events && events.map((event, index) => { 
                       if (event.status !== 'waiting' && event.is_valid === 0) {
                         return ( 
                           <tr key={index++}>

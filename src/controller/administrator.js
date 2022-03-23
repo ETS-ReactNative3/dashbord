@@ -1,4 +1,4 @@
-import {BASE_URL} from "../config/http";
+import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -7,7 +7,7 @@ const route = '/administrators';
 
 export async function addAdministrator(administrateur)  {
     const url = BASE_URL+`${route}/`;
-    const response = await axios.put(url, administrateur);
+    const response = await axios.put(url, {headers:HEADERS}, administrateur);
 
     if (response.status === 200) {
         console.log('Administrateur cree');
@@ -18,7 +18,7 @@ export async function addAdministrator(administrateur)  {
 
 export async function getAdministrators(){
     const url = BASE_URL+`${route}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url, {headers:HEADERS});
         if (response.status === 200) {
             return response;
         }
@@ -29,7 +29,7 @@ export async function getAdministrators(){
 
 export async function getSingleAdministrator(id) {
     const url = BASE_URL+`${route}/${id}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url, {headers:HEADERS});
     if (response.status === 200) {
         return response;
     }
@@ -39,7 +39,7 @@ export async function deleteAdministrator(id) {
     if (window.confirm("Are you sure that you wanted to delete that user record ? ")
         ) {
             const url = BASE_URL+`${route}/${id}`;
-            const response = await axios.delete(url);
+            const response = await axios.delete(url, {headers:HEADERS});
             if (response.status === 200) {
                 toast.success(response.data);
                 getAdministrators();
@@ -49,7 +49,7 @@ export async function deleteAdministrator(id) {
 
 export async function updateAdministrator(administrateur, id){
     const url = BASE_URL+`${route}/${id}`;
-    const response = await axios.put(url, administrateur);
+    const response = await axios.put(url, {headers:HEADERS}, administrateur);
     if (response.status === 200) {
         toast.information("Users updated successfuly");
     }
