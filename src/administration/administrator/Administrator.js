@@ -75,8 +75,8 @@ class Administrator extends React.Component {
                             <td className={"pl-0 fw-normal text-center"}>{administrator.username}</td>
                             <td className={"pl-0 fw-normal text-center"}>{administrator.contact}</td>
                             <td className={"pl-0 fw-normal text-center"}>{administrator.level}</td>
-                            <td className={"pl-0 fw-normal"}>
-                              <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></a>
+                            <td className={"pl-0 fw-normal text-center"}>
+                              <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></a>
                               <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></a>
                             </td>                          
                           </tr>
