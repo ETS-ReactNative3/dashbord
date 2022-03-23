@@ -968,7 +968,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               customDropDown
               title={<p className={"fw-bold"}>Utilisateurs Intercash</p>}
             >
-              <Table className={"mb-0"} borderless responsive>
+              <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
               <div style={{height:'500px', overflow: 'scroll'}}>
                 <thead>
                   <tr>
@@ -1000,9 +1000,6 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                       Types de comptes
                     </th>
                     <th style={{ textAlign: "center" }} >
-                      Nombre de transactions
-                    </th>`
-                    <th style={{ textAlign: "center" }} >
                       Statut
                     </th>
                     <th style={{ textAlign: "center" }} >
@@ -1026,11 +1023,11 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                             <td style={{ textAlign: "center" }} >{user.phone}</td>
                             <td style={{ textAlign: "center" }} >{user.country}</td>
                             <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
-                            <td style={{ textAlign: "center" }} >{user.country}</td>
-                            <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>
-                            <td style={{ textAlign: "center" }} >{user.fidelity_points}</td> 
-                            <td style={{ textAlign: "center" }} >{ statusName[user.is_active]}</td> 
-                            <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
+                            <td style={{ textAlign: "center" }} >{user.creation_date}</td>
+                            <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>                        
+                            <td style={{ textAlign: "center" }} >{ statusName[user.is_active]}</td>
+                            <td style={{ textAlign: "center" }} >{user.stop_amount}</td>  
+                            
                           </tr>
                         );
                     })
@@ -1050,7 +1047,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               customDropDown
               title={<p className={"fw-bold"}>Transactions</p>}
             >
-              <Table className={"mb-0"} borderless responsive>
+              <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
               <div style={{height:'500px', overflow: 'scroll'}}>
                 <thead>
                   <tr>
@@ -1125,8 +1122,8 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               title={<p className={"fw-bold"}>Comptes</p>}
             >
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
-              <div style={{height:'500px', overflow: 'scroll'}}>
-                <thead>
+              <div style={{height:'500px'}}>
+                <thead style={{ overflow: 'auto'}}>
                   <tr>
                     <th style={{ textAlign: "center" }}>
                       No
@@ -1160,7 +1157,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-dark">
+                <tbody className="text-dark" style={{ overflow: 'auto'}}>
 
                 {
                     reponse.map((account, index) => {                      
