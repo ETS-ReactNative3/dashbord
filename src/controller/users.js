@@ -1,26 +1,23 @@
 import axios from 'axios';
-import { useEffect} from 'react';
-import {BASE_URL} from "../config/http";
+import {BASE_URL, HEADERS} from "../config/http";
 
 
 const route = '/users';
-var hasProfessionalAccount = {
+export var hasProfessionalAccount = {
     0: "Classique",
     1: "Professionnel"
   }
 
-  var statusName = {
+  export var statusName = {
     0 : "Désactivé",
     1 : "Actif  "
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+ 
 
-  export async function getUsers () {
+  export default async function getUsers () {
     const url = BASE_URL+`${route}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
             return response;
         }

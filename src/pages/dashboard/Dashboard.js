@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Table } from "reactstrap";
+// import { ProgressBar } from 'react-bootstrap';
 
 import usersImg from "../../images/usersImg.svg";
 import smileImg from "../../images/smileImg.svg";
@@ -7,7 +8,9 @@ import totalSale from "../../images/total-sale.svg";
 import orders from "../../images/orders.svg";
 import stocksImg from "../../images/stocks.svg";
 import stocksDownImg from "../../images/stocksDown.svg";
-import transactions, { getTransactions } from "../../controller/transactions";
+import getTransactions from "../../controller/transactions";
+import getAccounts, {TypeAccount} from "../../controller/accounts";
+import getUsers, {statusName, hasProfessionalAccount} from "../../controller/users";
 
 import { chartData } from "./chartsMock";
 
@@ -22,6 +25,12 @@ import p2 from "../../images/people/p2.png";
 import p3 from "../../images/people/p3.png";
 import p4 from "../../images/people/p4.png";
 import p5 from "../../images/userAvatar.png";
+
+export var sommeDepot=0, nbdepot=0, montantTransaction=0, sommeAchat=0, nbVente=0, sommeVente=0, nbAchat=0, nbretrait=0, nbtrans=0, sommeTrans=0, sommeRetrait=0, nbUser=0, sommeTranfer=0, nbComptClassic=0, nbComptPro =0;
+
+
+
+
 
 const orderValueOverride = {
   options: {
@@ -90,9 +99,6 @@ var typeTransaction = {
   3: "Achat",
   4: "Vente"
 } 
-
-
-var transactionsList = [];
 
 const convertionRateOverride = {
   series: [
@@ -391,6 +397,14 @@ class Dashboard extends React.Component {
     transactions: [],
   };
 
+  transactions= getTransactions();
+  accounts= getAccounts();
+  users = getUsers();
+  dashboardData = {
+    nbUser: 0,
+    nbClassicalAccount: 0,
+    nbProfessionAccount: 0,
+  }
 
   componentDidMount() {
     window.addEventListener("resize", this.forceUpdate.bind(this))
@@ -402,47 +416,102 @@ class Dashboard extends React.Component {
 
   render() {
 
-    // const [transaction, setTransaction] = useState([]);
-    const response = getTransactions();
-    // var transactionsList = [];
+    //operation sur les utilisateurs
+    this.users.then((value) => {
+      localStorage.setItem('users',JSON.stringify(value.data));
+    });
+    const respons = JSON.parse(localStorage.getItem('users'));
+    
+    {
+      nbUser = 0;  
+      respons.map((user, index) => {   
+        nbUser++;  
+      })       
+    }
 
-    // response.then(value => {
-    //   value.forEach(transaction => {
-    //     console.log('transactionId: '+transaction.id);      
-    //   })
-    //   // this.setState({transactions: value})
-    // });
+
+//operations sur les transactions
+    this.transactions.then((value) => {
+      localStorage.setItem('transactions',JSON.stringify(value.data));
+    });
+    const response = JSON.parse(localStorage.getItem('transactions'));
+    {
+      nbdepot=0;
+      sommeDepot=0;
+      nbtrans=0;
+      sommeTrans=0;
+      nbAchat=0;
+      montantTransaction=0;
+      sommeAchat=0;
+      nbAchat=0;
+      sommeVente=0;
+      response.map((transaction, index) => {   
+      montantTransaction +=transaction.amount; 
+      if(typeTransaction[transaction.transaction_type_id]==="Dépot") {
+        nbdepot++;
+        sommeDepot= sommeDepot + transaction.amount;
+      }else if(typeTransaction[transaction.transaction_type_id]==="Transfert") {
+        nbtrans++;
+        sommeTrans= sommeTrans + transaction.amount;
+      } else if(typeTransaction[transaction.transaction_type_id]==="Achat"){
+          nbAchat++;
+          sommeAchat= sommeAchat + transaction.amount;
+      } else{
+        nbVente++;
+        sommeVente= sommeVente + transaction.amount;
+      }
+    })}     
+   
+console.log("montant des transactions",montantTransaction-sommeAchat);
+    
+// operations sur les comptes
+    this.accounts.then((value) => {
+      localStorage.setItem('accounts',JSON.stringify(value.data));
+    });
+    const reponse = JSON.parse(localStorage.getItem('accounts'));
+    {
+      nbComptClassic = 0;
+      nbComptPro = 0;
+      
+      reponse.map((account, index) => { 
+
+        if(TypeAccount[account.account_type_id] == "Classique"){
+          nbComptClassic++
+        }
+        else{ nbComptPro++}  
+      })
+    } 
+
 
     
+    
+    // const usersList = respons;
+    // const accountList = response;
 
-    // console.log('*******************************');
-    // console.log('transactionsList: '+transactionsList);
-    // console.log('*******************************');
-
-    console.log('*******************************');
-    console.log('this.state.transactions: '+this.state.transactions);
-    console.log('*******************************');
-
-    // setTransaction(response.data);
+    // usersList.forEach((user) => {
+    //   usersList.forEach((user) => {
+    //     if ()
+    //   });
+    // });
     
     return (
       <div className={s.root}>
         <Row>
           <Col xl={4}>
             <Widget
-              title={<p style={{ fontWeight: 700 }}>Depots du jour</p>}
+              title={<p style={{ fontWeight: 700 }}> Montant Depots</p>}
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
                 <Col sm={8} className={"d-flex align-items-center"}>
-                  <h6 className={"fw-semi-bold mb-0"}>872 410 F CFA</h6>
+                  <h6 className={"fw-semi-bold mb-0"}>{sommeDepot} F CFA</h6>
                 </Col>
                 <Col
                   sm={4}
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>40%</p>
+                  <p className={"text-success mb-0"}>{(sommeDepot*100/montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -460,19 +529,19 @@ class Dashboard extends React.Component {
           </Col>
           <Col xl={4}>
             <Widget
-              title={<p style={{ fontWeight: 700 }}>Retrait du jour</p>}
+              title={<p style={{ fontWeight: 700 }}>Montant Retrait</p>}
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
                 <Col sm={8} className={"d-flex align-items-center"}>
-                  <h6 className={"fw-semi-bold mb-0"}>325 286 F CFA</h6>
+                  <h6 className={"fw-semi-bold mb-0"}>{sommeRetrait} F CFA</h6>
                 </Col>
                 <Col
                   sm={4}
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>15%</p>
+                  <p className={"text-success mb-0"}>{(sommeRetrait*100/montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -492,19 +561,19 @@ class Dashboard extends React.Component {
 
           <Col xl={4}>
             <Widget
-              title={<p style={{ fontWeight: 700 }}>Utilisateurs</p>}
+              title={<p style={{ fontWeight: 700 }}> Utilisateurs </p>}
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
                 <Col sm={8} className={"d-flex align-items-center"}>
-                  <h6 className={"fw-semi-bold mb-0"}>5 824</h6>
+                  <h6 className={"fw-semi-bold mb-0"}>{nbUser}</h6>
                 </Col>
                 <Col
                   sm={4}
                   className={"d-flex align-items-center justify-content-end"}
                 >
-                  <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>15%</p>
+                  {/* <img src={stocksImg} alt="" className={"mr-1"} /> */}
+                  {/* <p className={"text-success mb-0"}>{(sommeAchat*100/montantTransaction).toFixed(2)} %</p> */}
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -600,19 +669,19 @@ class Dashboard extends React.Component {
         <Row>
           <Col xl={4}>
             <Widget
-              title={<p style={{ fontWeight: 700 }}>Transferts du jour </p>}
+              title={<p style={{ fontWeight: 700 }}>Montant Transferts</p>}
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
                 <Col sm={8} className={"d-flex align-items-center"}>
-                  <h6 className={"fw-semi-bold mb-0"}>1 395 720 F CFA</h6>
+                  <h6 className={"fw-semi-bold mb-0"}>{sommeTrans} F CFA</h6>
                 </Col>
                 <Col
                   sm={4}
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>20%</p>
+                  <p className={"text-success mb-0"}>{(sommeTrans*100/montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -630,19 +699,19 @@ class Dashboard extends React.Component {
           </Col>
           <Col xl={4}>
             <Widget
-              title={<p style={{ fontWeight: 700 }}>Commissions du jour</p>}
+              title={<p style={{ fontWeight: 700 }}>Comissions Intercash</p>}
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
                 <Col sm={8} className={"d-flex align-items-center"}>
-                  <h6 className={"fw-semi-bold mb-0"}>12 897 F CFA</h6>
+                  <h6 className={"fw-semi-bold mb-0"}>{sommeVente}</h6>
                 </Col>
                 <Col
                   sm={4}
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>14%</p>
+                  <p className={"text-success mb-0"}>{(sommeVente*100/montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -676,13 +745,13 @@ class Dashboard extends React.Component {
                   sm={12}
                   className={"d-flex justify-content-center align-items-center"}
                 >
-                  <h3 className={"fw-semi-bold pt-1 mb-0"}>5873</h3>
+                  <h3 className={"fw-semi-bold pt-1 mb-0"}>{nbComptClassic}</h3>
                 </Col>
                 <Col
                   sm={12}
                   className={"d-flex justify-content-center align-items-center"}
                 >
-                  <h6 className={"fw-thin pt-1 mb-0"}>Classique</h6>
+                  <h6 className={"fw-thin pt-1 mb-0"}> Classique</h6>
                 </Col>
                 <Col
                   sm={12}
@@ -691,7 +760,7 @@ class Dashboard extends React.Component {
                   }
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"fw-thin text-success mb-0"}>15%</p>
+                  <p className={"fw-thin text-success mb-0"}>{(nbComptClassic*100/reponse.length).toFixed(2)} %</p>
                 </Col>
               </Row>
             </Widget>
@@ -713,7 +782,7 @@ class Dashboard extends React.Component {
                   sm={12}
                   className={"d-flex justify-content-center align-items-center"}
                 >
-                  <h3 className={"fw-semi-bold pt-1 mb-0"}>6452</h3>
+                  <h3 className={"fw-semi-bold pt-1 mb-0"}>{nbComptPro}</h3>
                 </Col>
                 <Col
                   sm={12}
@@ -728,7 +797,7 @@ class Dashboard extends React.Component {
                   }
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"fw-thin text-success mb-0"}>15%</p>
+                  <p className={"fw-thin text-success mb-0"}>{(nbComptPro*100/reponse.length).toFixed(2)} %</p>
                 </Col>
               </Row>
             </Widget>
@@ -834,7 +903,6 @@ class Dashboard extends React.Component {
                     series={this.state.splineArea.series}
                     options={this.state.splineArea.options}
                     type={"area"}
-                    height={"350px"}
                   />
                 </Col>
               </Row>
@@ -861,19 +929,31 @@ class Dashboard extends React.Component {
               <Row className={`justify-content-between`}>
                 <Col sm={4}>
                   <div className={`${s.pieElementsDanger} ${s.pieElements}`}>
-                    <h4 className={"mt-3 mb-1"}>253</h4>
+                    <h4 className={"mt-3 mb-1"}>{nbdepot}</h4>
                     <p>Depots</p>
                   </div>
                 </Col>
                 <Col sm={4}>
+                  <div className={`${s.pieElementsDanger} ${s.pieElements}`}>
+                    <h4 className={"mt-3 mb-1"}>{nbAchat}</h4>
+                    <p>Achats</p>
+                  </div>
+                </Col>
+                <Col sm={4}>
+                  <div className={`${s.pieElementsDanger} ${s.pieElements}`}>
+                    <h4 className={"mt-3 mb-1"}>{nbVente}</h4>
+                    <p>Ventes</p>
+                  </div>
+                </Col>
+                <Col sm={4}>
                   <div className={`${s.pieElementsWarning} ${s.pieElements}`}>
-                    <h4 className={"mt-3 mb-1"}>1732</h4>
+                    <h4 className={"mt-3 mb-1"}>{nbretrait}</h4>
                     <p>Retraits</p>
                   </div>
                 </Col>
                 <Col sm={4}>
                   <div className={`${s.pieElementsBlack} ${s.pieElements}`}>
-                    <h4 className={"mt-3 mb-1"}>50</h4>
+                    <h4 className={"mt-3 mb-1"}>{nbtrans}</h4>
                     <p>Transferts</p>
                   </div>
                 </Col>
@@ -886,237 +966,152 @@ class Dashboard extends React.Component {
           <Col sm={12}>
             <Widget
               customDropDown
+              title={<p className={"fw-bold"}>Utilisateurs Intercash</p>}
+            >
+              <Table className={"mb-0"} borderless responsive>
+              <div style={{height:'500px', overflow: 'scroll'}}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "center" }} >
+                     No
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                    ID
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Nom 
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Prénom (s)
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Numéro 
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Pays
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Points de fidélités
+                    </th>
+                    <th style={{ textAlign: "center" }}>
+                      Date d'inscription
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Types de comptes
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Nombre de transactions
+                    </th>`
+                    <th style={{ textAlign: "center" }} >
+                      Statut
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Limite de transactions
+                    </th>`
+                  </tr>
+                </thead>
+                
+                
+                
+                <tbody className="text-dark">
+                 
+                {
+                    respons.map((user, index) => {           
+                        return ( 
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td style={{ textAlign: "center" }} >{user.id}</td>
+                            <td style={{ textAlign: "center" }} >{user.last_name}</td>
+                            <td style={{ textAlign: "center" }} >{user.first_name}</td>
+                            <td style={{ textAlign: "center" }} >{user.phone}</td>
+                            <td style={{ textAlign: "center" }} >{user.country}</td>
+                            <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
+                            <td style={{ textAlign: "center" }} >{user.country}</td>
+                            <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>
+                            <td style={{ textAlign: "center" }} >{user.fidelity_points}</td> 
+                            <td style={{ textAlign: "center" }} >{ statusName[user.is_active]}</td> 
+                            <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
+                          </tr>
+                        );
+                    })
+                  }  
+                </tbody>
+                </div>
+                
+              </Table>
+            </Widget>
+          </Col>
+        </Row>
+
+
+        <Row>
+          <Col sm={12}>
+            <Widget
+              customDropDown
               title={<p className={"fw-bold"}>Transactions</p>}
             >
               <Table className={"mb-0"} borderless responsive>
+              <div style={{height:'500px', overflow: 'scroll'}}>
                 <thead>
                   <tr>
-                    <th key={0} scope="col" className={"pl-0"}>
-                      #
+                    <th style={{ textAlign: "center" }} >
+                     No
                     </th>
-                    <th key={1} scope="col" className={"pl-0"}>
-                      Utilisateur
+                    <th style={{ textAlign: "center" }} >
+                    ID
                     </th>
-                    <th key={2} scope="col" className={"pl-0"}>
-                      Compte
+                    <th style={{ textAlign: "center" }} >
+                      solde
                     </th>
-                    <th key={3} scope="col" className={"pl-0"}>
-                      Telephone
+                    <th style={{ textAlign: "center" }} >
+                      Envoyeur
                     </th>
-                    <th key={4} scope="col" className={"pl-0"}>
-                      Date
+                    <th style={{ textAlign: "center" }} >
+                      Numéro Envoyeur
                     </th>
-                    <th key={5} scope="col" className={"pl-0"}>
-                      Montant
+                    <th style={{ textAlign: "center" }} >
+                      Bénéficiaire
                     </th>
-                    <th key={6} scope="col" className={"pl-0"}>
-                      Type
+                    <th style={{ textAlign: "center" }} >
+                      Numéro Bénéficiaire
                     </th>
-                    <th key={7} scope="col" className={"pl-0"}>
-                      Status
+                    <th style={{ textAlign: "center" }}>
+                      Date transaction
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Heure transaction
+                    </th>
+                    <th style={{ textAlign: "center" }} >
+                      Type transaction
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-dark">
-                {
-                    // response.then(value => {
-                    //   value.forEach(transaction => {
-                    //     transactionsList.push(transaction);
-                    //     this.setState({transactions: transactionsList})
-                      
-                    //   })
-
-                    // getTransactions().then(response => {
-                    //   this.setState({
-                    //     transaction: response.transaction,
-                    //   });
-                    // })
-
-                    // response.then(value => {
-                    //   value.forEach(transaction => {
-                    //     console.log(transaction);
-                    //   })
-                    //   // setState({ 
-                    //   //   ...state,
-                    //   //   [tran]: value, 
-                    //   //  });
-                    //   // this.setState({transactions: value})
-                    //   console.log('*******************************');
-                    //   console.log(value);
-                    //   console.log('*******************************');
-                    // })
-                  // // response.then(value => {
-                  // //   var index = 0;
-                  // //   return (value.forEach(transaction => {
-                  // //     // return (
-                  // //       {
-                  // //         <tr key={index}>
-                  // //           <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
-                  // //           <th style={{ textAlign: "center" }}>{transaction.id}</th>
-                  // //           <td style={{ textAlign: "center" }}>{transaction.amount}</td>
-                  // //           <td style={{ textAlign: "center" }}>{transaction.sender_account_id}</td>
-                  // //           <td style={{ textAlign: "center" }}>{transaction.sender_phone}</td>
-                  // //           <td style={{ textAlign: "center" }}>{transaction.receiver_account_id}</td>
-                  // //           <td style={{ textAlign: "center" }}>{transaction.receiver_phone}</td>
-                  // //           <td style={{ textAlign: "center" }}>{(transaction.creation_date).slice(0, 10)}</td>
-                  // //           <td style={{ textAlign: "center" }}>{(transaction.creation_date).slice(11, 19)}</td>
-                  // //           <td style={{ textAlign: "center" }}>{typeTransaction[transaction.transaction_type_id]}</td>
-                  // //         </tr>
-                  //       }
-                  //     // );
-                  //     index++; 
-                  //   }))
-                  //   // this.setState({transactions: value})
-                  // })
-
-                  // response && response.map((item, index) => {
-                  //     return (
-                  //       <tr key={index}>
-                  //         <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
-                  //         <th style={{ textAlign: "center" }}>{item.id}</th>
-                  //         <td style={{ textAlign: "center" }}>{item.amount}</td>
-                  //         <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
-                  //         <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
-                  //         <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
-                  //         <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
-                  //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
-                  //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
-                  //         <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
-                  //       </tr>
-                  //     );
-                  //   })
                 
-                  // response.then((transactionsList) => {
-
-                  //   this.setState({
-                  //     transactions: transactionsList
-                  //   })
-
-                    // transactions && transactions.map((item, index) => {
-                    //   return (
-                    //     <tr key={index}>
-                    //       <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
-                    //       <th style={{ textAlign: "center" }}>{item.id}</th>
-                    //       <td style={{ textAlign: "center" }}>{item.amount}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
-                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
-                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
-                    //       <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
-                    //     </tr>
-                    //   );
-                    // })
-
-                    
-                    // console.log("response.value =>",value)
-                    // var i = 0;
-
-                    // for(var transaction in transactions) {
-                    //   console.log("compteur",value)
-                    //   <tr>
-                    //   <td className={"pl-0 fw-normal"}>1</td>
-                    //   <td className={"pl-0 fw-normal"}>Kate Claus</td>
-                    //   <td className={"pl-0 fw-normal"}>Professionel</td>
-                    //   <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    //   <td className={"pl-0 fw-normal"}>10 Jan 2020</td>
-                    //   <td className={"pl-0 fw-normal"}>8 400 F CFA</td>
-                    //   <td className={"pl-0 fw-normal"}>Depot</td>
-                    //   <td className={"pl-0 text-success fw-normal"}>Succes</td>
-                    // </tr>
-                    // }
-
-                  
-
-                    // var cpt = 0;
-                    // for(var transaction in transactions) {
-                    //     <tr key={index}>
-                    //       <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
-                    //       <th style={{ textAlign: "center" }}>{item.id}</th>
-                    //       <td style={{ textAlign: "center" }}>{item.amount}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
-                    //       <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
-                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
-                    //       <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
-                    //       <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
-                    //     </tr>
-                    // }
-
-                    //   transactions && transactions.map((item, index) => {
-                    //     return (
-                    //       <tr key={index}>
-                    //         <th scope='row' style={{ textAlign: "center" }}>{index + 1}</th>
-                    //         <th style={{ textAlign: "center" }}>{item.id}</th>
-                    //         <td style={{ textAlign: "center" }}>{item.amount}</td>
-                    //         <td style={{ textAlign: "center" }}>{item.sender_account_id}</td>
-                    //         <td style={{ textAlign: "center" }}>{item.sender_phone}</td>
-                    //         <td style={{ textAlign: "center" }}>{item.receiver_account_id}</td>
-                    //         <td style={{ textAlign: "center" }}>{item.receiver_phone}</td>
-                    //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(0, 10)}</td>
-                    //         <td style={{ textAlign: "center" }}>{(item.creation_date).slice(11, 19)}</td>
-                    //         <td style={{ textAlign: "center" }}>{typeTransaction[item.transaction_type_id]}</td>
-                    //       </tr>
-                    //     );
-                    //   })
-                  // })
-
-                  
-                  }
-
-                  {/* <tr key={0}> 
-                  <td className={"pl-0 fw-normal"}>1</td>
-                    <td className={"pl-0 fw-normal"}>Kate Claus</td>
-                    <td className={"pl-0 fw-normal"}>Professionel</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>8 400 F CFA</td>
-                    <td className={"pl-0 fw-normal"}>Depot</td>
-                    <td className={"pl-0 text-success fw-normal"}>Succes</td>
-                  </tr>
-                  <tr key={1}>
-                    <td className={"pl-0 fw-normal"}>2</td>
-                    <td className={"pl-0 fw-normal"}>Maria Gordon</td>
-                    <td className={"pl-0 fw-normal"}>Classique</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>08 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>8 400 F CFA</td>
-                    <td className={"pl-0 fw-normal"}>Transfert</td>
-                    <td className={"pl-0 text-success fw-normal"}>Succes</td>
-                  </tr>
-                  <tr key={2}>
-                    <td className={"pl-0 fw-normal"}>3</td>
-                    <td className={"pl-0 fw-normal"}>Nick Peru</td>
-                    <td className={"pl-0 fw-normal"}>Classique</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>05 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>1 300 F CFA</td>
-                    <td className={"pl-0 fw-normal"}>Paiement</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Echec</td>
-                  </tr>
-                  <tr key={3}>
-                    <td className={"pl-0 fw-normal"}>4</td>
-                    <td className={"pl-0 fw-normal"}>Lian Robinson</td>
-                    <td className={"pl-0 fw-normal"}>Classique</td>
-                    <td className={"pl-0 fw-normal"}>70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>20 Dec 2019</td>
-                    <td className={"pl-0 fw-normal"}>880 F CFA</td>
-                    <td className={"pl-0 fw-normal"}>Retrait</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Echec</td>
-                  </tr>
-                  <tr key={4}>
-                    <td className={"pl-0 fw-normal"}>5</td>
-                    <td className={"pl-0 fw-normal"}>Sam Fisher</td>
-                    <td className={"pl-0 fw-normal"}>Professionel</td>
-                    <td className={"pl-0 fw-normal"}>70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>16 Dec 2019</td>
-                    <td className={"pl-0 fw-normal"}>9 400 F CFA</td>
-                    <td className={"pl-0 fw-thin"}>Depot</td>
-                    <td className={"pl-0 text-success fw-normal"}>Succes</td> 
-                  </tr> */}
+                
+                
+                <tbody className="text-dark">
+                 
+                {
+                    response.map((transaction, index) => {   
+                        return ( 
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.id}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.amount}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.sender_account_id}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.receiver_account_id}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
+                            <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(0, 10)}</td>
+                            <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(11, 19)}</td>
+                            <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>                   
+                          </tr>
+                        );
+                    })
+                  }  
                 </tbody>
+                </div>
+                
               </Table>
             </Widget>
           </Col>
@@ -1129,118 +1124,69 @@ class Dashboard extends React.Component {
               customDropDown
               title={<p className={"fw-bold"}>Comptes</p>}
             >
-              <Table className={"mb-0"} borderless responsive>
+              <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
+              <div style={{height:'500px', overflow: 'scroll'}}>
                 <thead>
                   <tr>
-                    <th key={0} scope="col" className={"pl-0"}>
-                      #
+                    <th style={{ textAlign: "center" }}>
+                      No
                     </th>
-                    <th key={1} scope="col" className={"pl-0"}>
-                      Utilisateur
+                    <th style={{ textAlign: "center" }}>
+                    Compte ID
                     </th>
-                    <th key={2} scope="col" className={"pl-0"}>
-                      Compte
+                    <th style={{ textAlign: "center" }}>
+                    Utilisateur
                     </th>
-                    <th key={3} scope="col" className={"pl-0"}>
-                      Telephone
+                    <th kstyle={{ textAlign: "center" }}>
+                    Solde
                     </th>
-                    <th key={4} scope="col" className={"pl-0"}>
-                      Derniere modification
+                    <th style={{ textAlign: "center" }}>
+                    Date Création
                     </th>
-                    <th key={5} scope="col" className={"pl-0"}>
-                      Solde
+                    <th style={{ textAlign: "center" }}>
+                    Heure création
                     </th>
-                    <th key={6} scope="col" className={"pl-0"}>
-                      Plafond
+                    <th style={{ textAlign: "center" }}>
+                    Dernière opération
                     </th>
-                    <th key={7} scope="col" className={"pl-0"}>
-                      Type
+                    <th style={{ textAlign: "center" }}>
+                    Heure derniere opération
+                    </th>
+                    <th style={{ textAlign: "center" }}>
+                    Limite de transaction
+                    </th>
+                    <th style={{ textAlign: "center" }}>
+                    Type de compte
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-dark">
-                  <tr key={0}>
-                    <td className={"pl-0 fw-normal"}>1</td>
-                    <td className={"pl-0 fw-normal"}>
-                      Kate Claus
-                    </td>
-                    <td className={"pl-0 fw-normal"}>Professionel</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>10 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <i className={`fa fa-circle text-success mr-3`} />
-                      8 400 F CFA
-                    </td>
-                    <td className={"pl-0 text-success fw-normal"}> No Limit </td>
-                    <td className={"pl-0 fw-normal"}>Depot</td>
-                  </tr>
-                  <tr key={1}>
-                    <td className={"pl-0 fw-normal"}>2</td>
-                    <td className={"pl-0 fw-normal"}>
-                      Maria Gordon
-                    </td>
-                    <td className={"pl-0 fw-normal"}>Classique</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>08 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <i className={`fa fa-circle text-success mr-3`} />
-                      67 924 F CFA
-                    </td>
-                    <td className={"pl-0 text-danger fw-normal"}> 200 000 F CFA </td>
-                    <td className={"pl-0 fw-normal"}>Transfert</td>
-                  </tr>
-                  <tr key={2}>
-                    <td className={"pl-0 fw-normal"}>3</td>
-                    <td className={"pl-0 fw-normal"}>
-                      Nick Peru
-                    </td>
-                    <td className={"pl-0 fw-normal"}>Classique</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>05 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <i className={`fa fa-circle text-warning mr-3`} />
-                      948 528 F CFA
-                    </td>
-                    <td className={"pl-0 text-danger fw-normal"}> 2 000 000 F CFA </td>
-                    <td className={"pl-0 fw-normal"}>Paiement</td>
-                  </tr>
-                  <tr key={3}>
-                    <td className={"pl-0 fw-normal"}>4</td>
-                    <td className={"pl-0 fw-normal"}>
-                      Lian Robinson
-                    </td>
-                    <td className={"pl-0 fw-normal"}>Classique</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>20 Dec 2019</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <i className={`fa fa-circle text-danger mr-3`} />
-                      1 867 400 F CFA
-                    </td>
-                    <td className={"pl-0 text-danger fw-normal"}> 2 000 000 F CFA </td>
-                    <td className={"pl-0 fw-normal"}>Retrait</td>
-                  </tr>
-                  <tr key={4}>
-                    <td className={"pl-0 fw-normal"}>5</td>
-                    <td className={"pl-0 fw-normal"}>
-                      Sam Fisher
-                    </td>
-                    <td className={"pl-0 fw-normal"}>Professionel</td>
-                    <td className={"pl-0 fw-normal"}> 70 00 00 00</td>
-                    <td className={"pl-0 fw-normal"}>16 Dec 2019</td>
-                    <td className={"pl-0 fw-normal"}>
-                      <i className={`fa fa-circle text-success mr-3`} />
-                      9 400 F CFA
-                    </td>
-                    <td className={"pl-0 text-success fw-normal"}> No Limit </td>
-                    <td className={"pl-0 fw-thin"}>Depot</td>
-                  </tr>
+
+                {
+                    reponse.map((account, index) => {                      
+                        return ( 
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td style={{ textAlign: "center" }}>{account.id}</td>
+                            <td style={{ textAlign: "center" }}>{account.user_id}</td>
+                            <td style={{ textAlign: "center" }}>{account.amount}</td>
+                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(0,10)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11,18)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.last_update).slice(0,10)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11,18)}</td>
+                            <td style={{ textAlign: "center" }}>{account.stop_amount}</td>
+                            <td style={{ textAlign: "center" }}>{TypeAccount[account.account_type_id]}</td>                  
+                          </tr>
+                        );
+                       
+                    })
+                  }
                 </tbody>
+                </div>
               </Table>
             </Widget>
           </Col>
         </Row>
-
-
         {/* <Row>
           <Col sm={12}>
             <Widget

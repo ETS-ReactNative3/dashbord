@@ -13,19 +13,20 @@ var typeTransaction = {
 
   
 
-  export async function getTransactions () {
+  export default async function getTransactions () {
     const url = BASE_URL+`${route}`;
     const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
-          return response.data; 
-        } 
+            return response;
+        }
   }
 
   export async function getTransaction (id) {
     const url = BASE_URL+`${route}/${id}`;
     const response = await axios.get(url);
     if (response.status === 200) {
-        return response.data  }
+        return response.data;
+    }
   }
 
   export async function createTransaction (transaction) {

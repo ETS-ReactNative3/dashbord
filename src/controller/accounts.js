@@ -1,21 +1,21 @@
 import axios from 'axios';
 import {useEffect } from 'react';
-import {BASE_URL} from "../config/http";
+import {BASE_URL, HEADERS} from "../config/http";
 import { toast } from "react-toastify";
 
 const route = '/accounts';
-var TypeAccount = {
+ export var TypeAccount = {
     1: "Classique",
     2: "Professionnel"
   }
 
-  useEffect(() => {
-    getAccounts();
-  }, []);
+  // useEffect(() => {
+  //   getAccounts();
+  // }, []);
 
-  export async function getAccounts () {
+  export default async function getAccounts () {
     const url = BASE_URL+`${route}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
             return response;
         }
@@ -40,7 +40,7 @@ var TypeAccount = {
     }
 }
 
-export default async function getAccountById(id){
+export async function getAccountById(id){
   const url = BASE_URL+`${route}/${id}`;
   const response = await axios.get(url);
   if (response.status === 200) {
@@ -48,7 +48,7 @@ export default async function getAccountById(id){
   } 
 }
 
-export default async function getStopAmount(id){
+export async function getStopAmount(id){
   const url = BASE_URL+`${route}/getStopAmount/${id}`;
   const response = await axios.get(url);
   if (response.status === 200) {
