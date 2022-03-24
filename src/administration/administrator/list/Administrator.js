@@ -2,14 +2,14 @@ import React from 'react';
 import {
   Row, Col, Button, Table,
 } from 'reactstrap';
-import Widget from "../../components/Widget";
+import Widget from "../../../components/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Administrator.module.scss';
 
 
-import { getAdministrators } from "../../controller/administrator";
+import { getAdministrators } from "../../../controller/administrator";
 
-class Administrator extends React.Component {
+class ListAdministrator extends React.Component {
 
   state = {
     
@@ -95,4 +95,4 @@ class Administrator extends React.Component {
   }
 }
 
-export default Administrator;
+export default ListAdministrator;

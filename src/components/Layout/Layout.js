@@ -25,9 +25,9 @@ import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
 
 // Administration
-import Administrator from "../../administration/administrator/Administrator";
-// import AddAdministratorPage from "../../administration/administrator/add/Administrator";
-// import ListAdministratorPage from "../../administration/administrator/list/Administrator";
+// import Administrator from "../../administration/administrator/Administrator";
+import AddAdministratorPage from "../../administration/administrator/add/Administrator";
+import ListAdministratorPage from "../../administration/administrator/list/Administrator";
 
 import AddEventPage from "../../administration/event/add/Event";
 import ListEventPage from "../../administration/event/list/Event";
@@ -141,9 +141,9 @@ class Layout extends React.Component {
                     <Route path={"/app/administration/event/add"} component={AddEventPage} />
                     <Route path={"/app/administration/event/list"} component={ListEventPage} />
 
-                    <Route path={"/app/administration/administrator"} component={Administrator} />
-                    {/* <Route path={"/app/administration/administrator/add"} component={AddAdministratorPage} />
-                    <Route path={"/app/administration/administrator/list"} component={ListAdministratorPage} /> */}
+                    {/* <Route path={"/app/administration/administrator"} component={Administrator} /> */}
+                    <Route path={"/app/administration/administrator/add"} component={AddAdministratorPage} />
+                    <Route path={"/app/administration/administrator/list"} component={ListAdministratorPage} />
 
 
                   </Switch>
