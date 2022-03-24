@@ -262,7 +262,7 @@ class Sidebar extends React.Component {
               header="Evenements"
               isHeader
               index="evenement"
-              link="/app/administration/evenement"
+              link="/app/administration/event/add"
             >
             <i class="fa fa-calendar"></i>
             </LinksGroup>

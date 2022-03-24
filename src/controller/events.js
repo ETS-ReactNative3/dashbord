@@ -1,54 +1,51 @@
 import axios from 'axios';
-import { useEffect } from 'react';
 import {BASE_URL, HEADERS} from "../config/http";
 
 
 const route = '/events';
 
 
-  // useEffect(() => {
-  //   getEvents();
-  // }, []);
 
-  export async function getEvents () {
-    const url = BASE_URL+`${route}`;
-    const response = await axios.get(url, {headers:HEADERS});
-    if (response.status === 200) {
+
+export async function getEvents () {
+  const url = BASE_URL+`${route}`;
+  const response = await axios.get(url, {headers:HEADERS});
+  if (response.status === 200) {
+    return response;
+  }
+}
+
+export async function getEvent (id) {
+  const url = BASE_URL+`${route}/${id}`;
+  const response = await axios.get(url);
+  if (response.status === 200) {
       return response;
-    }
   }
+}
 
-  export async function getEvent (id) {
-    const url = BASE_URL+`${route}/${id}`;
-    const response = await axios.get(url);
-    if (response.status === 200) {
-        return response;
-    }
-  }
-
-  export async function createEvent(event) {
-    const url = BASE_URL+`${route}`;
-    const response = await axios.put(url, {
-      "name": event.name,
-      "organizer": event.organizer,
-      "limitRegistration": event.limitRegistration,
-      "country": event.country,
-      "city": event.city,
-      "district": event.district,
-      "location": event.location,
-      "startingDate": event.startingDate,
-      "endingDate": event.endingDate,
-      "publishingStartDate": event.publishingStartDate,
-      "publishingEndDate": event.publishingEndDate,
-      "description": event.description,
-      "phone": event.phone,
-      "category": event.category,
-      "accountId": event.accountId,
-    });
-        if (response.status === 200) {
-            return response;
-        }
-  }
+export async function createEvent(event) {
+  const url = BASE_URL+`${route}`;
+  const response = await axios.put(url, {
+    "name": event.name,
+    "organizer": event.organizer,
+    "limitRegistration": event.limitRegistration,
+    "country": event.country,
+    "city": event.city,
+    "district": event.district,
+    "location": event.location,
+    "startingDate": event.startingDate,
+    "endingDate": event.endingDate,
+    "publishingStartDate": event.publishingStartDate,
+    "publishingEndDate": event.publishingEndDate,
+    "description": event.description,
+    "phone": event.phone,
+    "category": event.category,
+    "accountId": event.accountId,
+  });
+      if (response.status === 200) {
+          return response;
+      }
+}
  
 export async function getEventByName(eventName){
     const url = BASE_URL+`${route}/getEventByName/${eventName}`;
