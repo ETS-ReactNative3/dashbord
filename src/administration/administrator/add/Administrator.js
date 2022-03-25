@@ -43,14 +43,28 @@ class AddAdministrator extends React.Component {
             }}
           // onSubmit={handleSubmit}
           >
-            <label
-              style={{
-                marginTop: "10px",
-                marginRight: "50px",
-              }}
-              htmlFor="name">
-              <strong>Name :</strong> </label>
-            <input
+            {/* <tr>
+              <td>
+
+              </td>
+              <td>
+
+              </td>
+            </tr> */}
+
+            <tr>
+              <td>
+                <label
+                  style={{
+                    marginTop: "10px",
+                    marginRight: "50px",
+                  }}
+                  htmlFor="name">
+                  <strong>Name :</strong> 
+              </label>
+              </td>
+              <td>
+              <input
               style={{
                 padding: "3px",
                 border: "1px solid #F5C5C5",
@@ -66,32 +80,41 @@ class AddAdministrator extends React.Component {
             // value={name}
 
             />
-            <br />
-            <br />
+              </td>
+            </tr>
 
-            <label htmlFor="username"
-              style={{
-                marginTop: "10px",
-                marginRight: "50px",
-              }}
-            ><strong>Username : </strong> </label>
-            <input
+            <tr>
+              <td>
+                  <label htmlFor="username"
+                  style={{
+                    marginTop: "10px",
+                    marginRight: "50px",
+                  }}
+                ><strong>Username : </strong> </label>
+              </td>
+              <td>
+              <input
+                style={{
+                  padding: "3px",
+                  border: "1px solid #F5C5C5",
+                  borderRadius: "5px",
+                  width: "200px",
+                  boxShadow: "1px 1px 2px #C0C0C0 inset",
+                }}
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter Contact No. ..."
+                // onChange={handleInputChange}
+                // value={username}
 
-              style={{
-                padding: "3px",
-                border: "1px solid #F5C5C5",
-                borderRadius: "5px",
-                width: "200px",
-                boxShadow: "1px 1px 2px #C0C0C0 inset",
-              }}
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter Contact No. ..."
-            // onChange={handleInputChange}
-            // value={username}
+                />
+              </td>
+            </tr>
 
-            />
+
+          
+
             <br />
             <br />
             <label htmlFor="password"
