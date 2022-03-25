@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Row, Col, Button, Table,
 } from 'reactstrap';
+import { Link } from "react-router-dom";
 import Widget from "../../../components/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Administrator.module.scss';
@@ -32,7 +33,9 @@ class ListAdministrator extends React.Component {
           <Row>
             <Col sm={10} className="text-align:right"></Col>
             <Col sm={2} className="text-align:right">
-              <Button  className="text-warning" href="./Administrator.js"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Creer <i class="fa fa-plus-circle"></i></Button>
+            <Link to="./add">
+            <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Creer <i class="fa fa-plus-circle"></i></Button>
+            </Link>
             </Col>
           </Row>
           <Row>

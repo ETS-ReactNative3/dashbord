@@ -10,7 +10,7 @@ export var hasProfessionalAccount = {
 
   export var statusName = {
     0 : "Désactivé",
-    1 : "Actif  "
+    1 : "Actif"
   };
 
  
@@ -40,7 +40,7 @@ export var hasProfessionalAccount = {
 
 export async function getUsersMinim () {
     const url = BASE_URL+`${route}/findAllMin`;
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
             return response;
         }
@@ -48,7 +48,23 @@ export async function getUsersMinim () {
 
   export async function getUsersById (id) {
     const url = BASE_URL+`${route}/${id}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers:HEADERS});
+        if (response.status === 200) {
+            return response;
+        }
+  }
+
+  export async function getFullNameByUserId (userId) {
+  const url = BASE_URL+`${route}/getFullNameByUserId/${userId}`;
+  const response = await axios.get(url,{headers:HEADERS});
+      if (response.status === 200) {
+          return response;
+      }
+}
+
+export async function getFullNameByAccountId (accountId) {
+    const url = BASE_URL+`${route}/getFullNameByAccountId/${accountId}`;
+    const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
             return response;
         }
@@ -134,48 +150,3 @@ export async function getUsersMinim () {
             return response;
         }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// static Future<RequestResult> update(user) async {
-//   var result = await http_put("$route/${user.id}", {
-//     "id": user.id,
-//     "firstName": user.firstName,
-//     "lastName": user.lastName,
-//     "username": user.username,
-//     "email": user.email,
-//     "password": user.password,
-//     "phone": user.phone,
-//     "birthday": user.birthday,
-//     "country": user.country,
-//     "identityCardNumber": user.identityCardNumber,
-//     "passportNumber": user.passportNumber,
-//     "fidelityPoints": user.fidelityPoints,
-//     "isActive": user.isActive,
-//   });
-//   return result;
-// }
-
-// static Future<RequestResult> getByUsername(username) async {
-//   var result = await http_get("$route/getUserByUsername/$username");
-//   return result;
-// }
-
-// static Future<RequestResult> loginWithEmail(email, password) async {
-//   var result = await http_get("$route/loginWithEmail/$email/$password");
-//   return result;
-// }
-//
-// static Future<RequestResult> loginWithUsername(username, password) async {
-//   var result = await http_get("$route/loginWithUsername/$username/$password", {});
-//   return result;

@@ -2,6 +2,18 @@ import React, { useState } from "react";
 import { Row, Col, Table } from "reactstrap";
 // import { ProgressBar } from 'react-bootstrap';
 
+//for search
+import cx from "classnames";
+import search from "../../images/search.svg";
+import {
+
+  InputGroupAddon,
+  InputGroup,
+  Input,
+  Form,
+ 
+} from "reactstrap";
+
 import usersImg from "../../images/usersImg.svg";
 import smileImg from "../../images/smileImg.svg";
 import totalSale from "../../images/total-sale.svg";
@@ -11,6 +23,7 @@ import stocksDownImg from "../../images/stocksDown.svg";
 import getTransactions from "../../controller/transactions";
 import getAccounts, {TypeAccount} from "../../controller/accounts";
 import getUsers, {statusName, hasProfessionalAccount} from "../../controller/users";
+import { getFullNameByUserId, getFullNameByAccountId } from "../../controller/users";
 
 import { chartData } from "./chartsMock";
 
@@ -400,12 +413,35 @@ class Dashboard extends React.Component {
   transactions= getTransactions();
   accounts= getAccounts();
   users = getUsers();
-  dashboardData = {
-    nbUser: 0,
-    nbClassicalAccount: 0,
-    nbProfessionAccount: 0,
+  
+  name = '';
+
+
+
+
+
+  getNameByAccountId (accountId) {
+    if(accountId != 0 && accountId != null) {
+      if (localStorage.getItem('name'+accountId) == null) {
+        var promise = getFullNameByAccountId(accountId);
+        promise.then((value) => {
+          localStorage.setItem('name'+accountId, value.data.fullname);
+        });
+      }
+    }
   }
 
+  getNameByUserId (userId) {
+    if(userId != 0 && userId != null) {
+      if (localStorage.getItem('name'+userId) == null) {
+        var promise = getFullNameByUserId(userId);
+        promise.then((value) => {
+          localStorage.setItem('name'+userId, value.data.fullname);
+        });
+      }
+    }    
+  }
+  
   componentDidMount() {
     window.addEventListener("resize", this.forceUpdate.bind(this))
   }
@@ -445,7 +481,7 @@ class Dashboard extends React.Component {
       sommeAchat=0;
       nbAchat=0;
       sommeVente=0;
-      response.map((transaction, index) => {   
+      response.map((transaction, index) => { 
       montantTransaction +=transaction.amount; 
       if(typeTransaction[transaction.transaction_type_id]==="Dépot") {
         nbdepot++;
@@ -482,19 +518,10 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
       })
     } 
 
-
-    
-    
-    // const usersList = respons;
-    // const accountList = response;
-
-    // usersList.forEach((user) => {
-    //   usersList.forEach((user) => {
-    //     if ()
-    //   });
-    // });
     
     return (
+
+
       <div className={s.root}>
         <Row>
           <Col xl={4}>
@@ -970,6 +997,29 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
             >
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
               <div style={{height:'500px', overflow: 'scroll'}}>
+              <Form className={`d-md-down-none`} inline>
+          <InputGroup
+            onFocus={this.toggleFocus}
+            onBlur={this.toggleFocus}
+            // className={`${cx("input-group-no-border", { focus: !!focus })}`}
+          >
+            <Input
+              id="search-input"
+              placeholder="Search"
+              // className={`${cx({ focus: !!focus})} ${s.headerSearchInput}`}
+              style={{ borderBottomLeftRadius: 4, borderTopLeftRadius: 4 }}
+            />
+            <InputGroupAddon addonType={"prepend"}>
+              <img
+                src={search}
+                alt="search"
+                width="24px"
+                height="23px"
+                style={{ marginRight: 12 }}
+              />
+            </InputGroupAddon>
+          </InputGroup>
+        </Form>
                 <thead>
                   <tr>
                     <th style={{ textAlign: "center" }} >
@@ -992,19 +1042,13 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                     </th>
                     <th style={{ textAlign: "center" }} >
                       Points de fidélités
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                      Date d'inscription
-                    </th>
+                    </th>                 
                     <th style={{ textAlign: "center" }} >
                       Types de comptes
                     </th>
                     <th style={{ textAlign: "center" }} >
                       Statut
                     </th>
-                    <th style={{ textAlign: "center" }} >
-                      Limite de transactions
-                    </th>`
                   </tr>
                 </thead>
                 
@@ -1023,10 +1067,8 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                             <td style={{ textAlign: "center" }} >{user.phone}</td>
                             <td style={{ textAlign: "center" }} >{user.country}</td>
                             <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
-                            <td style={{ textAlign: "center" }} >{user.creation_date}</td>
                             <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>                        
-                            <td style={{ textAlign: "center" }} >{ statusName[user.is_active]}</td>
-                            <td style={{ textAlign: "center" }} >{user.stop_amount}</td>  
+                            <td style={{ textAlign: "center" }} >{ statusName[user.is_active]}</td> 
                             
                           </tr>
                         );
@@ -1058,7 +1100,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                     ID
                     </th>
                     <th style={{ textAlign: "center" }} >
-                      solde
+                      Montant
                     </th>
                     <th style={{ textAlign: "center" }} >
                       Envoyeur
@@ -1089,21 +1131,23 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                 <tbody className="text-dark">
                  
                 {
-                    response && response.map((transaction, index) => {   
-                        return ( 
-                          <tr key={index++}>
-                            <td scope='row'>{index}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.id}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.amount}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.sender_account_id}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.receiver_account_id}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
-                            <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(0, 10)}</td>
-                            <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(11, 19)}</td>
-                            <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>                   
-                          </tr>
-                        );
+                    response && response.map((transaction, index) => {
+                      this.getNameByAccountId(transaction.sender_account_id);
+                      this.getNameByAccountId(transaction.receiver_account_id);
+                      return ( 
+                        <tr key={index++}>
+                          <td scope='row'>{index}</td>
+                          <td style={{ textAlign: "center" }} >{transaction.id}</td>
+                          <td style={{ textAlign: "center" }} >{transaction.amount}F CFA</td>
+                          <td style={{ textAlign: "center" }} >{localStorage.getItem('name'+transaction.sender_account_id) || 'Unknow'}</td>
+                          <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
+                          <td style={{ textAlign: "center" }} >{localStorage.getItem('name'+transaction.receiver_account_id) || 'Unknow'}</td>
+                          <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
+                          <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(0, 10)}</td>
+                          <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(11, 19)}</td>
+                          <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>                   
+                        </tr>
+                      );
                     })
                   }  
                 </tbody>
@@ -1160,23 +1204,23 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                 <tbody className="text-dark" style={{ overflow: 'auto'}}>
 
                 {
-                    reponse && reponse.map((account, index) => {                      
-                        return ( 
+                    reponse && reponse.map((account, index) => {   
+                      this.getNameByUserId(account.user_id);
+                      return(
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
                             <td style={{ textAlign: "center" }}>{account.id}</td>
-                            <td style={{ textAlign: "center" }}>{account.user_id}</td>
-                            <td style={{ textAlign: "center" }}>{account.amount}</td>
+                            <td style={{ textAlign: "center" }}>{localStorage.getItem('name'+account.user_id) || 'Unknow'}</td>
+                            <td style={{ textAlign: "center" }}>{account.amount}F CFA</td>
                             <td style={{ textAlign: "center" }}>{(account.creation_date).slice(0,10)}</td>
                             <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11,18)}</td>
                             <td style={{ textAlign: "center" }}>{(account.last_update).slice(0,10)}</td>
                             <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11,18)}</td>
-                            <td style={{ textAlign: "center" }}>{account.stop_amount}</td>
+                            <td style={{ textAlign: "center" }}>{account.stop_amount}F CFA</td>
                             <td style={{ textAlign: "center" }}>{TypeAccount[account.account_type_id]}</td>                  
                           </tr>
-                        );
-                       
-                    })
+                        );   
+                      })            
                   }
                 </tbody>
                 </div>
