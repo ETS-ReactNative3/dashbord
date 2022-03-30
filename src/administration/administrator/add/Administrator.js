@@ -1,32 +1,60 @@
 import React from 'react';
-import {
-  Row, Col, Button, Table,
-} from 'reactstrap';
-import Widget from "../../../components/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Administrator.module.scss';
-import { Alert, Label, FormGroup, Input } from "reactstrap";
+import  { useState} from "react";
+import { toast } from "react-toastify";
+import {addAdministrator} from "../../../controller/administrator"
+import {updateAdministrator, getSingleAdministrator} from "../../../controller/administrator";
 
 
-import { getAdministrators } from "../../../controller/administrator";
 
-class AddAdministrator extends React.Component {
+const initialState = {
+  name: "",
+  username: "",
+  password: "",
+  level: "",
+  contact: "",
+};
 
-  state = {
+
+
+function AddAdministrator() {
+  
+    const [state, setState] = useState(initialState);
+
+    const { name, username, password, level, contact } = state;
+   
+  const handleInputChange = (e) => {
+    let { name, value } = e.target;
+    setState({
+        ...state,
+        [name]: value,
+    });
+};
+      
+console.log("************** props ***********************");
+console.log(window.location.search);
+console.log("***************************************************");
+
+console .log(" etat golobal de addAdministrator",state)
+
+const handleSubmit = (e) => {
+  if (!name || !username || !password || !level || !contact) {
+      toast.error("Please provide value into each input field");
+  }
+  else {
+    
+    addAdministrator(state);
+          toast.success("User added successfuly");
 
   }
-  promise = getAdministrators();
+  
+};
 
-
-
-  componentDidMount() { }
-
-
-  render() {
     return (
       <div className={s.root}>
-        <div className="form-group">
-          <h1>CREATION D'ADMINISTRATEUR INTERCASH</h1>
+        <div className="form-group text-center">
+          <h6>CREATION D'ADMINISTRATEUR INTERCASH</h6>
           <form
 
             style={{
@@ -41,16 +69,8 @@ class AddAdministrator extends React.Component {
 
 
             }}
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           >
-            {/* <tr>
-              <td>
-
-              </td>
-              <td>
-
-              </td>
-            </tr> */}
 
             <tr>
               <td>
@@ -60,128 +80,134 @@ class AddAdministrator extends React.Component {
                     marginRight: "50px",
                   }}
                   htmlFor="name">
-                  <strong>Name :</strong> 
-              </label>
+                  <strong>Name :</strong>
+                </label>
               </td>
               <td>
-              <input
-              style={{
-                padding: "3px",
-                border: "1px solid #F5C5C5",
-                borderRadius: "5px",
-                width: "200px",
-                boxShadow: "1px 1px 2px #C0C0C0 inset",
-              }}
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter name ..."
-            // onChange={handleInputChange}
-            // value={name}
-
-            />
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                  <label htmlFor="username"
+                <input
                   style={{
-                    marginTop: "10px",
-                    marginRight: "50px",
+                    padding: "3px",
+                    border: "1px solid #F5C5C5",
+                    borderRadius: "5px",
+                    width: "200px",
+                    boxShadow: "1px 1px 2px #C0C0C0 inset",
                   }}
-                ><strong>Username : </strong> </label>
-              </td>
-              <td>
-              <input
-                style={{
-                  padding: "3px",
-                  border: "1px solid #F5C5C5",
-                  borderRadius: "5px",
-                  width: "200px",
-                  boxShadow: "1px 1px 2px #C0C0C0 inset",
-                }}
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter Contact No. ..."
-                // onChange={handleInputChange}
-                // value={username}
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter name ..."
+                onChange={handleInputChange}
+                value={name}
 
                 />
               </td>
             </tr>
 
+            <tr >
+              <td>
+                <label htmlFor="username"
+                  style={{
+                    marginTop: "40px",
+                    marginRight: "50px",
+                  }}
+                ><strong>Username : </strong> </label>
+              </td>
+              <td>
+                <input
+                  style={{
+                    marginTop: "40px",
+                    padding: "3px",
+                    border: "1px solid #F5C5C5",
+                    borderRadius: "5px",
+                    width: "200px",
+                    boxShadow: "1px 1px 2px #C0C0C0 inset",
+                  }}
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Enter Contact No. ..."
+                onChange={handleInputChange}
+                value={username}
 
-          
+                />
+              </td>
+            </tr>
 
-            <br />
-            <br />
-            <label htmlFor="password"
+            <tr>
+              <td>
+                <label htmlFor="password"
+                  style={{
+                    marginTop: "40px",
+                    marginRight: "50px",
+                  }}
+                > <strong>password :</strong> </label>
+              </td>
+              <td>
+                <input
+                  style={{
+                    marginTop: "40px",
+                    padding: "3px",
+                    border: "1px solid #F5C5C5",
+                    borderRadius: "5px",
+                    width: "200px",
+                    boxShadow: "1px 1px 2px #C0C0C0 inset",
+                  }}
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter password"
+                onChange={handleInputChange}
+                value={password}
+
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+              <label htmlFor="level"
               style={{
-                marginTop: "10px",
+                marginTop: "40px",
                 marginRight: "50px",
               }}
-            > <strong>password :</strong> </label>
-            <input
+            > <strong>Level :</strong></label>
+              </td>
+              <td>
+              <select
               style={{
+                marginTop: "40px",
+                marginRight: "50px",
                 padding: "3px",
                 border: "1px solid #F5C5C5",
                 borderRadius: "5px",
                 width: "200px",
                 boxShadow: "1px 1px 2px #C0C0C0 inset",
               }}
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter password"
-            // onChange={handleInputChange}
-            // value={password}
+              id="level" name="level"
+            value={level} 
+            onChange={handleInputChange}
+            >
+              <option value="None" >None</option>
+              <option value="High" >High</option>
+              <option value="Medium" >Medium</option>
+              <option value="Low" >Low</option>
+            </select>
+              </td>
+            </tr>
 
-            />
-            <br />
-            <br />
-
-            <Row style={{
-              marginLeft: "10px",
-            }}>
-              <label htmlFor="level"
-                style={{
-                  marginTop: "10px",
-                  marginRight: "50px",
-                }}
-              > <strong>Level :</strong></label>
-              <br />
-              <br />
-              <select
-                style={{
-                  marginTop: "10px",
-                  marginRight: "50px",
-                  padding: "3px",
-                  border: "1px solid #F5C5C5",
-                  borderRadius: "5px",
-                  width: "200px",
-                  boxShadow: "1px 1px 2px #C0C0C0 inset",
-                }}
-                id="level" name="level"
-              // value={level} 
-              // onChange={handleInputChange}
-              >
-                <option value="High" >High</option>
-                <option value="Medium" >Medium</option>
-                <option value="Low" >Low</option>
-              </select>
-            </Row >
-            <br />
-            <br />
-            <label htmlFor="contact"
+            <tr>
+              <td>
+              <label htmlFor="contact"
               style={{
-                marginTop: "10px",
+                marginTop: "40px",
                 marginRight: "50px",
               }}
             > <strong>contact :</strong></label>
-            <input
+              </td>
+              <td>
+              <input
               style={{
+                marginTop: "40px",
                 padding: "3px",
                 border: "1px solid #F5C5C5",
                 borderRadius: "5px",
@@ -192,14 +218,16 @@ class AddAdministrator extends React.Component {
               id="contact"
               name="contact"
               placeholder="Enter Contact No. ..."
-            // value={contact}
-            // onChange={handleInputChange}
+            value={contact}
+            onChange={handleInputChange}
 
             />
-            <br />
-            <br />
+              </td>
+            </tr>
+
             <input
               style={{
+                marginTop: "40px",
                 width: "100px",
                 marginLeft: "5px",
                 boxShadow: "1px 1px 1px #D83F3D",
@@ -210,7 +238,7 @@ class AddAdministrator extends React.Component {
         </div>
       </div>
     );
-  }
+  
 }
 
-export default AddAdministrator;
+export default  AddAdministrator;

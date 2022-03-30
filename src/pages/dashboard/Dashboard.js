@@ -408,6 +408,7 @@ class Dashboard extends React.Component {
     area2: { ...area2 },
     splineArea: { ...splineArea },
     transactions: [],
+    focus: false,
   };
 
   transactions= getTransactions();
@@ -417,6 +418,15 @@ class Dashboard extends React.Component {
   name = '';
 
 
+  toggleFocus = () => {
+    this.setState({ focus: !this.state.focus });
+  };
+
+  toggleNotifications() {
+    this.setState({
+      notificationsOpen: !this.state.notificationsOpen,
+    });
+  }
 
 
 
@@ -1007,7 +1017,15 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               id="search-input"
               placeholder="Search"
               // className={`${cx({ focus: !!focus})} ${s.headerSearchInput}`}
-              style={{ borderBottomLeftRadius: 4, borderTopLeftRadius: 4 }}
+             
+              style={{ 
+                    marginTop: "40px",
+                    padding: "3px",
+                    border: "1px solid #F5C5C5",
+                    borderRadius: "5px",
+                    width: "200px",
+                    boxShadow: "1px 1px 2px #C0C0C0 inset",
+               }}
             />
             <InputGroupAddon addonType={"prepend"}>
               <img

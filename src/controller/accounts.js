@@ -31,7 +31,8 @@ const route = '/accounts';
       "stopAmount": account.stopAmount,
       "accountTypeId": account.accountTypeId,
       "userId": account.userId,
-      });
+      }
+      );
 
     if (response.status === 200) {
         toast.success("Account created successfuly");

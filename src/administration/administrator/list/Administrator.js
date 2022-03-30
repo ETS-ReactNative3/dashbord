@@ -2,28 +2,31 @@ import React from 'react';
 import {
   Row, Col, Button, Table,
 } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import Widget from "../../../components/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Administrator.module.scss';
+import {deleteAdministrator} from "../../../controller/administrator";
 
 
 import { getAdministrators } from "../../../controller/administrator";
 
-class ListAdministrator extends React.Component {
+function ListAdministrator () {
 
-  state = {
+
+  
+  const onDeleteUser = async (id) => {
+    console.log("utilisateur a supprimer", id)
+    deleteAdministrator(id);
+};
+
+ const state = {
     
   }
-  promise = getAdministrators();
+ const promise = getAdministrators();
   
 
-
-  componentDidMount() {}
-
-
-  render() {
-    this.promise.then((administrators) => {
+    promise.then((administrators) => {
       localStorage.setItem('administrators',JSON.stringify(administrators.data));
     });
     const administrators = JSON.parse(localStorage.getItem('administrators'));
@@ -79,9 +82,10 @@ class ListAdministrator extends React.Component {
                             <td className={"pl-0 fw-normal text-center"}>{administrator.contact}</td>
                             <td className={"pl-0 fw-normal text-center"}>{administrator.level}</td>
                             <td className={"pl-0 fw-normal text-center"}>
-                              <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></a>
-                              <a href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-warning fa fa-times-circle"></i></a>
-                              <a href="#" style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></a>
+                            <Link to={`add/${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></Link>
+                              <button href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-warning fa fa-times-circle"></i></button>
+                              <button onClick={() => onDeleteUser(administrator.id)} style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></button>
+                             
                             </td>                          
                           </tr>
                         );
@@ -95,7 +99,7 @@ class ListAdministrator extends React.Component {
       
         </div>
     );
-  }
+  
 }
 
 export default ListAdministrator;

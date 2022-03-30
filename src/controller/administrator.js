@@ -1,16 +1,24 @@
 import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
 import { toast } from "react-toastify";
-
 const route = '/administrators';
 
 
-export async function addAdministrator(administrateur)  {
+export async function addAdministrator   (administrateur)  {
     const url = BASE_URL+`${route}/`;
-    const response = await axios.put(url, {headers:HEADERS}, administrateur);
+    const response = await axios.post(
+        url,
+        { 
+            name: administrateur.name,
+            username: administrateur.username,
+            password: administrateur.password,
+            level: administrateur.level,
+            contact: administrateur.contact,
+       },
 
+        {headers:HEADERS});
     if (response.status === 200) {
-        console.log('Administrateur cree');
+        console.log('Administrateur crée');
     } else {
         console.log('Error');
     }
@@ -41,7 +49,7 @@ export async function deleteAdministrator(id) {
             const url = BASE_URL+`${route}/${id}`;
             const response = await axios.delete(url, {headers:HEADERS});
             if (response.status === 200) {
-                toast.success(response.data);
+                toast.success("User deleted successfully");
                 getAdministrators();
             }
         }
@@ -49,7 +57,15 @@ export async function deleteAdministrator(id) {
 
 export async function updateAdministrator(administrateur, id){
     const url = BASE_URL+`${route}/${id}`;
-    const response = await axios.put(url, {headers:HEADERS}, administrateur);
+    const response = await axios.put(url,
+        { 
+            name: administrateur.name,
+            username: administrateur.username,
+            password: administrateur.password,
+            level: administrateur.level,
+            contact: administrateur.contact,
+       }
+        , {headers:HEADERS});
     if (response.status === 200) {
         toast.information("Users updated successfuly");
     }
