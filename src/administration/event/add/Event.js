@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import { Row, Col, Table,  Button, Badge } from "reactstrap";
 import Widget from "../../../components/Widget";
+import {Link} from "react-router-dom";
 import s from "./Event.module.scss";
 import { toast } from "react-toastify";
 import { createEvent } from "../../../controller/events";
@@ -57,6 +58,14 @@ const handleSubmit = (e) => {
 
   return(
     <div className={s.root}>
+      <Row>
+          <Col sm={10} className="text-align:right"></Col>
+          <Col sm={2} className="text-align:right">
+            <Link to = "/app/administration/event/list">
+            <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Event list </Button>
+            </Link>
+          </Col>
+        </Row>
     <div className="form-group text-center">
       <h6>CREATION D'ADMINISTRATEUR INTERCASH</h6>
       <form
@@ -390,7 +399,6 @@ const handleSubmit = (e) => {
           <select
           style={{
             marginTop: "40px",
-            marginRight: "50px",
             padding: "3px",
             border: "1px solid #F5C5C5",
             borderRadius: "5px",
@@ -508,6 +516,8 @@ const handleSubmit = (e) => {
           }}
           type="submit" value={"Add Event"} />
       </form>
+            <br />
+     
     </div>
   </div>
   )

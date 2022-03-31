@@ -24,6 +24,7 @@ import Icons from "../../pages/icons";
 import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
 
+
 // Administration
 // import Administrator from "../../administration/administrator/Administrator";
 import AddAdministratorPage from "../../administration/administrator/add/Administrator";
@@ -31,6 +32,8 @@ import ListAdministratorPage from "../../administration/administrator/list/Admin
 
 import AddEventPage from "../../administration/event/add/Event";
 import ListEventPage from "../../administration/event/list/Event";
+import Partners from "../../administration/Partners/list/Partners";
+import addPartners from "../../administration/Partners/add/addPartners";
 
 
 
@@ -136,6 +139,8 @@ class Layout extends React.Component {
                     />
                     <Route path={"/app/ui/icons"} component={Icons} />
                     <Route path={"/app/ui/charts"} component={Charts} />
+                    <Route path={"/app/administration/Partners/list"}  component={Partners}/>
+                    <Route path={"/app/administration/Partners/addPartners"}  component={addPartners}/>
 
 
                     <Route path={"/app/administration/event/add"} component={AddEventPage} />

@@ -267,7 +267,7 @@ class Sidebar extends React.Component {
             <i class="fa fa-calendar"></i>
             </LinksGroup>
 
-            <LinksGroup
+            {/* <LinksGroup
               onActiveSidebarItemChange={activeItem =>
                 this.props.dispatch(changeActiveSidebarItem(activeItem))
               }
@@ -278,7 +278,7 @@ class Sidebar extends React.Component {
             >
             <i class = "fa fa-institution"></i>
 
-            </LinksGroup>
+            </LinksGroup> */}
 
             <LinksGroup
               onActiveSidebarItemChange={activeItem =>
@@ -287,12 +287,12 @@ class Sidebar extends React.Component {
               header="Partenaires"
               isHeader
               // index="main"
-              link="/app/ui/charts"
+              link="/app/administration/Partners/list"
             >
               <i class = "fa fa-building"></i>
             </LinksGroup>
 
-            <LinksGroup
+            {/* <LinksGroup
               onActiveSidebarItemChange={activeItem =>
                 this.props.dispatch(changeActiveSidebarItem(activeItem))
               }
@@ -302,7 +302,7 @@ class Sidebar extends React.Component {
               link="/app/typography"
             >
               <i class="fa fa-film"></i>
-            </LinksGroup>
+            </LinksGroup> */}
 
             <hr />
               <LinksGroup

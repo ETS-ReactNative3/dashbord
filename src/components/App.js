@@ -16,6 +16,7 @@ import { logoutUser } from '../actions/user';
 import Administrator from '../administration/administrator/add/Administrator';
 import Event from "../administration/event/add/Event";
 
+
 const PrivateRoute = ({dispatch, component, ...rest }) => {
     if (!Login.isAuthenticated(localStorage.getItem('authenticated'))) {
         dispatch(logoutUser());
@@ -49,7 +50,7 @@ class App extends React.PureComponent {
                     <Route path="/login" exact component={Login}/>
                     <Route path="/add" exact component={Administrator}/>
                     <Route path="/error" exact component={ErrorPage}/>
-                    <Route path="/add" exact component={Event} />
+                    <Route path="/add" exact component={Event} />                   
                     <Route component={ErrorPage}/>
                 </Switch>
             </HashRouter>
