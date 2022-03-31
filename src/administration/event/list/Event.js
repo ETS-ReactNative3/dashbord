@@ -1,10 +1,11 @@
 import React from "react";
-import { Row, Col, Table,  Button, Badge } from "reactstrap";
+import { Row, Col, Table,  Button, Badge} from "reactstrap";
 import Widget from "../../../components/Widget";
 import s from "./Event.module.scss";
 import AddEvent from "../../../administration/event/add";
 import {validateEvent,deniedEvent} from "../../../controller/events";
 import { getEvents } from "../../../controller/events";
+import {Link} from "react-router-dom";
 
 
 class ListEvent extends React.Component {
@@ -42,7 +43,9 @@ class ListEvent extends React.Component {
         <Row>
           <Col sm={10} className="text-align:right"></Col>
           <Col sm={2} className="text-align:right">
-            <Button  className="text-warning" href="../event/add"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Créer <i class="fa fa-plus-circle"></i></Button>
+            <Link to = "./add/Event">
+            <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Créer <i class="fa fa-plus-circle"></i></Button>
+            </Link>
           </Col>
         </Row>
         <Row>

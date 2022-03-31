@@ -1161,8 +1161,8 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                           <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
                           <td style={{ textAlign: "center" }} >{localStorage.getItem('name'+transaction.receiver_account_id) || 'Unknow'}</td>
                           <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
-                          <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(0, 10)}</td>
-                          <td style={{ textAlign: "center" }} >{(transaction.creation_date).slice(11, 19)}</td>
+                          <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
+                          <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
                           <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>                   
                         </tr>
                       );
