@@ -7,7 +7,7 @@ const route = '/partners';
 
 export async function createPartners (partner) {
     const url = BASE_URL+`${route}/`;
-    const response = await axios.put(url,{
+    const response = await axios.post(url,{
         "id": partner.id,
         "name": partner.name,
         "logo": partner.logo,
@@ -18,7 +18,7 @@ export async function createPartners (partner) {
     }
 }
 
-export default async function getPartners() {
+export async function getPartners() {
     const url = BASE_URL+`${route}/`;
     const response = await axios.get(url,{headers:HEADERS});
     if(response.status === 200){

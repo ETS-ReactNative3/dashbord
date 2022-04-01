@@ -312,7 +312,7 @@ class Sidebar extends React.Component {
                 header="Logs"
                 isHeader
                 // index="main"
-                link="/app/ui/icons"
+                link="/app/administration/log/log"
               >
                 <i class = "fa fa-navicon"></i>
               </LinksGroup>

@@ -31,7 +31,7 @@ function AddPartners() {
 
 
   const handleSubmit = (e) => {
-    if (!name || !logo ) {
+    if (!name ) {
       toast.error("Please provide value into each input field");
     }
     else {

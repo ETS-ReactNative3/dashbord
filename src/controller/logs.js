@@ -1,5 +1,9 @@
+import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
 const route = "/logs";
+
+
+
 
 
 export async function createLog (log){
@@ -19,7 +23,7 @@ export async function createLog (log){
 
 export async function getLogs (){
     const url = BASE_URL+`${route}/`;
-    const response = await axios.get(url);
+    const response = await axios.get(url, {headers:HEADERS});
     if(response.status === 200){
         return response;
     }

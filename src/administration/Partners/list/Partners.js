@@ -3,11 +3,11 @@ import {
   Row, Col, Button, Table,
 } from 'reactstrap';
 import { Link} from "react-router-dom";
-import getPartners from '../../../controller/Partners';
+import {getPartners} from '../../../controller/Partners';
 import Widget from "../../../components/Widget/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Partners.module.scss';
-import  deletePartner  from '../../../controller/Partners';
+import  {deletePartner}  from '../../../controller/Partners';
 
 
 function ListPartners () {

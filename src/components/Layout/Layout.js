@@ -34,6 +34,7 @@ import AddEventPage from "../../administration/event/add/Event";
 import ListEventPage from "../../administration/event/list/Event";
 import Partners from "../../administration/Partners/list/Partners";
 import addPartners from "../../administration/Partners/add/addPartners";
+import log from "../../administration/log/log"
 
 
 
@@ -141,6 +142,7 @@ class Layout extends React.Component {
                     <Route path={"/app/ui/charts"} component={Charts} />
                     <Route path={"/app/administration/Partners/list"}  component={Partners}/>
                     <Route path={"/app/administration/Partners/addPartners"}  component={addPartners}/>
+                    <Route path={"/app/administration/log/log"}  component={log}/>
 
 
                     <Route path={"/app/administration/event/add"} component={AddEventPage} />
