@@ -55,6 +55,9 @@ function ListPartners () {
                       <th key={3} scope="col" className={"text-center pl-0"}>
                         logo
                       </th>
+                      <th key={3} scope="col" className={"text-center pl-0"}>
+                        Commandes
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="text-dark">

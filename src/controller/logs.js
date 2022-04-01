@@ -2,9 +2,10 @@ import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
 const route = "/logs";
 
-
-
-
+export var statut = {
+    0: "Echec",
+    1: "Succes"
+  }
 
 export async function createLog (log){
     const url = BASE_URL+`${route}/`;

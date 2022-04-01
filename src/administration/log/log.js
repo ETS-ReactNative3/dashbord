@@ -6,7 +6,7 @@ import { Link} from "react-router-dom";
 import {getLogs} from "../../controller/logs";
 import Widget from "../../components/Widget/Widget";
 import s from './Logs.module.scss';
-import {getLogById} from "../../controller/logs";
+import {getLogById, statut} from "../../controller/logs";
 import {getFullNameByUserId} from "../../controller/users";
 
 
@@ -93,7 +93,7 @@ function ListPartners () {
                             <td className={"pl-0 fw-normal text-center"}>{Log.id}</td>
                             <td className={"pl-0 fw-normal text-center"}>{(Log.description).slice(7,19)}</td>
                             <td className={"pl-0 fw-normal text-center"}>{(Log.description).slice(20,40)}</td>
-                            <td className={"pl-0 fw-normal text-center"}>{Log.statut}</td>
+                            <td className={"pl-0 fw-normal text-center"}>{statut[Log.statut]}</td>
                             <td className={"pl-0 fw-normal text-center"}>{(Log.date).slice(0,10)}</td>
                             <td className={"pl-0 fw-normal text-center"}>{(Log.date).slice(11,19)}</td>
                             <td className={"pl-0 fw-normal text-center"}>{localStorage.getItem('name'+Log.user_id) || 'Unknow'}</td>

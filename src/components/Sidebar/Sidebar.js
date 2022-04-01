@@ -324,7 +324,7 @@ class Sidebar extends React.Component {
               header="Journaux"
               isHeader
               // index="main"
-              link="/app/tables"
+              link="/app/administration/journaux/journal/journal"
               >
                 <i class = "fa fa-book"></i>
               </LinksGroup>
