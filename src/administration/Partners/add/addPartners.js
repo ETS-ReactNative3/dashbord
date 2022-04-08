@@ -1,12 +1,11 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import { Row, Col, Table,  Button } from "reactstrap";
 import s from './Partners.module.scss';
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { createPartners } from '../../../controller/Partners';
-
-
-
+import {Link} from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -44,7 +43,19 @@ function AddPartners() {
   };
 
   return (
+
+   
+    
     <div className={s.root}>
+      <Row>
+        <Col sm={10} className="text-align:right"></Col>
+        <Col sm={2} className="text-align:right">
+          <Link to = "/app/administration/Partners/list">
+          <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Partners list </Button>
+          </Link>
+        </Col>
+      </Row>
+  
       <div className="form-group text-center">
         <h2>CREATION D'UN PARTENAIRE</h2>
         <form
@@ -114,7 +125,7 @@ function AddPartners() {
                   width: "200px",
                   boxShadow: "1px 1px 2px #C0C0C0 inset",
                 }}
-                type="text"
+                type="file"
                 id="logo"
                 name="logo"
                 placeholder="Enter Logo ..."
@@ -133,7 +144,7 @@ function AddPartners() {
               boxShadow: "1px 1px 1px #D83F3D",
               cursor: "pointer",
             }}
-            type="submit" value={"Add Partner "} />
+            type="submit" refresh="true" value={"Add Partner "} />
         </form>
       </div>
     </div>

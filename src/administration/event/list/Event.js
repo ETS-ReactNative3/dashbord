@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Table,  Button, Badge} from "reactstrap";
 import Widget from "../../../components/Widget";
 import s from "./Event.module.scss";
-import AddEvent from "../../../administration/event/add";
+import {AddEvent} from "../../../administration/event/add";
 import {validateEvent,deniedEvent} from "../../../controller/events";
 import { getEvents } from "../../../controller/events";
 import {Link} from "react-router-dom";

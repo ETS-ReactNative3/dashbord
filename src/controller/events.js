@@ -26,33 +26,29 @@ export async function getEvent (id) {
 }
 
 
-export async function createEvent(event) {
-  const url = BASE_URL+`${route}`;
-  const response = await axios.put(url, 
+export  async function createEvent(event) {
+  const url = BASE_URL+`${route}/`;
+  const response = await axios.post(url, 
     {
     "name": event.name,
     "organizer": event.organizer,
-    "limit_registration": event.limitRegistration,
+    "limitRegistration": event.limitRegistration,
     "country": event.country,
     "city": event.city,
     "district": event.district,
     "location": event.location,
-    "starting_date": event.startingDate,
-    "ending_date": event.endingDate,
+    "startingDate": event.startingDate,
+    "endingDate": event.endingDate,
+    "publishingStartDate": event.publishingStartDate,
+    "publishingEndDate": event.publishingEndDate,
     "description": event.description,
     "phone": event.phone,
-    "status": event.status,
-    "is_valid": "0",
     "category": event.category,
-    "account_id": event.accountId,
-    "publishing_start_date": event.publishingStartDate,
-    "publishing_end_date": event.publishingEndDate,
-    
-    
-    
-    
-  });
-      if (response.status === 200) {
+    "accountId": event.accountId,     
+  }
+  ,{headers:HEADERS});
+      if (response.status === 200) {         
+          toast.success("Event added successfully");
           return response;
       }
 }
@@ -77,10 +73,10 @@ export async function validateEvent(eventId){
   if(window.confirm('Are you sure you want to validate this event ?'))
   {
     const url = BASE_URL+`${route}/validate/${eventId}`;
-    const response = await axios.put(url,{headers:HEADERS});
+    const response = await axios.put(url,{},{headers:HEADERS});
     if (response.status === 200) {
-        return response;
         toast.success("Event Validated successfully");
+        return response;
     }
   }
     
@@ -90,10 +86,12 @@ export async function validateEvent(eventId){
     if(window.confirm('Are you sure you want to denie this event ?'))
     {
       const url = BASE_URL+`${route}/denied/${eventId}`;
-    const response = await axios.put(url,{headers:HEADERS});
+    const response = await axios.put(url,{},{headers:HEADERS});
+    console.log("............................................");
+    console.log("Authorisation",HEADERS)
     if (response.status === 200) {
-        return response;
         toast.success("Event denied successfully");
+        return response;
     }
     }
     

@@ -1,6 +1,8 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Administrator.module.scss';
+import { Row, Col, Table,  Button } from "reactstrap";
+import {Link} from 'react-router-dom'
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { addAdministrator } from "../../../controller/administrator"
@@ -53,6 +55,14 @@ function AddAdministrator() {
 
   return (
     <div className={s.root}>
+      <Row>
+        <Col sm={10} className="text-align:right"></Col>
+        <Col sm={2} className="text-align:right">
+          <Link to = "/app/administration/administrator/list" refresh="true">
+          <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Admins list </Button>
+          </Link>
+        </Col>
+      </Row>
       <div className="form-group text-center">
         <h6>CREATION D'ADMINISTRATEUR INTERCASH</h6>
         <form

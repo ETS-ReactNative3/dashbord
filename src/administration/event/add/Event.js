@@ -4,26 +4,27 @@ import Widget from "../../../components/Widget";
 import {Link} from "react-router-dom";
 import s from "./Event.module.scss";
 import { toast } from "react-toastify";
-import { createEvent } from "../../../controller/events";
+import  {createEvent} from "../../../controller/events";
 
 const initialState = {
   
     "name": "",
     "organizer": "",
-    "limit_registration":"",
+    "limitRegistration":"",
     "country": "",
     "city": "",
     "district": "",
     "location": "",
-    "starting_date":"",
-    "ending_date": "",
+    "startingDate":"",
+    // "startingTime":"",
+    "endingDate": "",
+    // "endingTime":"",
     "description": "",
     "phone": "",
-    "is_valid": "0",
     "category":"",
-    "account_id": "",
-    "publishing_start_date": "",
-    "publishing_end_date": "",
+    "accountId": "",
+    "publishingStartDate": "",
+    "publishingEndDate": "",
 }
 
 
@@ -31,7 +32,7 @@ const initialState = {
 function AddEvent()  {
 
 const [state,setState] = useState(initialState);
-const { name, organizer, limit_registration, country, city,district, location, starting_date, ending_date,description,phone, category,account_id, publishing_start_date,publishing_end_date} = state;
+const { name, organizer, limitRegistration, country, city,district, location, startingDate,startingTime, endingDate, endingTime, description,phone, category,accountId, publishingStartDate,publishingEndDate} = state;
 
   const handleInputChange = (e) => {
     let { name, value } = e.target;
@@ -41,15 +42,16 @@ const { name, organizer, limit_registration, country, city,district, location, s
     });
 };
 
+console.log(state);
 const handleSubmit = (e) => {
-  if (!name || !organizer || !limit_registration || !country || !city || !district  || !location || !starting_date || !ending_date||!description  || !category || !account_id, !publishing_start_date || !publishing_end_date) {
+  if (!name || !organizer || !limitRegistration || !country || !city || !district  || !location || !startingDate  || !endingDate || !description  || !category || !accountId, !publishingStartDate || !publishingEndDate) {
       toast.error("Please provide value into each input field");
-      e.preventDefault();
+      // e.preventDefault();
   }
   else {
      
           createEvent(state);
-          toast.success("User added successfuly");
+          // toast.success("Event added successfuly");
 
 
       }
@@ -166,11 +168,11 @@ const handleSubmit = (e) => {
                 boxShadow: "1px 1px 2px #C0C0C0 inset",
               }}
               type="number"
-              id="limit_registration"
-              name="limit_registration"
-              placeholder="Enter places available"
+              id="limitRegistration"
+              name="limitRegistration"
+              placeholder="Enter places availables"
             onChange={handleInputChange}
-            value={limit_registration}
+            value={limitRegistration}
 
             />
           </td>
@@ -206,6 +208,36 @@ const handleSubmit = (e) => {
           </td>
         </tr>
 
+        <tr>
+          <td>
+            <label htmlFor="country"
+              style={{
+                marginTop: "40px",
+                marginRight: "50px",
+              }}
+            > <strong>Description :</strong> </label>
+          </td>
+          <td>
+            <input
+              style={{
+                marginTop: "40px",
+                padding: "3px",
+                border: "1px solid #F5C5C5",
+                borderRadius: "5px",
+                width: "200px",
+                boxShadow: "1px 1px 2px #C0C0C0 inset",
+              }}
+              type="text"
+              id="description"
+              name="description"
+              placeholder="tell something about event"
+            onChange={handleInputChange}
+            value={description}
+
+            />
+          </td>
+        </tr>
+        
         <tr>
           <td>
             <label htmlFor="city"
@@ -298,7 +330,7 @@ const handleSubmit = (e) => {
 
         <tr>
           <td>
-            <label htmlFor="starting_date"
+            <label htmlFor="startingDate"
               style={{
                 marginTop: "40px",
                 marginRight: "50px",
@@ -316,19 +348,49 @@ const handleSubmit = (e) => {
                 boxShadow: "1px 1px 2px #C0C0C0 inset",
               }}
               type="date"
-              id="starting_date"
-              name="starting_date"
+              id="startingDate"
+              name="startingDate"
               placeholder="Enter starting date"
             onChange={handleInputChange}
-            value={starting_date}
+            value={startingDate}
 
             />
           </td>
         </tr>
 
+        {/* <tr>
+          <td>
+            <label htmlFor="startingDate"
+              style={{
+                marginTop: "40px",
+                marginRight: "50px",
+              }}
+            > <strong>Start Time  :</strong> </label>
+          </td>
+          <td>
+            <input
+              style={{
+                marginTop: "40px",
+                padding: "3px",
+                border: "1px solid #F5C5C5",
+                borderRadius: "5px",
+                width: "200px",
+                boxShadow: "1px 1px 2px #C0C0C0 inset",
+              }}
+              type="date"
+              id="startingDate"
+              name="startingDate"
+              placeholder="Enter starting date"
+            onChange={handleInputChange}
+            value={startingDate}
+
+            />
+          </td>
+        </tr> */}
+
         <tr>
           <td>
-            <label htmlFor="ending_date"
+            <label htmlFor="endingDate"
               style={{
                 marginTop: "40px",
                 marginRight: "50px",
@@ -346,11 +408,11 @@ const handleSubmit = (e) => {
                 boxShadow: "1px 1px 2px #C0C0C0 inset",
               }}
               type="date"
-              id="ending_date"
-              name="ending_date"
+              id="endingDate"
+              name="endingDate"
               placeholder="Enter ending date"
             onChange={handleInputChange}
-            value={ending_date}
+            value={endingDate}
 
             />
           </td>
@@ -420,7 +482,7 @@ const handleSubmit = (e) => {
 
         <tr>
           <td>
-          <label htmlFor="account_id"
+          <label htmlFor="accountId"
           style={{
             marginTop: "40px",
             marginRight: "50px",
@@ -438,10 +500,10 @@ const handleSubmit = (e) => {
             boxShadow: "1px 1px 2px #C0C0C0 inset",
           }}
           type="number"
-          id="account_id"
-          name="account_id"
+          id="accountId"
+          name="accountId"
           placeholder="Enter L'ID du compte ..."
-        value={account_id}
+        value={accountId}
         onChange={handleInputChange}
 
         />
@@ -450,7 +512,7 @@ const handleSubmit = (e) => {
 
         <tr>
           <td>
-          <label htmlFor="publishing_start_date"
+          <label htmlFor="publishingStartDate"
           style={{
             marginTop: "40px",
             marginRight: "50px",
@@ -468,10 +530,10 @@ const handleSubmit = (e) => {
             boxShadow: "1px 1px 2px #C0C0C0 inset",
           }}
           type="date"
-          id="publishing_start_date"
-          name="publishing_start_date"
+          id="publishingStartDate"
+          name="publishingStartDate"
           placeholder="Enter la date pour le début de la publication ..."
-        value={publishing_start_date}
+        value={publishingStartDate}
         onChange={handleInputChange}
 
         />
@@ -479,7 +541,7 @@ const handleSubmit = (e) => {
         </tr>
         <tr>
           <td>
-          <label htmlFor="publishing_end_date"
+          <label htmlFor="publishingEndDate"
           style={{
             marginTop: "40px",
             marginRight: "50px",
@@ -497,10 +559,10 @@ const handleSubmit = (e) => {
             boxShadow: "1px 1px 2px #C0C0C0 inset",
           }}
           type="date"
-          id="publishing_end_date"
-          name="publishing_end_date"
+          id="publishingEndDate"
+          name="publishingEndDate"
           placeholder="Enter la  date de fin de la publication ..."
-        value={publishing_end_date}
+        value={publishingEndDate}
         onChange={handleInputChange}
 
         />

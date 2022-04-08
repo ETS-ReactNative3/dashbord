@@ -14,6 +14,7 @@ function ListPartners () {
   
   const onDeletePartner = async (id) => {
     deletePartner(id);
+
 };
 
  const promise = getPartners();
@@ -29,7 +30,7 @@ function ListPartners () {
           <Row>
             <Col sm={10} className="text-align:right"></Col>
             <Col sm={2} className="text-align:right">
-            <Link to="/app/administration/Partners/addPartners">
+            <Link to="/app/administration/Partners/addPartners" refresh="true">
             <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Créer <i class="fa fa-plus-circle"></i></Button>
             </Link>
             </Col>

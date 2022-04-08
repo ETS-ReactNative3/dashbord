@@ -5,6 +5,7 @@ import {
 import { Link, Route } from "react-router-dom";
 import Widget from "../../../components/Widget";
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams} from "react-router-dom";
 import s from './Administrator.module.scss';
 import {deleteAdministrator} from "../../../controller/administrator";
 
@@ -16,8 +17,8 @@ function ListAdministrator () {
 
   
   const onDeleteUser = async (id) => {
-    console.log("utilisateur a supprimer", id)
-    deleteAdministrator(id);
+        deleteAdministrator(id);
+        
 };
 
  const state = {
@@ -84,7 +85,7 @@ function ListAdministrator () {
                             <td className={"pl-0 fw-normal text-center"}>
                             <Link to={`add/${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></Link>
                               <button href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-warning fa fa-times-circle"></i></button>
-                              <button onClick={() => onDeleteUser(administrator.id)} style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></button>
+                              <button onClick={() => onDeleteUser(administrator.id)} refresh="true" style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></button>
                              
                             </td>                          
                           </tr>
