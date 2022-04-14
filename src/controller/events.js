@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 
 
-const route = '/events';
+const route = '/events0';
 
 
 
@@ -13,7 +13,14 @@ export async function getEvents () {
   const url = BASE_URL+`${route}`;
   const response = await axios.get(url, {headers:HEADERS});
   if (response.status === 200) {
-    return response;
+    if(response.data.status === true)
+    {
+      return response.data.data;
+    }
+    else
+    {
+      return response.data.message;
+    }
   }
 }
 
@@ -32,19 +39,20 @@ export  async function createEvent(event) {
     {
     "name": event.name,
     "organizer": event.organizer,
-    "limitRegistration": event.limitRegistration,
+    "limit_registration": event.limit_registration,
     "country": event.country,
     "city": event.city,
     "district": event.district,
+    "description": event.description,
     "location": event.location,
-    "startingDate": event.startingDate,
-    "endingDate": event.endingDate,
-    "publishingStartDate": event.publishingStartDate,
-    "publishingEndDate": event.publishingEndDate,
+    "starting_date": event.starting_date,
+    "ending_date": event.ending_date,
+    "publishing_start_date": event.publishing_start_date,
+    "publishing_end_date": event.publishing_end_date,
     "description": event.description,
     "phone": event.phone,
     "category": event.category,
-    "accountId": event.accountId,     
+    "account_id": event.account_id,     
   }
   ,{headers:HEADERS});
       if (response.status === 200) {         
@@ -107,24 +115,25 @@ export async function validateEvent(eventId){
   
   export async function updateEvent(event) {
     const url = BASE_URL+`${route}/updateEvent/${event.id}`;
-    const response = await axios.put(url, {
-        "id": event.id,
+    const response = await axios.put(url, 
+      {
         "name": event.name,
         "organizer": event.organizer,
-        "limitRegistration": event.limitRegistration,
+        "limit_registration": event.limit_registration,
         "country": event.country,
         "city": event.city,
         "district": event.district,
         "location": event.location,
-        "startingDate": event.startingDate,
-        "endingDate": event.endingDate,
-        "publishingStartDate": event.publishingStartDate,
-        "publishingEndDate": event.publishingEndDate,
+        "starting_date": event.starting_date,
+        "ending_date": event.ending_date,
+        "publishing_start_date": event.publishing_start_date,
+        "publishing_end_date": event.publishing_end_date,
         "description": event.description,
         "phone": event.phone,
         "category": event.category,
-        "accountId": event.accountId,
-    });
+        "account_id": event.account_id,     
+      }
+    );
     if (response.status === 200) {
         return response;
     }

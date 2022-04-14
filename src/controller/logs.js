@@ -1,6 +1,6 @@
 import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
-const route = "/logs";
+const route = "/logs0";
 
 export var statut = {
     0: "Echec",

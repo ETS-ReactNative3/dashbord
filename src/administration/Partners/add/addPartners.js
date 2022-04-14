@@ -36,7 +36,7 @@ function AddPartners() {
     else {
 
         createPartners(state);
-      toast.success("User added successfuly");
+      // toast.success("User added successfuly");
 
     }
 

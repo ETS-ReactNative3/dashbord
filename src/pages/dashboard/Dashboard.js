@@ -11,7 +11,7 @@ import {
   InputGroup,
   Input,
   Form,
- 
+
 } from "reactstrap";
 
 import usersImg from "../../images/usersImg.svg";
@@ -20,9 +20,9 @@ import totalSale from "../../images/total-sale.svg";
 import orders from "../../images/orders.svg";
 import stocksImg from "../../images/stocks.svg";
 import stocksDownImg from "../../images/stocksDown.svg";
-import getTransactions from "../../controller/transactions";
-import getAccounts, {TypeAccount} from "../../controller/accounts";
-import getUsers, {statusName, hasProfessionalAccount} from "../../controller/users";
+import { getTransactions } from "../../controller/transactions";
+import { getAccounts, TypeAccount } from "../../controller/accounts";
+import { getUsers, statusName, hasProfessionalAccount } from "../../controller/users";
 import { getFullNameByUserId, getFullNameByAccountId } from "../../controller/users";
 
 import { chartData } from "./chartsMock";
@@ -39,7 +39,7 @@ import p3 from "../../images/people/p3.png";
 import p4 from "../../images/people/p4.png";
 import p5 from "../../images/userAvatar.png";
 
-export var sommeDepot=0, nbdepot=0, montantTransaction=0, sommeAchat=0, nbVente=0, sommeVente=0, nbAchat=0, nbretrait=0, nbtrans=0, sommeTrans=0, sommeRetrait=0, nbUser=0, sommeTranfer=0, nbComptClassic=0, nbComptPro =0;
+export var sommeDepot = 0, nbdepot = 0, montantTransaction = 0, sommeAchat = 0, nbVente = 0, sommeVente = 0, nbAchat = 0, nbretrait = 0, nbtrans = 0, sommeTrans = 0, sommeRetrait = 0, nbUser = 0, sommeTranfer = 0, nbComptClassic = 0, nbComptPro = 0;
 
 
 
@@ -111,7 +111,7 @@ var typeTransaction = {
   2: "Transfert",
   3: "Achat",
   4: "Vente"
-} 
+}
 
 const convertionRateOverride = {
   series: [
@@ -411,10 +411,10 @@ class Dashboard extends React.Component {
     focus: false,
   };
 
-  transactions= getTransactions();
-  accounts= getAccounts();
+  transactions = getTransactions();
+  accounts = getAccounts();
   users = getUsers();
-  
+
   name = '';
 
 
@@ -430,28 +430,28 @@ class Dashboard extends React.Component {
 
 
 
-  getNameByAccountId (accountId) {
-    if(accountId != 0 && accountId != null) {
-      if (localStorage.getItem('name'+accountId) == null) {
+  getNameByAccountId(accountId) {
+    if (accountId != 0 && accountId != null) {
+      if (localStorage.getItem('name' + accountId) == null) {
         var promise = getFullNameByAccountId(accountId);
         promise.then((value) => {
-          localStorage.setItem('name'+accountId, value.data.fullname);
+          localStorage.setItem('name' + accountId, value.data.fullname);
         });
       }
     }
   }
 
-  getNameByUserId (userId) {
-    if(userId != 0 && userId != null) {
-      if (localStorage.getItem('name'+userId) == null) {
+  getNameByUserId(userId) {
+    if (userId != 0 && userId != null) {
+      if (localStorage.getItem('name' + userId) == null) {
         var promise = getFullNameByUserId(userId);
         promise.then((value) => {
-          localStorage.setItem('name'+userId, value.data.fullname);
+          localStorage.setItem('name' + userId, value.data.fullname);
         });
       }
-    }    
+    }
   }
-  
+
   componentDidMount() {
     window.addEventListener("resize", this.forceUpdate.bind(this))
   }
@@ -464,71 +464,89 @@ class Dashboard extends React.Component {
 
     //operation sur les utilisateurs
     this.users.then((value) => {
-      localStorage.setItem('users',JSON.stringify(value.data));
+      console.log("-------------then respons.data-------------------");
+    console.log(value);
+    console.log("---------------------------------------------");
+      localStorage.setItem('users',JSON.stringify(value));
+    
     });
     const respons = JSON.parse(localStorage.getItem('users'));
-    
+    console.log("-------------respons-------------------");
+    console.log(respons);
+    console.log("-------------respons.data-------------------");
+    console.log(respons.data);
+    console.log("---------------------------------------------");
+
     {
-      nbUser = 0;  
-      respons && respons.map((user, index) => {   
-        nbUser++;  
-      })       
+      nbUser = 0;
+      respons && respons.map((user, index) => {
+        console.log("--------------nombre user ----------------------------");
+        console.log(user);
+        nbUser++;
+      })
     }
 
 
-//operations sur les transactions
+    //operations sur les transactions
     this.transactions.then((value) => {
-      localStorage.setItem('transactions',JSON.stringify(value.data));
+      localStorage.setItem('transactions', JSON.stringify(value));
+      
     });
     const response = JSON.parse(localStorage.getItem('transactions'));
+  
     {
-      nbdepot=0;
-      sommeDepot=0;
-      nbtrans=0;
-      sommeTrans=0;
-      nbAchat=0;
-      montantTransaction=0;
-      sommeAchat=0;
-      nbAchat=0;
-      sommeVente=0;
-      response.map((transaction, index) => { 
-      montantTransaction +=transaction.amount; 
-      if(typeTransaction[transaction.transaction_type_id]==="Dépot") {
-        nbdepot++;
-        sommeDepot= sommeDepot + transaction.amount;
-      }else if(typeTransaction[transaction.transaction_type_id]==="Transfert") {
-        nbtrans++;
-        sommeTrans= sommeTrans + transaction.amount;
-      } else if(typeTransaction[transaction.transaction_type_id]==="Achat"){
+      nbdepot = 0;
+      sommeDepot = 0;
+      nbtrans = 0;
+      sommeTrans = 0;
+      nbAchat = 0;
+      montantTransaction = 0;
+      sommeAchat = 0;
+      nbAchat = 0;
+      sommeVente = 0;
+      response && response.map((transaction, index) => {
+
+        montantTransaction = parseFloat(montantTransaction) + parseFloat(transaction.amount);
+
+        if (typeTransaction[transaction.transaction_type_id] === "Dépot") {
+          nbdepot++;
+          sommeDepot = parseFloat(sommeDepot) + parseFloat(transaction.amount);
+        } else if (typeTransaction[transaction.transaction_type_id] === "Transfert") {
+          nbtrans++;
+          sommeTrans = parseFloat(sommeTranfer) + parseFloat(transaction.amount);
+        } else if (typeTransaction[transaction.transaction_type_id] === "Achat") {
           nbAchat++;
-          sommeAchat= sommeAchat + transaction.amount;
-      } else{
-        nbVente++;
-        sommeVente= sommeVente + transaction.amount;
-      }
-    })}     
-   
-console.log("montant des transactions",montantTransaction-sommeAchat);
+          sommeAchat = parseFloat(sommeAchat) + parseFloat(transaction.amount);
+        } else {
+          nbVente++;
+          sommeVente = parseFloat(sommeVente) + parseFloat(transaction.amount);
+        }
+      })
+    }
     
-// operations sur les comptes
+
+    // operations sur les comptes
     this.accounts.then((value) => {
-      localStorage.setItem('accounts',JSON.stringify(value.data));
+     
+      localStorage.setItem('accounts', JSON.stringify(value));
     });
+
     const reponse = JSON.parse(localStorage.getItem('accounts'));
+    
     {
       nbComptClassic = 0;
       nbComptPro = 0;
-      
-      response && reponse.map((account, index) => { 
 
-        if(TypeAccount[account.account_type_id] == "Classique"){
+      reponse && reponse.map((account, index) => {
+
+        if (TypeAccount[account.account_type_id] == "Classique") {
           nbComptClassic++
         }
-        else{ nbComptPro++}  
+        else { nbComptPro++ }
       })
-    } 
+    }
 
-    
+
     return (
 
 
@@ -548,7 +566,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>{(sommeDepot*100/montantTransaction).toFixed(2)} %</p>
+                  <p className={"text-success mb-0"}>{(sommeDepot * 100 / montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -578,7 +596,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>{(sommeRetrait*100/montantTransaction).toFixed(2)} %</p>
+                  <p className={"text-success mb-0"}>{(sommeRetrait * 100 / montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -718,7 +736,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>{(sommeTrans*100/montantTransaction).toFixed(2)} %</p>
+                  <p className={"text-success mb-0"}>{(sommeTrans * 100 / montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -748,7 +766,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>{(sommeVente*100/montantTransaction).toFixed(2)} %</p>
+                  <p className={"text-success mb-0"}>{(sommeVente * 100 / montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -797,7 +815,9 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                   }
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"fw-thin text-success mb-0"}>{(nbComptClassic*100/reponse.length).toFixed(2)} %</p>
+                  <p className={"fw-thin text-success mb-0"}>
+                    {/* {(nbComptClassic * 100 / reponse.length).toFixed(2)} % */}
+                    </p>
                 </Col>
               </Row>
             </Widget>
@@ -834,7 +854,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                   }
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"fw-thin text-success mb-0"}>{(nbComptPro*100/reponse.length).toFixed(2)} %</p>
+                  <p className={"fw-thin text-success mb-0"}>{(nbComptPro * 100 / reponse.length).toFixed(2)} %</p>
                 </Col>
               </Row>
             </Widget>
@@ -1006,77 +1026,75 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               title={<p className={"fw-bold"}>Utilisateurs Intercash</p>}
             >
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
-              <div style={{height:'500px', overflow: 'scroll'}}>
-              <Form className={`d-md-down-none`} inline>
-          <InputGroup
-            onFocus={this.toggleFocus}
-            onBlur={this.toggleFocus}
-            // className={`${cx("input-group-no-border", { focus: !!focus })}`}
-          >
-            <Input
-              id="search-input"
-              placeholder="Search"
-              // className={`${cx({ focus: !!focus})} ${s.headerSearchInput}`}
-             
-              style={{ 
-                    marginTop: "40px",
-                    padding: "3px",
-                    border: "1px solid #F5C5C5",
-                    borderRadius: "5px",
-                    width: "200px",
-                    boxShadow: "1px 1px 2px #C0C0C0 inset",
-               }}
-            />
-            <InputGroupAddon addonType={"prepend"}>
-              <img
-                src={search}
-                alt="search"
-                width="24px"
-                height="23px"
-                style={{ marginRight: 12 }}
-              />
-            </InputGroupAddon>
-          </InputGroup>
-        </Form>
-                <thead>
-                  <tr>
-                    <th style={{ textAlign: "center" }} >
-                     No
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                    ID
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Nom 
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Prénom (s)
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Numéro 
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Pays
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Points de fidélités
-                    </th>                 
-                    <th style={{ textAlign: "center" }} >
-                      Types de comptes
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Statut
-                    </th>
-                  </tr>
-                </thead>
-                
-                
-                
-                <tbody className="text-dark">
-                 
-                {
-                    respons && respons.map((user, index) => {           
-                        return ( 
+                <div style={{ height: '500px', overflow: 'scroll' }}>
+                  <Form className={`d-md-down-none`} inline>
+                    <InputGroup
+                      onFocus={this.toggleFocus}
+                      onBlur={this.toggleFocus}
+                    // className={`${cx("input-group-no-border", { focus: !!focus })}`}
+                    >
+                      <Input
+                        id="search-input"
+                        placeholder="Search"
+                        // className={`${cx({ focus: !!focus})} ${s.headerSearchInput}`}
+
+                        style={{
+                          marginTop: "40px",
+                          padding: "3px",
+                          border: "1px solid #F5C5C5",
+                          borderRadius: "5px",
+                          width: "200px",
+                          boxShadow: "1px 1px 2px #C0C0C0 inset",
+                        }}
+                      />
+                      <InputGroupAddon addonType={"prepend"}>
+                        <img
+                          src={search}
+                          alt="search"
+                          width="24px"
+                          height="23px"
+                          style={{ marginRight: 12 }}
+                        />
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </Form>
+                  <thead>
+                    <tr>
+                      <th style={{ textAlign: "center" }} >
+                        No
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        ID
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Nom
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Prénom (s)
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Numéro
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Pays
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Points de fidélités
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Types de comptes
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Statut
+                      </th>
+                    </tr>
+                  </thead>
+
+
+                  <tbody className="text-dark">
+                    {
+                      respons && respons  .map((user, index) => {
+                        return (
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
                             <td style={{ textAlign: "center" }} >{user.id}</td>
@@ -1085,16 +1103,16 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
                             <td style={{ textAlign: "center" }} >{user.phone}</td>
                             <td style={{ textAlign: "center" }} >{user.country}</td>
                             <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
-                            <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>                        
-                            <td style={{ textAlign: "center" }} >{ statusName[user.is_active]}</td> 
-                            
+                            <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>
+                            <td style={{ textAlign: "center" }} >{statusName[user.is_active]}</td>
+
                           </tr>
                         );
-                    })
-                  }  
-                </tbody>
+                      })
+                    }
+                  </tbody>
                 </div>
-                
+
               </Table>
             </Widget>
           </Col>
@@ -1108,69 +1126,69 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               title={<p className={"fw-bold"}>Transactions</p>}
             >
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
-              <div style={{height:'500px', overflow: 'scroll'}}>
-                <thead>
-                  <tr>
-                    <th style={{ textAlign: "center" }} >
-                     No
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                    ID
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Montant
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Envoyeur
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Numéro Envoyeur
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Bénéficiaire
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Numéro Bénéficiaire
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                      Date transaction
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Heure transaction
-                    </th>
-                    <th style={{ textAlign: "center" }} >
-                      Type transaction
-                    </th>
-                  </tr>
-                </thead>
-                
-                
-                
-                <tbody className="text-dark">
-                 
-                {
-                    response && response.map((transaction, index) => {
-                      this.getNameByAccountId(transaction.sender_account_id);
-                      this.getNameByAccountId(transaction.receiver_account_id);
-                      return ( 
-                        <tr key={index++}>
-                          <td scope='row'>{index}</td>
-                          <td style={{ textAlign: "center" }} >{transaction.id}</td>
-                          <td style={{ textAlign: "center" }} >{transaction.amount}F CFA</td>
-                          <td style={{ textAlign: "center" }} >{localStorage.getItem('name'+transaction.sender_account_id) || 'Unknow'}</td>
-                          <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
-                          <td style={{ textAlign: "center" }} >{localStorage.getItem('name'+transaction.receiver_account_id) || 'Unknow'}</td>
-                          <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
-                          <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
-                          <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
-                          <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>                   
-                        </tr>
-                      );
-                    })
-                  }  
-                </tbody>
+                <div style={{ height: '500px', overflow: 'scroll' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ textAlign: "center" }} >
+                        No
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        ID
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Montant
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Envoyeur
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Numéro Envoyeur
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Bénéficiaire
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Numéro Bénéficiaire
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Date transaction
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Heure transaction
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Type transaction
+                      </th>
+                    </tr>
+                  </thead>
+
+
+
+                  <tbody className="text-dark">
+
+                    {
+                      response && response.map((transaction, index) => {
+                        this.getNameByAccountId(transaction.sender_account_id);
+                        this.getNameByAccountId(transaction.receiver_account_id);
+                        return (
+                          <tr key={index++}>
+                            <td scope='row'>{index}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.id}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.amount}F CFA</td>
+                            <td style={{ textAlign: "center" }} >{localStorage.getItem('name' + transaction.sender_account_id) || 'Unknow'}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
+                            <td style={{ textAlign: "center" }} >{localStorage.getItem('name' + transaction.receiver_account_id) || 'Unknow'}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
+                            <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
+                            <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>
+                          </tr>
+                        );
+                      })
+                    }
+                  </tbody>
                 </div>
-                
+
               </Table>
             </Widget>
           </Col>
@@ -1184,63 +1202,63 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
               title={<p className={"fw-bold"}>Comptes</p>}
             >
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
-              <div style={{height:'500px'}}>
-                <thead style={{ overflow: 'auto'}}>
-                  <tr>
-                    <th style={{ textAlign: "center" }}>
-                      No
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Compte ID
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Utilisateur
-                    </th>
-                    <th kstyle={{ textAlign: "center" }}>
-                    Solde
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Date Création
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Heure création
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Dernière opération
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Heure derniere opération
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Limite de transaction
-                    </th>
-                    <th style={{ textAlign: "center" }}>
-                    Type de compte
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-dark" style={{ overflow: 'auto'}}>
+                <div style={{ height: '500px' }}>
+                  <thead style={{ overflow: 'auto' }}>
+                    <tr>
+                      <th style={{ textAlign: "center" }}>
+                        No
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Compte ID
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Utilisateur
+                      </th>
+                      <th kstyle={{ textAlign: "center" }}>
+                        Solde
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Date Création
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Heure création
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Dernière opération
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Heure derniere opération
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Limite de transaction
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Type de compte
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-dark" style={{ overflow: 'auto' }}>
 
-                {
-                    reponse && reponse.map((account, index) => {   
-                      this.getNameByUserId(account.user_id);
-                      return(
+                    {
+                      reponse && reponse.map((account, index) => {
+                        this.getNameByUserId(account.user_id);
+                        return (
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
                             <td style={{ textAlign: "center" }}>{account.id}</td>
-                            <td style={{ textAlign: "center" }}>{localStorage.getItem('name'+account.user_id) || 'Unknow'}</td>
+                            <td style={{ textAlign: "center" }}>{localStorage.getItem('name' + account.user_id) || 'Unknow'}</td>
                             <td style={{ textAlign: "center" }}>{account.amount}F CFA</td>
-                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(0,10)}</td>
-                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11,18)}</td>
-                            <td style={{ textAlign: "center" }}>{(account.last_update).slice(0,10)}</td>
-                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11,18)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(0, 10)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11, 18)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.last_update).slice(0, 10)}</td>
+                            <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11, 18)}</td>
                             <td style={{ textAlign: "center" }}>{account.stop_amount}F CFA</td>
-                            <td style={{ textAlign: "center" }}>{TypeAccount[account.account_type_id]}</td>                  
+                            <td style={{ textAlign: "center" }}>{TypeAccount[account.account_type_id]}</td>
                           </tr>
-                        );   
-                      })            
-                  }
-                </tbody>
+                        );
+                      })
+                    }
+                  </tbody>
                 </div>
               </Table>
             </Widget>
@@ -1363,7 +1381,7 @@ console.log("montant des transactions",montantTransaction-sommeAchat);
         </Row> */}
 
       </div>
-      );
+    );
   }
 }
 

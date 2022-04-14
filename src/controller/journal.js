@@ -1,6 +1,6 @@
 import axios from "axios";
 import {BASE_URL, HEADERS} from "../config/http";
-const route = "/journals";
+const route = "/journals0";
 
 
 export async function createJournal(journal) {

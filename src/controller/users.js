@@ -2,7 +2,7 @@ import axios from 'axios';
 import {BASE_URL, HEADERS} from "../config/http";
 
 
-const route = '/users';
+const route = '/users0';
 export var hasProfessionalAccount = {
     0: "Classique",
     1: "Professionnel"
@@ -15,11 +15,15 @@ export var hasProfessionalAccount = {
 
  
 
-  export default async function getUsers () {
+  export  async function getUsers () {
     const url = BASE_URL+`${route}`;
     const response = await axios.get(url,{headers:HEADERS});
         if (response.status === 200) {
-            return response;
+            if (response.data.status === true) {
+                return response.data.data;
+            } else {
+                return response.data.message;
+            }
         }
   }
  

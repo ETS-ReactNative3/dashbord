@@ -984,7 +984,7 @@
     "core-js-pure" "^3.20.2"
     "regenerator-runtime" "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   "version" "7.17.2"
   dependencies:
     "regenerator-runtime" "^0.13.4"
@@ -5141,13 +5141,6 @@
     "tiny-warning" "^1.0.0"
     "value-equal" "^1.0.1"
 
-"history@^5.2.0":
-  "integrity" "sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ=="
-  "resolved" "https://registry.npmjs.org/history/-/history-5.3.0.tgz"
-  "version" "5.3.0"
-  dependencies:
-    "@babel/runtime" "^7.7.6"
-
 "hmac-drbg@^1.0.1":
   "version" "1.0.1"
   dependencies:
@@ -8909,14 +8902,7 @@
   dependencies:
     "prop-types" "^15.6.0"
 
-"react-router@^6.3.0":
-  "integrity" "sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ=="
-  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.3.0.tgz"
-  "version" "6.3.0"
-  dependencies:
-    "history" "^5.2.0"
-
-"react-router@5.2.0":
+"react-router@^5.2.0", "react-router@5.2.0":
   "integrity" "sha512-smz1DUuFHRKdcJC0jobGo8cVbhO3x50tCL4icacOlcwDOEQPq4TMqwx3sY1TP+DvtTgz4nm3thuo7A+BK2U0Dw=="
   "resolved" "https://registry.npmjs.org/react-router/-/react-router-5.2.0.tgz"
   "version" "5.2.0"

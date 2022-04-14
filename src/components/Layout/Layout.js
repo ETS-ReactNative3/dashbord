@@ -34,7 +34,8 @@ import AddEventPage from "../../administration/event/add/Event";
 import ListEventPage from "../../administration/event/list/Event";
 import Partners from "../../administration/Partners/list/Partners";
 import addPartners from "../../administration/Partners/add/addPartners";
-import log from "../../administration/log/log"
+import log from "../../administration/log/log";
+import store from "../../administration/Store/list/store";
 import journals from "../../administration/journaux/journal/journals";
 
 
@@ -142,6 +143,7 @@ class Layout extends React.Component {
                     <Route path={"/app/ui/icons"} component={Icons} />
                     <Route path={"/app/ui/charts"} component={Charts} />
                     <Route path={"/app/administration/Partners/list"}  component={Partners}/>
+                    <Route path={"/app/administration/store/list"}  component={store}/>
                     <Route path={"/app/administration/Partners/addPartners"}  component={addPartners}/>
                     <Route path={"/app/administration/log/log"}  component={log}/>
                     <Route path={"/app/administration/journaux/journal/journal"}  component={journals}/>

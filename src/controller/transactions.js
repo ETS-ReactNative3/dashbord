@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import {BASE_URL, HEADERS} from "../config/http";
 
 
-const route = '/transactions';
+const route = '/transactions0';
 var typeTransaction = {
     1:"Dépot",
     2:"Transfert",
@@ -13,11 +13,11 @@ var typeTransaction = {
 
   
 
-  export default async function getTransactions () {
+  export  async function getTransactions () {
     const url = BASE_URL+`${route}`;
     const response = await axios.get(url,{headers:HEADERS});
-        if (response.status === 200) {
-            return response;
+        if (response.status === 200 && response.data.status === true) {
+            return response.data.data;
         }
   }
 

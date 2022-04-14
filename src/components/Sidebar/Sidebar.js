@@ -305,6 +305,18 @@ class Sidebar extends React.Component {
             </LinksGroup> */}
 
             <hr />
+            <LinksGroup
+                onActiveSidebarItemChange={activeItem =>
+                  this.props.dispatch(changeActiveSidebarItem(activeItem))
+                }
+                header="Stores"
+                isHeader
+                // index="main"
+                link="/app/administration/store/list"
+              >
+                <i class = "fa fa-cart-arrow-down"></i>
+              </LinksGroup>
+
               <LinksGroup
                 onActiveSidebarItemChange={activeItem =>
                   this.props.dispatch(changeActiveSidebarItem(activeItem))

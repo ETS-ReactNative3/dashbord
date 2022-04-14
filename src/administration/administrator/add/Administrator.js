@@ -3,6 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import s from './Administrator.module.scss';
 import { Row, Col, Table,  Button } from "reactstrap";
 import {Link} from 'react-router-dom'
+import {useSearchParams} from 'react-router';
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { addAdministrator } from "../../../controller/administrator"
@@ -22,6 +23,7 @@ const initialState = {
 
 function AddAdministrator() {
 
+  // console.log(queryString_url_id);
   const [state, setState] = useState(initialState);
 
   const { name, username, password, level, contact } = state;
@@ -33,12 +35,6 @@ function AddAdministrator() {
       [name]: value,
     });
   };
-
-  console.log("************** props ***********************");
-  console.log(window.location.search);
-  console.log("***************************************************");
-
-  console.log(" etat golobal de addAdministrator", state)
 
   const handleSubmit = (e) => {
     if (!name || !username || !password || !level || !contact) {

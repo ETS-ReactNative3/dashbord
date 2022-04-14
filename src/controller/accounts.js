@@ -3,7 +3,7 @@ import {useEffect } from 'react';
 import {BASE_URL, HEADERS} from "../config/http";
 import { toast } from "react-toastify";
 
-const route = '/accounts';
+const route = '/accounts0';
  export var TypeAccount = {
     1: "Classique",
     2: "Professionnel"
@@ -13,11 +13,11 @@ const route = '/accounts';
   //   getAccounts();
   // }, []);
 
-  export default async function getAccounts () {
+  export  async function getAccounts () {
     const url = BASE_URL+`${route}`;
     const response = await axios.get(url,{headers:HEADERS});
-        if (response.status === 200) {
-            return response;
+        if (response.status === 200 && response.data.status === true) {
+            return response.data.data;
         }
   }
 

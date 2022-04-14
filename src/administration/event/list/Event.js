@@ -33,9 +33,12 @@ class ListEvent extends React.Component {
   render() {
     
     this.promise.then((events) => {
-      localStorage.setItem('events',JSON.stringify(events.data));
+      localStorage.setItem('events',JSON.stringify(events));
     });
     const events = JSON.parse(localStorage.getItem('events'));
+    console.log(".....................events...........................");
+    console.log(events);
+    console.log(".......................................................");
 
     return (
 
@@ -182,7 +185,7 @@ class ListEvent extends React.Component {
                 <tbody className="text-dark">
                   {
                     events && events.map((event, index) => { 
-                      if (event.is_valid === 1) {
+                      if (event.is_valid === true) {
                         return ( 
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
@@ -259,7 +262,7 @@ class ListEvent extends React.Component {
                 <tbody className="text-dark">
                   {
                     events && events.map((event, index) => { 
-                      if (event.status !== 'waiting' && event.is_valid === 0) {
+                      if (event.status !== 'waiting' && event.is_valid === false) {
                         return ( 
                           <tr key={index++}>
                             <td scope='row'>{index}</td>

@@ -1,14 +1,13 @@
 import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
 import { toast } from "react-toastify";
-const route = '/partners';
+const route = '/partners0';
 
 
 
 export async function createPartners (partner) {
     const url = BASE_URL+`${route}/`;
     const response = await axios.post(url,{
-        "id": partner.id,
         "name": partner.name,
         "logo": partner.logo,
     }, {headers:HEADERS});
@@ -46,7 +45,6 @@ export async function getPartnersByName(name) {
     const url = BASE_URL+`${route}/${id}`;
     const response = await axios.put(url,
         { 
-        "id": partner.id,
         "name": partner.name,
         "logo": partner.logo,
        }

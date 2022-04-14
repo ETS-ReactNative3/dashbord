@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import {BASE_URL} from "../config/http";
 
 
-const route = '/transactionsTypes';
+const route = '/transactionsTypes0';
 
 export async function createTransactionType(transactionType) {
     const url = BASE_URL+`${route}/`;
@@ -50,6 +50,4 @@ export async function createTransactionType(transactionType) {
         return response;
     }
   }
-  
-
   

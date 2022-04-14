@@ -21,9 +21,7 @@ function ListAdministrator () {
         
 };
 
- const state = {
-    
-  }
+
  const promise = getAdministrators();
   
 
@@ -38,7 +36,7 @@ function ListAdministrator () {
             <Col sm={10} className="text-align:right"></Col>
             <Col sm={2} className="text-align:right">
             <Link to="./add">
-            <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Creer <i class="fa fa-plus-circle"></i></Button>
+            <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Créer <i class="fa fa-plus-circle"></i></Button>
             </Link>
             </Col>
           </Row>
@@ -83,7 +81,7 @@ function ListAdministrator () {
                             <td className={"pl-0 fw-normal text-center"}>{administrator.contact}</td>
                             <td className={"pl-0 fw-normal text-center"}>{administrator.level}</td>
                             <td className={"pl-0 fw-normal text-center"}>
-                            <Link to={`add/${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></Link>
+                            <Link to={`add?id=${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></Link>
                               <button href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-warning fa fa-times-circle"></i></button>
                               <button onClick={() => onDeleteUser(administrator.id)} refresh="true" style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></button>
                              

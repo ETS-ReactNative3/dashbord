@@ -1,22 +1,19 @@
 import {BASE_URL, HEADERS} from "../config/http";
 import axios from "axios";
 import { toast } from "react-toastify";
-const route = '/administrators';
+const route = '/administrators0';
 
 
 export async function addAdministrator   (administrateur)  {
     const url = BASE_URL+`${route}/`;
-    const response = await axios.post(
-        url,
+    const response = await axios.post(url,
         { 
-            name: administrateur.name,
-            username: administrateur.username,
-            password: administrateur.password,
-            level: administrateur.level,
-            contact: administrateur.contact,
-       },
-
-        {headers:HEADERS});
+            "name": administrateur.name,
+            "username": administrateur.username,
+            "password": administrateur.password,
+            "level": administrateur.level,
+            "contact": administrateur.contact,
+       }, {headers:HEADERS});
     if (response.status === 200) {
         console.log('Administrateur crée');
     } else {
@@ -46,8 +43,8 @@ export async function getSingleAdministrator(id) {
 export async function deleteAdministrator(id) {
     if (window.confirm("Are you sure that you wanted to delete that user record ? ")
         ) {
-            const url = BASE_URL+`${route}/${id}`;
-            const response = await axios.delete(url, {headers:HEADERS});
+            const url = BASE_URL+`${route}/${id}/`;
+            const response = await axios.delete(url,{headers:HEADERS});
             if (response.status === 200) {
                 toast.success("User deleted successfully");
                 getAdministrators();
@@ -59,11 +56,11 @@ export async function updateAdministrator(administrateur, id){
     const url = BASE_URL+`${route}/${id}`;
     const response = await axios.put(url,
         { 
-            name: administrateur.name,
-            username: administrateur.username,
-            password: administrateur.password,
-            level: administrateur.level,
-            contact: administrateur.contact,
+            "name": administrateur.name,
+            "username": administrateur.username,
+            "password": administrateur.password,
+            "level": administrateur.level,
+            "contact": administrateur.contact,
        }
         , {headers:HEADERS});
     if (response.status === 200) {
@@ -74,7 +71,7 @@ export async function updateAdministrator(administrateur, id){
 export async function login(username, password)  {
     if (username.length > 0 && password.length > 0) {
 
-        const url = BASE_URL+`${route}/loginWithUsername/${username}/${password}`;
+        const url = BASE_URL+`${route}/login/${username}/${password}`;
         const response = await axios.get(url);
     
         if (response.status === 200) {
