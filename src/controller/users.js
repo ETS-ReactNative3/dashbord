@@ -92,7 +92,7 @@ export async function getFullNameByAccountId (accountId) {
 
   export async function verifyPhoneNumber(phone) {
     const url = BASE_URL+`${route}/verifyPhoneNumber/${phone}`;
-    const response = await axios.get(url);
+        const response = await axios.get(url);
         if (response.status === 200) {
             return response;
         }

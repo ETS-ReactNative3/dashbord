@@ -40,14 +40,14 @@ export async function createTransactionType(transactionType) {
     }
   }
 
-  export async function createTransactionType(transactionType) {
-    const url = BASE_URL+`${route}/${transactionType.id}`;
-    const response = await axios.put(url,{
-        "id": transactionType.id,
-        "name": transactionType.name,
-    });
-    if (response.status === 200) {
-        return response;
-    }
-  }
+  // export async function createTransactionType(transactionType) {
+  //   const url = BASE_URL+`${route}/${transactionType.id}`;
+  //   const response = await axios.put(url,{
+  //       "id": transactionType.id,
+  //       "name": transactionType.name,
+  //   });
+  //   if (response.status === 200) {
+  //       return response;
+  //   }
+  // }
   

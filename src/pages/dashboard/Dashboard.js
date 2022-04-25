@@ -13,7 +13,7 @@ import {
   Form,
 
 } from "reactstrap";
-
+import TextField from "@mui/material/TextField";
 import usersImg from "../../images/usersImg.svg";
 import smileImg from "../../images/smileImg.svg";
 import totalSale from "../../images/total-sale.svg";
@@ -393,6 +393,7 @@ const splineArea = {
   },
 };
 
+
 class Dashboard extends React.Component {
 
   constructor() {
@@ -401,6 +402,7 @@ class Dashboard extends React.Component {
     super();
     this.forceUpdate = this.forceUpdate.bind(this)
   }
+  
   state = {
     orderValue: { ...chartData.apex.column, ...orderValueOverride },
     convertionRate: { ...chartData.apex.column, ...convertionRateOverride },
@@ -409,6 +411,7 @@ class Dashboard extends React.Component {
     splineArea: { ...splineArea },
     transactions: [],
     focus: false,
+    searchTerm : "",
   };
 
   transactions = getTransactions();
@@ -485,6 +488,14 @@ class Dashboard extends React.Component {
         nbUser++;
       })
     }
+
+//recherche pour les users
+
+  const inputHandler = (e) => {
+    this.setState({searchTerm: e.target.value});
+    console.log("---------------searchTermUsuer------------------");
+console.log(this.e.target.value);
+  };
 
 
     //operations sur les transactions
@@ -1027,37 +1038,27 @@ class Dashboard extends React.Component {
             >
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <div style={{ height: '500px', overflow: 'scroll' }}>
-                  <Form className={`d-md-down-none`} inline>
-                    <InputGroup
-                      onFocus={this.toggleFocus}
-                      onBlur={this.toggleFocus}
-                    // className={`${cx("input-group-no-border", { focus: !!focus })}`}
-                    >
-                      <Input
-                        id="search-input"
-                        placeholder="Search"
-                        // className={`${cx({ focus: !!focus})} ${s.headerSearchInput}`}
-
-                        style={{
-                          marginTop: "40px",
-                          padding: "3px",
-                          border: "1px solid #F5C5C5",
-                          borderRadius: "5px",
-                          width: "200px",
-                          boxShadow: "1px 1px 2px #C0C0C0 inset",
-                        }}
-                      />
-                      <InputGroupAddon addonType={"prepend"}>
-                        <img
-                          src={search}
-                          alt="search"
-                          width="24px"
-                          height="23px"
-                          style={{ marginRight: 12 }}
-                        />
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Form>
+                <div className="main" style={{
+              display: "flex",
+              height: "100 vh",
+              width: "100%",
+              alignItems: "center",
+              flexDirection: "column",
+              rowGap: "100px",
+            }}>
+              <div className="search" style={{
+                width: "30%",
+              }}>
+                <TextField
+                  id="outlined-basic"
+                  onChange={inputHandler}
+                  variant="outlined"
+                  value={this.state.searchTerm}
+                  fullWidth
+                  label="Search Store name"
+                />
+              </div>
+            </div>
                   <thead>
                     <tr>
                       <th style={{ textAlign: "center" }} >
@@ -1093,7 +1094,7 @@ class Dashboard extends React.Component {
 
                   <tbody className="text-dark">
                     {
-                      respons && respons  .map((user, index) => {
+                      respons && respons.map((user, index) => {
                         return (
                           <tr key={index++}>
                             <td scope='row'>{index}</td>

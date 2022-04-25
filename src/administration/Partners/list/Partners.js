@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Row, Col, Button, Table,
 } from 'reactstrap';
@@ -8,6 +8,7 @@ import Widget from "../../../components/Widget/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Partners.module.scss';
 import  {deletePartner}  from '../../../controller/Partners';
+import TextField from "@mui/material/TextField";
 
 
 function ListPartners () {
@@ -18,7 +19,13 @@ function ListPartners () {
 };
 
  const promise = getPartners();
-  
+ const [searchTerm, setSearchTerm] = useState('');
+
+ const inputHandler = (e) => {
+
+   var term = e.target.value;
+   setSearchTerm(term);
+ };
 
     promise.then((Partners) => {
       localStorage.setItem('Partners',JSON.stringify(Partners.data));
@@ -41,6 +48,33 @@ function ListPartners () {
                 // customDropDown
                 title={<p className={"fw-bold text-warning"}>Les Partenaires d'intercash</p>}
               >
+            <div className="main" style={{
+              display: "flex",
+              height: "100 vh",
+              width: "100%",
+              alignItems: "center",
+              flexDirection: "column",
+              rowGap: "100px",
+            }}>
+              <div className="search" style={{
+                width: "30%",
+              }}>
+
+                <div className='searchInputs'>
+                  <TextField
+                    id="outlined-basic"
+                    onChange={inputHandler}
+                    variant="outlined"
+                    value={searchTerm}
+                    fullWidth
+                    label="Search partner"
+                  />
+                  <div className='searchIcon'>
+                    <searchIcon />
+                  </div>
+                </div>
+                </div>
+              </div>
                 <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                   <thead>
                     <tr>
@@ -63,7 +97,7 @@ function ListPartners () {
                   </thead>
                   <tbody className="text-dark">
                     {
-                      Partners && Partners.map((Partner, index) => { 
+                      Partners.filter(Partners => searchTerm === "" || Partners.name.toLowerCase() === searchTerm.toLowerCase()  || Partners.name.toLowerCase().includes(searchTerm.toLowerCase())).map((Partner, index) => { 
                         return ( 
                           <tr key={index++}>
 

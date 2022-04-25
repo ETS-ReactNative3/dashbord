@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Row, Col, Table,  Button, Badge} from "reactstrap";
 import Widget from "../../../components/Widget";
 import s from "./Event.module.scss";
@@ -6,39 +6,55 @@ import {AddEvent} from "../../../administration/event/add";
 import {validateEvent,deniedEvent} from "../../../controller/events";
 import { getEvents } from "../../../controller/events";
 import {Link} from "react-router-dom";
+import TextField from "@mui/material/TextField";
 
 
-class ListEvent extends React.Component {
+function ListEvent () {
 
   // constructor() {
   //   super();
   // }
 
-  state = {
-    
-  };
 
-  promise = getEvents();
+ const promise = getEvents();
   
 
-  componentDidMount() {
-    window.addEventListener("resize", this.forceUpdate.bind(this))
-  }
+  // componentDidMount() {
+  //   window.addEventListener("resize", this.forceUpdate.bind(this))
+  // }
 
-  forceUpdate() {
-    return this.setState({})
-  }
+  // forceUpdate() {
+  //   return this.setState({})
+  // }
 
-
-  render() {
     
-    this.promise.then((events) => {
+    promise.then((events) => {
       localStorage.setItem('events',JSON.stringify(events));
     });
     const events = JSON.parse(localStorage.getItem('events'));
-    console.log(".....................events...........................");
-    console.log(events);
-    console.log(".......................................................");
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const inputHandler = (e) => {
+  
+      var term = e.target.value;
+      setSearchTerm(term);
+    };
+    
+    const [searchTerme, setSearchTerme] = useState('');
+
+    const inputHand = (e) => {
+  
+      var val = e.target.value;
+      setSearchTerme(val);
+    };
+
+    const [searchTer, setSearchTer] = useState('');
+
+    const inputHan = (e) => {
+  
+      var tape = e.target.value;
+      setSearchTer(tape);
+    };
 
     return (
 
@@ -57,6 +73,33 @@ class ListEvent extends React.Component {
               customDropDown
               title={<p className={"fw-bold text-warning"}>Evenements en attente de validation</p>}
             >
+                          <div className="main" style={{
+              display: "flex",
+              height: "100 vh",
+              width: "100%",
+              alignItems: "center",
+              flexDirection: "column",
+              rowGap: "100px",
+            }}>
+              <div className="search" style={{
+                width: "30%",
+              }}>
+
+                <div className='searchInputs'>
+                  <TextField
+                    id="outlined-basic"
+                    onChange={inputHand}
+                    variant="outlined"
+                    value={searchTerme}
+                    fullWidth
+                    label="Search Store name"
+                  />
+                  <div className='searchIcon'>
+                    <searchIcon />
+                  </div>
+                </div>
+                </div>
+              </div>
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <thead>
                   <tr>
@@ -103,7 +146,7 @@ class ListEvent extends React.Component {
                 </thead>
                 <tbody className="text-dark">
                   {
-                    events && events.map((event, index) => { 
+                    events.filter(events => searchTerme === "" || events.name.toLowerCase() === searchTerme.toLowerCase() || events.category.toLowerCase().includes(searchTerme.toLowerCase())  || events.organizer.toLowerCase().includes(searchTerme.toLowerCase()) || events.name.toLowerCase().includes(searchTerme.toLowerCase())).map((event, index) => { 
                       if (event.status === 'waiting') {
                         return ( 
                           <tr key={index++}>
@@ -141,6 +184,33 @@ class ListEvent extends React.Component {
               customDropDown
               title={<p className={"fw-bold text-success"}>Evenements valides</p>}
             >
+           <div className="main" style={{
+              display: "flex",
+              height: "100 vh",
+              width: "100%",
+              alignItems: "center",
+              flexDirection: "column",
+              rowGap: "100px",
+            }}>
+              <div className="search" style={{
+                width: "30%",
+              }}>
+
+                <div className='searchInputs'>
+                  <TextField
+                    id="outlined-basic"
+                    onChange={inputHandler}
+                    variant="outlined"
+                    value={searchTerm}
+                    fullWidth
+                    label="Search Event"
+                  />
+                  <div className='searchIcon'>
+                    <searchIcon />
+                  </div>
+                </div>
+                </div>
+              </div>
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <thead>
                   <tr>
@@ -184,7 +254,7 @@ class ListEvent extends React.Component {
                 </thead>
                 <tbody className="text-dark">
                   {
-                    events && events.map((event, index) => { 
+                    events.filter(events => searchTerm === "" || events.name.toLowerCase() === searchTerm.toLowerCase() || events.category.toLowerCase().includes(searchTerm.toLowerCase())  || events.organizer.toLowerCase().includes(searchTerm.toLowerCase()) || events.name.toLowerCase().includes(searchTerm.toLowerCase())).map((event, index) => { 
                       if (event.is_valid === true) {
                         return ( 
                           <tr key={index++}>
@@ -218,6 +288,33 @@ class ListEvent extends React.Component {
               customDropDown
               title={<p className={"fw-bold text-danger"}>Evenements non valides</p>}
             >
+                          <div className="main" style={{
+              display: "flex",
+              height: "100 vh",
+              width: "100%",
+              alignItems: "center",
+              flexDirection: "column",
+              rowGap: "100px",
+            }}>
+              <div className="search" style={{
+                width: "30%",
+              }}>
+
+                <div className='searchInputs'>
+                  <TextField
+                    id="outlined-basic"
+                    onChange={inputHan}
+                    variant="outlined"
+                    value={searchTer}
+                    fullWidth
+                    label="Search Store name"
+                  />
+                  <div className='searchIcon'>
+                    <searchIcon />
+                  </div>
+                </div>
+                </div>
+              </div>
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <thead>
                   <tr>
@@ -261,7 +358,7 @@ class ListEvent extends React.Component {
                 </thead>
                 <tbody className="text-dark">
                   {
-                    events && events.map((event, index) => { 
+                    events.filter(events => searchTer === "" || events.name.toLowerCase() === searchTer.toLowerCase() || events.category.toLowerCase().includes(searchTer.toLowerCase())  || events.organizer.toLowerCase().includes(searchTer.toLowerCase()) || events.name.toLowerCase().includes(searchTer.toLowerCase())).map((event, index) => { 
                       if (event.status !== 'waiting' && event.is_valid === false) {
                         return ( 
                           <tr key={index++}>
@@ -290,7 +387,6 @@ class ListEvent extends React.Component {
 
       </div>
     );
-  }
 }
 
 export default ListEvent;

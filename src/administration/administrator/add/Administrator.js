@@ -7,7 +7,6 @@ import {useSearchParams} from 'react-router';
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { addAdministrator } from "../../../controller/administrator"
-import { updateAdministrator, getSingleAdministrator } from "../../../controller/administrator";
 
 
 
@@ -23,7 +22,15 @@ const initialState = {
 
 function AddAdministrator() {
 
+  // const queryString_url_id = window.location.search;
+  // const id = queryString_url_id.slice(1);
   // console.log(queryString_url_id);
+  // const urlSearchParams = new URLSearchParams(queryString_url_id);
+  // const id = urlSearchParams.get("id");
+  // console.log("---------------------------ceci est l'id tant rechercher------------------------------------");
+  // console.log(id);
+
+
   const [state, setState] = useState(initialState);
 
   const { name, username, password, level, contact } = state;

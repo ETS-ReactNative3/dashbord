@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Row, Col, Button, Table,
 } from 'reactstrap';
@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams} from "react-router-dom";
 import s from './Administrator.module.scss';
 import {deleteAdministrator} from "../../../controller/administrator";
+import TextField from "@mui/material/TextField";
 
 
 import { getAdministrators } from "../../../controller/administrator";
@@ -23,7 +24,13 @@ function ListAdministrator () {
 
 
  const promise = getAdministrators();
-  
+ const [searchTerm, setSearchTerm] = useState('');
+
+ const inputHandler = (e) => {
+
+   var term = e.target.value;
+   setSearchTerm(term);
+ };
 
     promise.then((administrators) => {
       localStorage.setItem('administrators',JSON.stringify(administrators.data));
@@ -46,6 +53,34 @@ function ListAdministrator () {
                 // customDropDown
                 title={<p className={"fw-bold text-warning"}>Les administrateurs du dashboard</p>}
               >
+           <div className="main" style={{
+              display: "flex",
+              height: "100 vh",
+              width: "100%",
+              alignItems: "center",
+              flexDirection: "column",
+              rowGap: "100px",
+            }}>
+              <div className="search" style={{
+                width: "30%",
+              }}>
+
+                <div className='searchInputs'>
+                  <TextField
+                    id="outlined-basic"
+                    onChange={inputHandler}
+                    variant="outlined"
+                    value={searchTerm}
+                    fullWidth
+                    label="Search Admin"
+                  />
+                  <div className='searchIcon'>
+                    <searchIcon />
+                  </div>
+                </div>
+
+              </div>
+              </div>
                 <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                   <thead>
                     <tr>
@@ -71,7 +106,7 @@ function ListAdministrator () {
                   </thead>
                   <tbody className="text-dark">
                     {
-                      administrators && administrators.map((administrator, index) => { 
+                      administrators.filter(administrators => searchTerm === "" || administrators.name.toLowerCase() === searchTerm.toLowerCase() || administrators.username.toLowerCase().includes(searchTerm.toLowerCase()) || administrators.name.toLowerCase().includes(searchTerm.toLowerCase())).map((administrator, index) => { 
                         return ( 
                           <tr key={index++}>
 
