@@ -19,6 +19,17 @@ import {
 } from 'reactstrap';
 
 import dropdownImg from '../../images/widget-menu.svg'
+import { getTransactions } from "../../controller/transactions";
+import { getAccounts} from "../../controller/accounts";
+import { getUsers } from "../../controller/users";
+
+var sommeDepot = 0, nbdepot = 0, montantTransaction = 0, sommeAchat = 0, nbVente = 0, sommeVente = 0, nbAchat = 0, nbretrait = 0, nbtrans = 0, sommeTrans = 0, sommeRetrait = 0, nbUser = 0, sommeTranfer = 0, nbComptClassic = 0, nbComptPro = 0;
+var typeTransaction = {
+  1: "Dépot",
+  2: "Transfert",
+  3: "Achat",
+  4: "Vente"
+}
 
 class Widget extends React.Component {
   static propTypes = {
@@ -85,7 +96,11 @@ class Widget extends React.Component {
 
   }
 
+  transactions = getTransactions();
+  accounts = getAccounts();
+  users = getUsers();
 
+ 
 
   toggleModal = () => {
     this.setState({ modal: !this.state.modal });
@@ -119,6 +134,9 @@ class Widget extends React.Component {
 
   };
 
+  handleQuotidient = () => {
+
+  }
   handleReload = () => {
     const { widgetType, updateWidgetData } = this.props;
     const type = widgetType;
@@ -143,6 +161,61 @@ class Widget extends React.Component {
   }
   
   render() {
+
+    this.transactions.then((value) => {
+      localStorage.setItem('transactions', JSON.stringify(value));
+      
+    });
+    const response = JSON.parse(localStorage.getItem('transactions'));
+
+      nbdepot = 0;
+      sommeDepot = 0;
+      nbtrans = 0;
+      sommeTrans = 0;
+      nbAchat = 0;
+      montantTransaction = 0;
+      sommeAchat = 0;
+      nbAchat = 0;
+      sommeVente = 0;
+     
+
+      response && response.map((transaction, index) => {
+        var date1 = new Date((transaction.creation_date));
+        var date2 = date1.getTime();
+          // console.log(date1, date2);
+          // console.log('............Date du jour.....................');
+          var today = new Date();
+          // console.log(today.getTime());
+          // console.log('.............................................');
+       if( date2 === today.getTime())
+       console.log('Hello bienvenue au test');
+       {
+        montantTransaction = parseFloat(montantTransaction) + parseFloat(transaction.amount);
+
+        if (typeTransaction[transaction.transaction_type_id] === "Dépot") {
+          nbdepot++;
+          sommeDepot = parseFloat(sommeDepot) + parseFloat(transaction.amount);
+        } else if (typeTransaction[transaction.transaction_type_id] === "Transfert") {
+          nbtrans++;
+          sommeTrans = parseFloat(sommeTranfer) + parseFloat(transaction.amount);
+        } else if (typeTransaction[transaction.transaction_type_id] === "Achat") {
+          nbAchat++;
+          sommeAchat = parseFloat(sommeAchat) + parseFloat(transaction.amount);
+        } else {
+          nbVente++;
+          sommeVente = parseFloat(sommeVente) + parseFloat(transaction.amount);
+        }
+       }   
+       
+      })
+
+      console.log('..................Les donnés journaliers...................');
+      console.log(montantTransaction);
+      console.log(sommeDepot);
+      console.log(sommeTrans);
+      console.log(nbVente);
+      console.log(sommeAchat); 
+      console.log(sommeVente);
   
     const {
       title,
@@ -320,9 +393,9 @@ class Widget extends React.Component {
                   Annee &nbsp;&nbsp;
                 </DropdownItem>
 
-                <DropdownItem onClick={this.handleReload} title="Reload">
+                {/* <DropdownItem onClick={this.handleReload} title="Reload">
                   Autre &nbsp;&nbsp;
-                </DropdownItem>
+                </DropdownItem> */}
 
                 
                 <DropdownItem onClick={this.handleFullscreen} title={!fullscreened ? "Full Screen" : "Restore"}>{!fullscreened ? "Fullscreen" : "Restore"} </DropdownItem>

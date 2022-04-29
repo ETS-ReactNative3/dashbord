@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState,useRef} from 'react';
 import {
-  Row, Col, Button, Table,
+  Row, Col, Table
 } from 'reactstrap';
 import { Link} from "react-router-dom";
+import { Button } from "@progress/kendo-react-buttons";
 import {getPartners} from '../../../controller/Partners';
 import Widget from "../../../components/Widget/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './Partners.module.scss';
 import  {deletePartner}  from '../../../controller/Partners';
 import TextField from "@mui/material/TextField";
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { ExcelExport, ExcelExportColumn } from '@progress/kendo-react-excel-export';
+
 
 
 function ListPartners () {
@@ -20,6 +24,10 @@ function ListPartners () {
 
  const promise = getPartners();
  const [searchTerm, setSearchTerm] = useState('');
+ const pdfExportComponent = useRef(null);
+  // const contentArea = useRef(null);
+ const _exporter = useRef(null);
+
 
  const inputHandler = (e) => {
 
@@ -31,6 +39,17 @@ function ListPartners () {
       localStorage.setItem('Partners',JSON.stringify(Partners.data));
     });
     const Partners = JSON.parse(localStorage.getItem('Partners'));
+
+    const handleExportWithComponent = (event) => {
+      pdfExportComponent.current.save();
+  
+    }
+  
+        const exportExcel = (event) => {
+                _exporter.current.save();      
+  
+      }
+  
 
     return (
         <div className={s.root}>
@@ -48,6 +67,14 @@ function ListPartners () {
                 // customDropDown
                 title={<p className={"fw-bold text-warning"}>Les Partenaires d'intercash</p>}
               >
+                <div className='button-area'>
+              {/* <Button style={{ backgroundColor: 'gray' }} >
+                <CSVLink style={{ color: 'black' }} filename='Report.csv' headers={Headers} data={Stor}>CSV Export </CSVLink>
+              </Button> */}
+              <Button style={{ backgroundColor: 'gray' }}  onClick={exportExcel}>Excel Export</Button>
+
+              <Button primary={true} style={{ backgroundColor: 'gray' }} onClick={handleExportWithComponent}>PDF Export</Button>
+            </div>
             <div className="main" style={{
               display: "flex",
               height: "100 vh",
@@ -75,6 +102,30 @@ function ListPartners () {
                 </div>
                 </div>
               </div>
+              <PDFExport ref={pdfExportComponent} paperSize='auto'>
+            <ExcelExport ref ={_exporter}
+            data={Partners}
+            fileName="Partenaires.xlsx"
+             >
+        <ExcelExportColumn
+          field="id"
+          title="ID"
+          locked={true}
+          width={200}
+        />
+        <ExcelExportColumn
+          field="name"
+          title="Nom"
+          width={350}
+        />
+        <ExcelExportColumn
+          field="logo"
+          title="Logo"
+          width={350}
+        />
+       
+        <ExcelExportColumn field="UnitsOnOrder" title="Units on Order" />
+        <ExcelExportColumn field="UnitsInStock" title="Units in Stock" />
                 <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                   <thead>
                     <tr>
@@ -116,6 +167,8 @@ function ListPartners () {
                     }
                   </tbody>
                 </Table>
+                </ExcelExport>
+                </PDFExport>
               </Widget>
             </Col>
           </Row>

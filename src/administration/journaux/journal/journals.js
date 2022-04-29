@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
-  Row, Col, Button, Table,
+  Row, Col,Table,
 } from 'reactstrap';
 import { Link} from "react-router-dom";
+import { Button } from "@progress/kendo-react-buttons";
 import {getJournals} from '../../../controller/journal';
 import Widget from "../../../components/Widget/Widget";
 import 'react-toastify/dist/ReactToastify.css';
 import s from './journals.module.scss';
 import {getJournalByStatus} from "../../../controller/journal"; 
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { ExcelExport, ExcelExportColumn } from '@progress/kendo-react-excel-export';
 
 
 
@@ -22,6 +25,21 @@ function ListPartners () {
     });
     const journals = JSON.parse(localStorage.getItem('journals'));
 
+    const pdfExportComponent = useRef(null);
+  // const contentArea = useRef(null);
+  const _exporter = useRef(null);
+
+  const handleExportWithComponent = (event) => {
+    pdfExportComponent.current.save();
+
+  }
+
+      const exportExcel = (event) => {
+              _exporter.current.save();      
+
+    }
+
+
     return (
         <div className={s.root}>
           
@@ -31,6 +49,43 @@ function ListPartners () {
                 // customDropDown
                 title={<p className={"fw-bold text-warning"}>Fichier de journalisation</p>}
               >
+                <div className='button-area'>
+              {/* <Button style={{ backgroundColor: 'gray' }} >
+                <CSVLink style={{ color: 'black' }} filename='Report.csv' headers={Headers} data={Stor}>CSV Export </CSVLink>
+              </Button> */}
+              <Button style={{ backgroundColor: 'gray' }} onClick={exportExcel}>Excel Export</Button>
+
+              <Button primary={true} style={{ backgroundColor: 'gray' }} onClick={handleExportWithComponent}>PDF Export</Button>
+            </div>
+            <PDFExport ref={pdfExportComponent} paperSize='auto'>
+            <ExcelExport ref ={_exporter}
+            data={journals}
+            fileName="journal.xlsx"
+             >
+        <ExcelExportColumn
+          field="amount"
+          title="Montant"
+          locked={true}
+          width={200}
+        />
+        <ExcelExportColumn
+          field="Phone"
+          title="Phone"
+          width={350}
+        />
+        <ExcelExportColumn
+          field="date"
+          title="Date"
+          width={350}
+        />
+        <ExcelExportColumn
+          field="status"
+          title="Statut"
+          width={350}
+        />
+        
+        <ExcelExportColumn field="UnitsOnOrder" title="Units on Order" />
+        <ExcelExportColumn field="UnitsInStock" title="Units in Stock" />
                 <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                   <thead>
                     <tr>
@@ -85,9 +140,9 @@ function ListPartners () {
                   <tbody className="text-dark">
                     {
                       journals && journals.map((journal, index) => { 
-                        return ( 
+                     return ( 
                           <tr key={index++}>
-
+                              
                             <td scope='row'>{index}</td>
                             <td className={"pl-0 fw-normal text-center"}>{journal.id}</td>
                             {/* <td className={"pl-0 fw-normal text-center"}>{journal.number}</td> */}
@@ -111,6 +166,8 @@ function ListPartners () {
                     }
                   </tbody>
                 </Table>
+                </ExcelExport>
+               </PDFExport>
               </Widget>
             </Col>
           </Row>

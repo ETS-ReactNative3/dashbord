@@ -467,19 +467,10 @@ class Dashboard extends React.Component {
 
     //operation sur les utilisateurs
     this.users.then((value) => {
-      console.log("-------------then respons.data-------------------");
-    console.log(value);
-    console.log("---------------------------------------------");
       localStorage.setItem('users',JSON.stringify(value));
-    
     });
     const respons = JSON.parse(localStorage.getItem('users'));
-    console.log("-------------respons-------------------");
-    console.log(respons);
-    console.log("-------------respons.data-------------------");
-    console.log(respons.data);
-    console.log("---------------------------------------------");
-
+    
     {
       nbUser = 0;
       respons && respons.map((user, index) => {

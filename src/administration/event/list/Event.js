@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { Row, Col, Table,  Button, Badge} from "reactstrap";
+import React, {useState, useRef} from "react";
+import { Row, Col, Table, Badge} from "reactstrap";
 import Widget from "../../../components/Widget";
 import s from "./Event.module.scss";
 import {AddEvent} from "../../../administration/event/add";
@@ -7,6 +7,10 @@ import {validateEvent,deniedEvent} from "../../../controller/events";
 import { getEvents } from "../../../controller/events";
 import {Link} from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import { Button } from "@progress/kendo-react-buttons";
+import '@progress/kendo-theme-material/dist/all.css';
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { ExcelExport, ExcelExportColumn } from '@progress/kendo-react-excel-export';
 
 
 function ListEvent () {
@@ -17,7 +21,10 @@ function ListEvent () {
 
 
  const promise = getEvents();
-  
+ const pdfExportComponent = useRef(null);
+ const pdfExportComponentValid = useRef(null);
+ const pdfExportComponentNonValid = useRef(null);
+ const _exporter = useRef(null);
 
   // componentDidMount() {
   //   window.addEventListener("resize", this.forceUpdate.bind(this))
@@ -27,11 +34,26 @@ function ListEvent () {
   //   return this.setState({})
   // }
 
-    
+  const handleExportWithComponent = (event) => {
+    pdfExportComponent.current.save();
+
+  }
+  const handleExportWithComponentValid = (event) => {
+    pdfExportComponentValid.current.save();
+
+  }
+  const handleExportWithComponentNonValid = (event) => {
+    pdfExportComponentNonValid.current.save();
+
+  }
+
+  
+
     promise.then((events) => {
       localStorage.setItem('events',JSON.stringify(events));
     });
     const events = JSON.parse(localStorage.getItem('events'));
+    
     const [searchTerm, setSearchTerm] = useState('');
 
     const inputHandler = (e) => {
@@ -47,7 +69,10 @@ function ListEvent () {
       var val = e.target.value;
       setSearchTerme(val);
     };
-
+    const exportExcel = (event) => {
+      _exporter.current.save();      
+  
+  }
     const [searchTer, setSearchTer] = useState('');
 
     const inputHan = (e) => {
@@ -73,7 +98,11 @@ function ListEvent () {
               customDropDown
               title={<p className={"fw-bold text-warning"}>Evenements en attente de validation</p>}
             >
-                          <div className="main" style={{
+           <div className='button-area'>             
+              <Button primary={true} style={{ backgroundColor: 'gray' }} onClick={handleExportWithComponent}>PDF Export</Button>
+            </div>
+
+           <div className="main" style={{
               display: "flex",
               height: "100 vh",
               width: "100%",
@@ -100,6 +129,8 @@ function ListEvent () {
                 </div>
                 </div>
               </div>
+              <PDFExport ref={pdfExportComponent} paperSize='auto'>
+           
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <thead>
                   <tr>
@@ -173,6 +204,8 @@ function ListEvent () {
                   }
                 </tbody>
               </Table>
+             
+            </PDFExport>
             </Widget>
           </Col>
         </Row>
@@ -184,6 +217,8 @@ function ListEvent () {
               customDropDown
               title={<p className={"fw-bold text-success"}>Evenements valides</p>}
             >
+               <Button  style={{ backgroundColor: 'gray' }} onClick={exportExcel}>Excel Export</Button>
+               <Button primary={true} style={{ backgroundColor: 'gray' }}  onClick={handleExportWithComponentValid}>Export</Button>
            <div className="main" style={{
               display: "flex",
               height: "100 vh",
@@ -211,6 +246,39 @@ function ListEvent () {
                 </div>
                 </div>
               </div>
+              <PDFExport ref={pdfExportComponentValid} paperSize='auto'>
+              <ExcelExport ref ={_exporter}
+            data={events}
+            fileName="Event.xlsx"
+             >
+        <ExcelExportColumn
+          field="name"
+          title="Name"
+          locked={true}
+          width={200}
+        />
+        <ExcelExportColumn
+          field="organizer"
+          title="Organisateur"
+          width={350}
+        />
+        <ExcelExportColumn
+          field="limit_registration"
+          title="Nombre de Places"
+          width={350}
+        />
+        <ExcelExportColumn
+          field="category"
+          title="Catégorie"
+          width={350}
+        />
+         <ExcelExportColumn
+          field="status"
+          title="Statut"
+          width={350}
+        />
+        <ExcelExportColumn field="UnitsOnOrder" title="Units on Order" />
+        <ExcelExportColumn field="UnitsInStock" title="Units in Stock" />
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <thead>
                   <tr>
@@ -277,6 +345,8 @@ function ListEvent () {
                   }
                 </tbody>
               </Table>
+              </ExcelExport>
+              </PDFExport>
             </Widget>
           </Col>
         </Row> 
@@ -288,7 +358,8 @@ function ListEvent () {
               customDropDown
               title={<p className={"fw-bold text-danger"}>Evenements non valides</p>}
             >
-                          <div className="main" style={{
+              <Button primary={true} style={{ backgroundColor: 'gray' }}  onClick={handleExportWithComponentNonValid}>Export</Button>
+           <div className="main" style={{
               display: "flex",
               height: "100 vh",
               width: "100%",
@@ -315,6 +386,7 @@ function ListEvent () {
                 </div>
                 </div>
               </div>
+              <PDFExport ref={pdfExportComponentNonValid} paperSize='auto'>
               <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                 <thead>
                   <tr>
@@ -381,6 +453,7 @@ function ListEvent () {
                   }  
                 </tbody>
               </Table>
+              </PDFExport>
             </Widget>
           </Col>
         </Row>

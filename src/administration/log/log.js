@@ -1,6 +1,6 @@
-import React from 'react';
+import React,{useRef} from 'react';
 import {
-  Row, Col, Button, Table
+  Row, Col, Table
 } from 'reactstrap';
 import { Link} from "react-router-dom";
 import {getLogs} from "../../controller/logs";
@@ -8,6 +8,9 @@ import Widget from "../../components/Widget/Widget";
 import s from './Logs.module.scss';
 import {getLogById, statut} from "../../controller/logs";
 import {getFullNameByUserId} from "../../controller/users";
+import { Button } from "@progress/kendo-react-buttons";
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { ExcelExport, ExcelExportColumn } from '@progress/kendo-react-excel-export';
 
 
 function ListPartners () {
@@ -31,6 +34,19 @@ function ListPartners () {
     //       }
     //     }    
     //   }
+    const pdfExportComponent = useRef(null);
+  // const contentArea = useRef(null);
+    const _exporter = useRef(null);
+
+    const handleExportWithComponent = (event) => {
+      pdfExportComponent.current.save();
+  
+    }
+  
+     const exportExcel = (event) => {
+                _exporter.current.save();      
+  
+      }
 
     return (
         <div className={s.root}>
@@ -45,6 +61,38 @@ function ListPartners () {
                 // customDropDown
                 title={<p className={"fw-bold text-warning"}>La liste des Logs</p>}
               >
+                 <div className='button-area'>
+              {/* <Button style={{ backgroundColor: 'gray' }} >
+                <CSVLink style={{ color: 'black' }} filename='Report.csv' headers={Headers} data={Stor}>CSV Export </CSVLink>
+              </Button> */}
+              <Button style={{ backgroundColor: 'grey' }} onClick={exportExcel}>Excel Export</Button>
+
+              <Button primary={true} style={{ backgroundColor: 'gray' }} onClick={handleExportWithComponent}>PDF Export</Button>
+            </div>
+
+            <PDFExport ref={pdfExportComponent} paperSize='auto'>
+            <ExcelExport ref ={_exporter}
+            data={Logs}
+            fileName="log.xlsx"
+             >
+        <ExcelExportColumn
+          field="id"
+          title="ID"
+          locked={true}
+          width={200}
+        />
+        <ExcelExportColumn
+          field="description"
+          title="Description"
+          width={350}
+        />
+        <ExcelExportColumn
+          field="date"
+          title="Date"
+          width={350}
+        />
+        <ExcelExportColumn field="UnitsOnOrder" title="Units on Order" />
+        <ExcelExportColumn field="UnitsInStock" title="Units in Stock" />
                 <Table className={"table-hover table-bordered table-striped table-lg mt-lg mb-0"} borderless responsive>
                   <thead>
                      <tr>
@@ -106,6 +154,8 @@ function ListPartners () {
                     }
                   </tbody>
                 </Table>
+                </ExcelExport>
+                </PDFExport>
               </Widget>
             </Col>
           </Row>
