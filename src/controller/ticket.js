@@ -1,32 +1,43 @@
 import axios from "axios";
-const route = "/tickets";
+import {BASE_URL, HEADERS} from "../config/http";
+import {toast} from "react-toastify";
+const route = "/tickets0";
+
+
 
 
   export async function createTicket(ticket) {
+  console.log('*****************ticket*********************');
+  console.log(ticket);
+  toast.success("ticket will be able to add");
     const url = BASE_URL+`${route}/`;
-    const response = await axios.put(url,{
+    const response = await axios.post(url,{
         "price": ticket.price,
-        "number": ticket.number,
-        "creationDate": ticket.creationDate,
         "category": ticket.category,
-        "isValid": ticket.isValid,
-        "totalTicket": ticket.totalTicket,
-        "totalSold": ticket.totalSold,
-        "eventId": ticket.eventId,
-        "movieId": ticket.movieId,
-        "accountId": ticket.accountId,
-    });
+        "commission": ticket.commission,
+        "is_valid": ticket.is_valid,
+        "total_ticket": ticket.total_ticket,
+        "event_id": ticket.event_id,
+        "movie_id": ticket.movie_id,
+        "account_id": ticket.account_id,
+    }, { headers:HEADERS });
     if (response.status === 200) {
-        return response;
+      if (response.data.status === true) {
+        toast.success("Ticket added successfully");
+        return response.data.data;
+      }
+      else {
+        return response.data.message;
+      }
     }
   }
 
 
   export async function getTickets () {
     const url = BASE_URL+`${route}/`;
-    const response = await axios.get(url);
-    if (response.status === 200) {
-        return response;
+    const response = await axios.get(url,{headers:HEADERS});
+    if (response.status === 200 && response.data.status === true) {
+        return response.data.data;
     }
   }
 

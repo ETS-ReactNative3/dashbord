@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Row, Col, Table } from "reactstrap";
 // import { ProgressBar } from 'react-bootstrap';
 
@@ -16,14 +16,12 @@ import {
 import TextField from "@mui/material/TextField";
 import usersImg from "../../images/usersImg.svg";
 import smileImg from "../../images/smileImg.svg";
-import totalSale from "../../images/total-sale.svg";
-import orders from "../../images/orders.svg";
+import { Button } from "@progress/kendo-react-buttons";
 import stocksImg from "../../images/stocks.svg";
-import stocksDownImg from "../../images/stocksDown.svg";
-import { getTransactions } from "../../controller/transactions";
-import { getAccounts, TypeAccount } from "../../controller/accounts";
-import { getUsers, statusName, hasProfessionalAccount } from "../../controller/users";
-import { getFullNameByUserId, getFullNameByAccountId } from "../../controller/users";
+import { getTransactions, getFullTransactions } from "../../controller/transactions";
+import { getFullAccounts,BlockedAccount,UnBlockedAccount, TypeAccount } from "../../controller/accounts";
+import { getUsers } from "../../controller/users";
+
 
 import { chartData } from "./chartsMock";
 
@@ -41,7 +39,10 @@ import p5 from "../../images/userAvatar.png";
 
 export var sommeDepot = 0, nbdepot = 0, montantTransaction = 0, sommeAchat = 0, nbVente = 0, sommeVente = 0, nbAchat = 0, nbretrait = 0, nbtrans = 0, sommeTrans = 0, sommeRetrait = 0, nbUser = 0, sommeTranfer = 0, nbComptClassic = 0, nbComptPro = 0;
 
-
+var IfBlockedAccount = {
+  true: "Compte bloqué",
+  false: "Compte non bloqué"
+}
 
 
 
@@ -415,7 +416,8 @@ class Dashboard extends React.Component {
   };
 
   transactions = getTransactions();
-  accounts = getAccounts();
+  trans = getFullTransactions();
+  accounts = getFullAccounts();
   users = getUsers();
 
   name = '';
@@ -433,27 +435,27 @@ class Dashboard extends React.Component {
 
 
 
-  getNameByAccountId(accountId) {
-    if (accountId != 0 && accountId != null) {
-      if (localStorage.getItem('name' + accountId) == null) {
-        var promise = getFullNameByAccountId(accountId);
-        promise.then((value) => {
-          localStorage.setItem('name' + accountId, value.data.fullname);
-        });
-      }
-    }
-  }
+  // getNameByAccountId(accountId) {
+  //   if (accountId != 0 && accountId != null) {
+  //     if (localStorage.getItem('name' + accountId) == null) {
+  //       var promise = getFullNameByAccountId(accountId);
+  //       promise.then((value) => {
+  //         localStorage.setItem('name' + accountId, value.data.fullname);
+  //       });
+  //     }
+  //   }
+  // }
 
-  getNameByUserId(userId) {
-    if (userId != 0 && userId != null) {
-      if (localStorage.getItem('name' + userId) == null) {
-        var promise = getFullNameByUserId(userId);
-        promise.then((value) => {
-          localStorage.setItem('name' + userId, value.data.fullname);
-        });
-      }
-    }
-  }
+  // getNameByUserId(userId) {
+  //   if (userId != 0 && userId != null) {
+  //     if (localStorage.getItem('name' + userId) == null) {
+  //       var promise = getFullNameByUserId(userId);
+  //       promise.then((value) => {
+  //         localStorage.setItem('name' + userId, value.data.fullname);
+  //       });
+  //     }
+  //   }
+  // }
 
   componentDidMount() {
     window.addEventListener("resize", this.forceUpdate.bind(this))
@@ -471,32 +473,39 @@ class Dashboard extends React.Component {
     });
     const respons = JSON.parse(localStorage.getItem('users'));
     
-    {
       nbUser = 0;
       respons && respons.map((user, index) => {
         console.log("--------------nombre user ----------------------------");
         console.log(user);
         nbUser++;
       })
-    }
 
 //recherche pour les users
 
   const inputHandler = (e) => {
     this.setState({searchTerm: e.target.value});
     console.log("---------------searchTermUsuer------------------");
-console.log(this.e.target.value);
+    console.log(this.e.target.value);
   };
 
+  //full comptes fjshdn
+
+  this.trans.then((value) => {
+    // localStorage.setItem('transaction', JSON.stringify(value));
+    localStorage.setItem('transaction', JSON.stringify(value));
+    console.log("noms des envoyers dans res*****************************");
+                        console.log(value);
+  });
+  const res = JSON.parse(localStorage.getItem('transaction'));
 
     //operations sur les transactions
     this.transactions.then((value) => {
       localStorage.setItem('transactions', JSON.stringify(value));
+
       
     });
     const response = JSON.parse(localStorage.getItem('transactions'));
   
-    {
       nbdepot = 0;
       sommeDepot = 0;
       nbtrans = 0;
@@ -524,7 +533,6 @@ console.log(this.e.target.value);
           sommeVente = parseFloat(sommeVente) + parseFloat(transaction.amount);
         }
       })
-    }
     
 
     // operations sur les comptes
@@ -533,9 +541,8 @@ console.log(this.e.target.value);
       localStorage.setItem('accounts', JSON.stringify(value));
     });
 
-    const reponse = JSON.parse(localStorage.getItem('accounts'));
+     const reponse = JSON.parse(localStorage.getItem('accounts'));
     
-    {
       nbComptClassic = 0;
       nbComptPro = 0;
 
@@ -546,7 +553,7 @@ console.log(this.e.target.value);
         }
         else { nbComptPro++ }
       })
-    }
+
 
 
     return (
@@ -568,7 +575,7 @@ console.log(this.e.target.value);
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>{(sommeDepot * 100 / montantTransaction).toFixed(2)} %</p>
+                  <p className={"text-success mb-0"}> {(sommeDepot * 100 / montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -756,19 +763,19 @@ console.log(this.e.target.value);
           </Col>
           <Col xl={4}>
             <Widget
-              title={<p style={{ fontWeight: 700 }}>Comissions Intercash</p>}
+              title={<p style={{ fontWeight: 700 }}>Montant Achat</p>}
               customDropDown
             >
               <Row className={`justify-content-between mt-3`} noGutters>
                 <Col sm={8} className={"d-flex align-items-center"}>
-                  <h6 className={"fw-semi-bold mb-0"}>{sommeVente}</h6>
+                  <h6 className={"fw-semi-bold mb-0"}>{sommeAchat}</h6>
                 </Col>
                 <Col
                   sm={4}
                   className={"d-flex align-items-center justify-content-end"}
                 >
                   <img src={stocksImg} alt="" className={"mr-1"} />
-                  <p className={"text-success mb-0"}>{(sommeVente * 100 / montantTransaction).toFixed(2)} %</p>
+                  <p className={"text-success mb-0"}>{(sommeAchat * 100 / montantTransaction).toFixed(2)} %</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: -9, marginTop: -1 }}>
@@ -1037,26 +1044,11 @@ console.log(this.e.target.value);
               flexDirection: "column",
               rowGap: "100px",
             }}>
-              <div className="search" style={{
-                width: "30%",
-              }}>
-                <TextField
-                  id="outlined-basic"
-                  onChange={inputHandler}
-                  variant="outlined"
-                  value={this.state.searchTerm}
-                  fullWidth
-                  label="Search Store name"
-                />
-              </div>
             </div>
                   <thead>
                     <tr>
                       <th style={{ textAlign: "center" }} >
                         No
-                      </th>
-                      <th style={{ textAlign: "center" }} >
-                        ID
                       </th>
                       <th style={{ textAlign: "center" }} >
                         Nom
@@ -1074,10 +1066,10 @@ console.log(this.e.target.value);
                         Points de fidélités
                       </th>
                       <th style={{ textAlign: "center" }} >
-                        Types de comptes
+                        Authenticated
                       </th>
                       <th style={{ textAlign: "center" }} >
-                        Statut
+                       Compte(s)
                       </th>
                     </tr>
                   </thead>
@@ -1089,15 +1081,19 @@ console.log(this.e.target.value);
                         return (
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
-                            <td style={{ textAlign: "center" }} >{user.id}</td>
                             <td style={{ textAlign: "center" }} >{user.last_name}</td>
                             <td style={{ textAlign: "center" }} >{user.first_name}</td>
                             <td style={{ textAlign: "center" }} >{user.phone}</td>
                             <td style={{ textAlign: "center" }} >{user.country}</td>
                             <td style={{ textAlign: "center" }} >{user.fidelity_points}</td>
-                            <td style={{ textAlign: "center" }} >{hasProfessionalAccount[user.has_professional_account]}</td>
-                            <td style={{ textAlign: "center" }} >{statusName[user.is_active]}</td>
-
+                            <td style={{ textAlign: "center" }} >{user.is_verified ? "Yes" : "No" }</td>
+                            <td style={{ textAlign: "center" }} >{(user.has_classical_account && user.has_professional_account)? " classique & Professionel":(user.has_classical_account)? "Compte classique":"Compte Professionel"}</td>
+                            {/* <td className={"pl-0 fw-normal"}>
+                              <Button onClick={() => 
+                                UnBlockedUser(user.id)} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></Button>
+                              <Button onClick={() => 
+                                BlockedUser(user.id)} style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></Button>
+                            </td>   */}
                           </tr>
                         );
                       })
@@ -1131,6 +1127,12 @@ console.log(this.e.target.value);
                         Montant
                       </th>
                       <th style={{ textAlign: "center" }} >
+                        Comission
+                      </th>
+                      <th style={{ textAlign: "center" }} >
+                        Libellé
+                      </th>
+                      <th style={{ textAlign: "center" }} >
                         Envoyeur
                       </th>
                       <th style={{ textAlign: "center" }} >
@@ -1159,21 +1161,21 @@ console.log(this.e.target.value);
                   <tbody className="text-dark">
 
                     {
-                      response && response.map((transaction, index) => {
-                        this.getNameByAccountId(transaction.sender_account_id);
-                        this.getNameByAccountId(transaction.receiver_account_id);
+                      res && res.map((transac, index) => {
                         return (
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.id}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.amount}F CFA</td>
-                            <td style={{ textAlign: "center" }} >{localStorage.getItem('name' + transaction.sender_account_id) || 'Unknow'}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.sender_phone}</td>
-                            <td style={{ textAlign: "center" }} >{localStorage.getItem('name' + transaction.receiver_account_id) || 'Unknow'}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.receiver_phone}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
-                            <td style={{ textAlign: "center" }} >{transaction.creation_date}</td>
-                            <td style={{ textAlign: "center" }} >{typeTransaction[transaction.transaction_type_id]}</td>
+                            <td style={{ textAlign: "center" }} >{transac.id}</td>
+                            <td style={{ textAlign: "center" }} >{transac.amount}F CFA</td>
+                            <td style={{ textAlign: "center" }} >{transac.commission}F CFA</td>
+                            <td style={{ textAlign: "center" }} >{transac.description}</td>
+                            <td style={{ textAlign: "center" }} >{transac.sender_name}</td>
+                            <td style={{ textAlign: "center" }} >{transac.sender_phone}</td>
+                            <td style={{ textAlign: "center" }} >{transac.receiver_name}</td>
+                            <td style={{ textAlign: "center" }} >{transac.receiver_phone}</td>
+                            <td style={{ textAlign: "center" }} >{(transac.creation_date).slice(0,10)}</td>
+                            <td style={{ textAlign: "center" }} >{(transac.creation_date).slice(11,19)}</td>
+                            <td style={{ textAlign: "center" }} >{typeTransaction[transac.transaction_type_id]}</td>
                           </tr>
                         );
                       })
@@ -1201,13 +1203,19 @@ console.log(this.e.target.value);
                         No
                       </th>
                       <th style={{ textAlign: "center" }}>
-                        Compte ID
+                        ID
                       </th>
                       <th style={{ textAlign: "center" }}>
                         Utilisateur
                       </th>
                       <th kstyle={{ textAlign: "center" }}>
                         Solde
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Commission
+                      </th>
+                      <th style={{ textAlign: "center" }}>
+                        Bonus
                       </th>
                       <th style={{ textAlign: "center" }}>
                         Date Création
@@ -1224,28 +1232,49 @@ console.log(this.e.target.value);
                       <th style={{ textAlign: "center" }}>
                         Limite de transaction
                       </th>
+                      
                       <th style={{ textAlign: "center" }}>
                         Type de compte
                       </th>
+                      <th key={12} scope="col" className={"text-center pl-0"}>
+                      Statut
+                    </th>
+                      <th key={12} scope="col" className={"text-center pl-0"}>
+                      Action
+                    </th>
                     </tr>
                   </thead>
                   <tbody className="text-dark" style={{ overflow: 'auto' }}>
 
                     {
                       reponse && reponse.map((account, index) => {
-                        this.getNameByUserId(account.user_id);
+                        // this.getNameByUserId(account.user_id);
                         return (
                           <tr key={index++}>
                             <td scope='row'>{index}</td>
-                            <td style={{ textAlign: "center" }}>{account.id}</td>
+                            <td style={{ textAlign: "center" }}>{(account.id)}</td>
                             <td style={{ textAlign: "center" }}>{localStorage.getItem('name' + account.user_id) || 'Unknow'}</td>
                             <td style={{ textAlign: "center" }}>{account.amount}F CFA</td>
+                            <td style={{ textAlign: "center" }}>{account.commission}F CFA</td>
+                            <td style={{ textAlign: "center" }}>{account.bonus}F CFA</td>
                             <td style={{ textAlign: "center" }}>{(account.creation_date).slice(0, 10)}</td>
                             <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11, 18)}</td>
                             <td style={{ textAlign: "center" }}>{(account.last_update).slice(0, 10)}</td>
                             <td style={{ textAlign: "center" }}>{(account.creation_date).slice(11, 18)}</td>
                             <td style={{ textAlign: "center" }}>{account.stop_amount}F CFA</td>
-                            <td style={{ textAlign: "center" }}>{TypeAccount[account.account_type_id]}</td>
+                            <td style={{ textAlign: "center" }}>{account.account_type_name}</td>
+                            <td style={{ textAlign: "center" }}>{IfBlockedAccount[account.is_locked]}</td>
+                            <td className={"pl-0 fw-normal"}>
+                            {
+                              account.is_locked ?
+                                <Button if={!account.is_locked} onClick={() => 
+                                  UnBlockedAccount(account.id)} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-check-circle"></i></Button>
+                              : 
+                                <Button onClick={() => 
+                                  BlockedAccount(account.id)} style={{fontSize:"20px"}}><i class="text-danger fa fa-times-circle"></i></Button>
+                            }
+                           
+                            </td>  
                           </tr>
                         );
                       })

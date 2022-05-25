@@ -1,92 +1,74 @@
-import React from 'react';
-import 'react-toastify/dist/ReactToastify.css';
-import s from './Administrator.module.scss';
-import { Row, Col, Button } from "reactstrap";
-import {Link} from 'react-router-dom'
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Row, Col, Button} from "reactstrap";
+import { Link } from "react-router-dom";
+import s from "./ticket.module.scss";
 import { toast } from "react-toastify";
-import { useHistory} from 'react-router-dom';
-import { addAdministrator,getSingleAdministrator,updateAdministrator,getAdministrators } from "../../../controller/administrator"
-
-
+import {createTicket}  from "../../controller/ticket";
 
 const initialState = {
-  name: "",
-  username: "",
-  password: "",
-  level: "",
-  contact: "",
-};
+        price: "",
+        commission: "",
+        category:"",  
+        total_ticket: "",
+        event_id:"",
+        movie_id: "",
+        is_valid: "",
+        account_id:"",
+}
 
 
+function AddEvent() {
 
-function AddAdministrator() {
+ var [state, setState] = useState(initialState);
 
-
-  const [state, setState] = useState(initialState);
-
-  const { name, username, password, level, contact } = state;
-
-  const history = useHistory()
-    const url2 = history.location.pathname;
-    var bon = "";
-
-    for (var i = 0; i < url2.length; i++) {
-
-        if (url2[i] === "=")
-            bon = i;
-
-    }
-    const id = parseInt(url2.slice(bon + 1));
-
-  useEffect(() => {
-    if (id) {
-      getSingleAdministrator(id);
-    }
-}, [id])
-
+  const {
+    price,
+    commission,
+    category,  
+    total_ticket,
+    event_id,
+    movie_id,
+    is_valid,
+    account_id
+   } = state;
+  
+  
   const handleInputChange = (e) => {
+
     let { name, value } = e.target;
     setState({
       ...state,
       [name]: value,
     });
   };
-
+  console.log(state);
   const handleSubmit = (e) => {
-    if (!name || !username || !password || !level || !contact) {
+    e.preventDefault();
+    
+
+    if (!price || !category ||  !total_ticket || !event_id || !account_id)  {
       toast.error("Please provide value into each input field");
-      e.preventDefault();
     }
     else {
-      if(!id)
-      {
-      addAdministrator(state);
-      toast.success("User added successfuly");
-      }
-      else{
-        updateAdministrator(state, id);
-        toast.success("User updated successfuly");
-      }
-      history.push("/app/administration/administrator/list");
-      getAdministrators();
-     
+        state.movie_id = 0;
+        state.is_valid = true;
+        createTicket(state);
     }
-
   };
+
 
   return (
     <div className={s.root}>
       <Row>
         <Col sm={10} className="text-align:right"></Col>
         <Col sm={2} className="text-align:right">
-          <Link to = "/app/administration/administrator/list" refresh="true">
-          <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Admins list </Button>
+          <Link to="/app/administration/Tickets/tickets">
+            <Button className="text-warning" style={{ fontSize: "20px", marginBottom: "10px", background: "black" }}>Ticket list </Button>
           </Link>
         </Col>
       </Row>
       <div className="form-group text-center">
-        <h6>CREATION D'ADMINISTRATEUR INTERCASH</h6>
+        <h6>CREATION D'UN TICKET</h6>
         <form
 
           style={{
@@ -111,8 +93,8 @@ function AddAdministrator() {
                   marginTop: "10px",
                   marginRight: "50px",
                 }}
-                htmlFor="name">
-                <strong>Name :</strong>
+                htmlFor="price">
+                <strong>Prix :</strong>
               </label>
             </td>
             <td>
@@ -124,12 +106,12 @@ function AddAdministrator() {
                   width: "200px",
                   boxShadow: "1px 1px 2px #C0C0C0 inset",
                 }}
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter name ..."
+                type="number"
+                id="price"
+                name="price"
+                placeholder="Enter price ..."
                 onChange={handleInputChange}
-                value={name}
+                value={price}
 
               />
             </td>
@@ -137,12 +119,12 @@ function AddAdministrator() {
 
           <tr >
             <td>
-              <label htmlFor="username"
+              <label htmlFor="commission"
                 style={{
                   marginTop: "40px",
                   marginRight: "50px",
                 }}
-              ><strong>Username : </strong> </label>
+              ><strong>Commission : </strong> </label>
             </td>
             <td>
               <input
@@ -154,25 +136,25 @@ function AddAdministrator() {
                   width: "200px",
                   boxShadow: "1px 1px 2px #C0C0C0 inset",
                 }}
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter Contact No. ..."
+                type="number"
+                id="commission"
+                name="commission"
+                placeholder="Enter commission ..."
                 onChange={handleInputChange}
-                value={username}
+                value={commission}
 
               />
             </td>
           </tr>
 
-          <tr>
+          <tr >
             <td>
-              <label htmlFor="password"
+              <label htmlFor="event_id"
                 style={{
                   marginTop: "40px",
                   marginRight: "50px",
                 }}
-              > <strong>password :</strong> </label>
+              ><strong>Event  ID : </strong></label>
             </td>
             <td>
               <input
@@ -184,12 +166,44 @@ function AddAdministrator() {
                   width: "200px",
                   boxShadow: "1px 1px 2px #C0C0C0 inset",
                 }}
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter password"
+                type="number"
+                id="event_id"
+                name="event_id"
+                placeholder="Enter the name of organizer ..."
                 onChange={handleInputChange}
-                value={password}
+                value={event_id}
+
+              />
+            </td>
+          </tr>
+
+         
+
+          <tr>
+            <td>
+              <label htmlFor="total_ticket"
+                style={{
+                  marginTop: "40px",
+                  marginRight: "50px",
+                }}
+              > <strong> Nombre de ticket :</strong> </label>
+            </td>
+            <td>
+              <input
+                style={{
+                  marginTop: "40px",
+                  padding: "3px",
+                  border: "1px solid #F5C5C5",
+                  borderRadius: "5px",
+                  width: "200px",
+                  boxShadow: "1px 1px 2px #C0C0C0 inset",
+                }}
+                type="number"
+                id="total_ticket"
+                name="total_ticket"
+                placeholder="Enter total ticket..."
+                onChange={handleInputChange}
+                value={total_ticket}
 
               />
             </td>
@@ -197,12 +211,12 @@ function AddAdministrator() {
 
           <tr>
             <td>
-              <label htmlFor="level"
+              <label htmlFor="category"
                 style={{
                   marginTop: "40px",
                   marginRight: "50px",
                 }}
-              > <strong>Level :</strong></label>
+              > <strong>category :</strong></label>
             </td>
             <td>
               <select
@@ -214,26 +228,25 @@ function AddAdministrator() {
                   width: "200px",
                   boxShadow: "1px 1px 2px #C0C0C0 inset",
                 }}
-                id="level" name="level"
-                value={level}
+                id="category" name="category"
+                value={category}
                 onChange={handleInputChange}
               >
-                <option value="None" >None</option>
-                <option value="High" >High</option>
-                <option value="Medium" >Medium</option>
-                <option value="Low" >Low</option>
+                <option value="VIP" >VIP</option>
+                <option value="STANDARD" >STANDARD</option>
+                <option value="GRATUIT" >GRATUIT</option>
               </select>
             </td>
           </tr>
 
           <tr>
             <td>
-              <label htmlFor="contact"
+              <label htmlFor="account_id"
                 style={{
                   marginTop: "40px",
                   marginRight: "50px",
                 }}
-              > <strong>contact :</strong></label>
+              > <strong>ID Compte :</strong></label>
             </td>
             <td>
               <input
@@ -245,17 +258,19 @@ function AddAdministrator() {
                   width: "200px",
                   boxShadow: "1px 1px 2px #C0C0C0 inset",
                 }}
-                type="tel"
-                id="contact"
-                name="contact"
-                placeholder="Enter Contact No. ..."
-                value={contact}
+                type="number"
+                id="account_id"
+                name="account_id"
+                placeholder="Enter L'ID du compte ..."
+                value={account_id}
                 onChange={handleInputChange}
 
               />
             </td>
           </tr>
 
+          
+          
           <input
             style={{
               marginTop: "40px",
@@ -264,12 +279,13 @@ function AddAdministrator() {
               boxShadow: "1px 1px 1px #D83F3D",
               cursor: "pointer",
             }}
-            type="submit" value={id ? "update" : "Add"} />
+            type="submit" value={"Add Ticket"} />
         </form>
+        <br />
+
       </div>
     </div>
-  );
-
+  )
 }
 
-export default AddAdministrator;
+export default AddEvent;

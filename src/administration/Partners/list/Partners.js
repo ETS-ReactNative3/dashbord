@@ -1,4 +1,4 @@
-import React, {useState,useRef} from 'react';
+import React, {useState,useRef,useEffect} from 'react';
 import {
   Row, Col, Table
 } from 'reactstrap';
@@ -12,6 +12,7 @@ import  {deletePartner}  from '../../../controller/Partners';
 import TextField from "@mui/material/TextField";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { ExcelExport, ExcelExportColumn } from '@progress/kendo-react-excel-export';
+import { useHistory } from 'react-router'
 
 
 
@@ -19,8 +20,14 @@ function ListPartners () {
   
   const onDeletePartner = async (id) => {
     deletePartner(id);
-
+    reloading();
 };
+ 
+const history = useHistory()
+
+useEffect(() => {
+  getPartners();
+}, []);
 
  const promise = getPartners();
  const [searchTerm, setSearchTerm] = useState('');
@@ -28,6 +35,15 @@ function ListPartners () {
   // const contentArea = useRef(null);
  const _exporter = useRef(null);
 
+ const reloading = () =>{
+  setTimeout(()=>{
+    
+    getPartners();
+    history.push('../../administration/Partners/list/Partners');
+
+    // window.location.reload();
+  },1000);
+}
 
  const inputHandler = (e) => {
 
@@ -53,11 +69,14 @@ function ListPartners () {
 
     return (
         <div className={s.root}>
+          {/* <meta http-equiv="refresh" content="2"></meta> */}
           <Row>
             <Col sm={10} className="text-align:right"></Col>
             <Col sm={2} className="text-align:right">
             <Link to="/app/administration/Partners/addPartners" refresh="true">
-            <Button  className="text-warning"  style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Créer <i class="fa fa-plus-circle"></i></Button>
+            <Button  className="text-warning"  
+            // o
+             style={{fontSize:"20px", marginBottom:"10px", background:"black"}}> Créer <i class="fa fa-plus-circle"></i></Button>
             </Link>
             </Col>
           </Row>

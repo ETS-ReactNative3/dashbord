@@ -7,7 +7,6 @@ import { Switch, Route } from 'react-router-dom';
 /* eslint-disable */
 import ErrorPage from '../pages/error';
 /* eslint-enable */
-import { BrowserRouter} from 'react-router-dom';
 import '../styles/theme.scss';
 import LayoutComponent from '../components/Layout';
 import Login from '../pages/login';

@@ -34,9 +34,8 @@ function AddPartners() {
       toast.error("Please provide value into each input field");
     }
     else {
-
-        createPartners(state);
-      // toast.success("User added successfuly");
+      toast.success("User added successfuly");
+      createPartners(state);
 
     }
 

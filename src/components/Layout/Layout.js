@@ -29,6 +29,7 @@ import Charts from "../../pages/charts";
 // import Administrator from "../../administration/administrator/Administrator";
 import AddAdministratorPage from "../../administration/administrator/add/Administrator";
 import ListAdministratorPage from "../../administration/administrator/list/Administrator";
+import ViewAdmin from "../../administration/administrator/list/ViewAdmin";
 
 import AddEventPage from "../../administration/event/add/Event";
 import ListEventPage from "../../administration/event/list/Event";
@@ -37,7 +38,10 @@ import addPartners from "../../administration/Partners/add/addPartners";
 import log from "../../administration/log/log";
 import store from "../../administration/Store/list/store";
 import journals from "../../administration/journaux/journal/journals";
-
+import comission from "../../administration/Comissions/comission"
+import tickets from "../../administration/Tickets/tickets";
+import addTicket from "../../administration/Tickets/addTicket"
+import ViewEvent from "../../administration/event/list/ViewEvent"
 
 
 
@@ -103,7 +107,7 @@ class Layout extends React.Component {
       <div
         className={[
           s.root,
-          !this.props.sidebarOpened ? s.sidebarClose : "",
+          // !this.props.sidebarOpened ? s.sidebarClose : "",
           "flatlogic-one",
           "dashboard-light",
         ].join(" ")}
@@ -147,6 +151,10 @@ class Layout extends React.Component {
                     <Route path={"/app/administration/Partners/addPartners"}  component={addPartners}/>
                     <Route path={"/app/administration/log/log"}  component={log}/>
                     <Route path={"/app/administration/journaux/journal/journal"}  component={journals}/>
+                    <Route path={"/app/administration/Comissions/comission"}  component={comission}/>
+                    <Route path={"/app/administration/Tickets/tickets"}  component={tickets}/>
+                    <Route path={"/app/administration/Tickets/addTicket"}  component={addTicket}/>
+                    <Route path={"/app/administration/event/list/ViewEvent"}  component={ViewEvent}/>
 
 
                     <Route path={"/app/administration/event/add"} component={AddEventPage} />
@@ -155,6 +163,7 @@ class Layout extends React.Component {
                     {/* <Route path={"/app/administration/administrator"} component={Administrator} /> */}
                     <Route path={"/app/administration/administrator/add"} component={AddAdministratorPage} />
                     <Route path={"/app/administration/administrator/list"} component={ListAdministratorPage} />
+                    <Route path={"/app/administration/administrator/list/ViewAdmin"} component={ViewAdmin} />
 
 
                   </Switch>

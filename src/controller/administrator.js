@@ -33,11 +33,17 @@ export async function getAdministrators(){
 
 
 export async function getSingleAdministrator(id) {
+
     const url = BASE_URL+`${route}/${id}`;
     const response = await axios.get(url, {headers:HEADERS});
     if (response.status === 200) {
-        return response;
-    }
+        if (response.data.status === true) {
+          return response.data.data;
+        }
+        else {
+          return response.data.message;
+        }
+      }
 }
 
 export async function deleteAdministrator(id) {
@@ -47,7 +53,7 @@ export async function deleteAdministrator(id) {
             const response = await axios.delete(url,{headers:HEADERS});
             if (response.status === 200) {
                 toast.success("User deleted successfully");
-                getAdministrators();
+                getAdministrators();    
             }
         }
 }

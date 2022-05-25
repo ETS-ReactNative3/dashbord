@@ -21,6 +21,46 @@ const route = '/accounts0';
         }
   }
 
+  export  async function getFullAccounts () {
+    const url = BASE_URL+`${route}/getAccounts/tableData`;
+    const response = await axios.get(url,{headers:HEADERS});
+        if (response.status === 200 && response.data.status === true) {
+            return response.data.data;
+        }
+  }
+
+  export async function mainAccount () {
+    const MainRoute = '/MainAccounts0';
+    const url = BASE_URL+`${MainRoute}`;
+    const response = await axios.get(url,{headers:HEADERS});
+    if (response.status === 200 && response.data.status === true) {
+      return response.data.data;
+  }
+  }
+
+  export async function BlockedAccount(accountId){
+    if(window.confirm('Are you sure you want to blocked this account ?')){
+    const url = BASE_URL+`${route}/lockAccount/${accountId}`;
+    const response = await axios.put(url,{},{headers:HEADERS});
+    window.location.reload(300);
+    if (response.status === 200 && response.data.status === true) {
+      toast.success("Account Blocked successfuly");
+      getFullAccounts();
+  }
+
+  }
+}
+export async function UnBlockedAccount(accountId){
+  if(window.confirm('Are you sure you want to unblocked this account ?')){
+  const url = BASE_URL+`${route}/unLockAccount/${accountId}`;
+  const response = await axios.put(url,{},{headers:HEADERS});
+  if (response.status === 200 && response.data.status === true) {
+    toast.success("Account Unlocked successfuly");
+    getFullAccounts();
+}
+
+}
+}
   export async function addAccount(account)  {
     const url = BASE_URL+`${route}/`;
     const response = await axios.put(url, 

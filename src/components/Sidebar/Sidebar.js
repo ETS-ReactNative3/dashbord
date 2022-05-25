@@ -267,6 +267,18 @@ class Sidebar extends React.Component {
             <i class="fa fa-calendar"></i>
             </LinksGroup>
 
+            <LinksGroup
+                onActiveSidebarItemChange={activeItem =>
+                  this.props.dispatch(changeActiveSidebarItem(activeItem))
+                }
+                header="Tickets"
+                isHeader
+                // index="main"
+                link="/app/administration/Tickets/tickets"
+              >
+                <i class = " text-succes fa fa-ticket"></i>
+              </LinksGroup>
+
             {/* <LinksGroup
               onActiveSidebarItemChange={activeItem =>
                 this.props.dispatch(changeActiveSidebarItem(activeItem))
@@ -327,6 +339,17 @@ class Sidebar extends React.Component {
                 link="/app/administration/log/log"
               >
                 <i class = "fa fa-navicon"></i>
+              </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={activeItem =>
+                  this.props.dispatch(changeActiveSidebarItem(activeItem))
+                }
+                header="Comissions"
+                isHeader
+                // index="main"
+                link="/app/administration/Comissions/comission"
+              >
+                <i class = "glyphicon glyphicon-usd"></i>
               </LinksGroup>
 
               <LinksGroup

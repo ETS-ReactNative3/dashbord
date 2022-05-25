@@ -66,6 +66,23 @@ export async function getUsersMinim () {
       }
 }
 
+export async function BlockedUser (userId) {
+    const url = BASE_URL+`${route}/lockUser/${userId}`;
+    const response = await axios.get(url,{headers:HEADERS});
+        if (response.status === 200) {
+            return response;
+        }
+  }
+
+  
+export async function UnBlockedUser (userId) {
+    const url = BASE_URL+`${route}/unLockUser/${userId}`;
+    const response = await axios.get(url,{headers:HEADERS});
+        if (response.status === 200) {
+            return response;
+        }
+  }
+
 export async function getFullNameByAccountId (accountId) {
     const url = BASE_URL+`${route}/getFullNameByAccountId/${accountId}`;
     const response = await axios.get(url,{headers:HEADERS});

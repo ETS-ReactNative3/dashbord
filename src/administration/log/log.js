@@ -65,9 +65,14 @@ function ListPartners () {
               {/* <Button style={{ backgroundColor: 'gray' }} >
                 <CSVLink style={{ color: 'black' }} filename='Report.csv' headers={Headers} data={Stor}>CSV Export </CSVLink>
               </Button> */}
-              <Button style={{ backgroundColor: 'grey' }} onClick={exportExcel}>Excel Export</Button>
-
-              <Button primary={true} style={{ backgroundColor: 'gray' }} onClick={handleExportWithComponent}>PDF Export</Button>
+              <Link>
+              <i   class= "fa fa-file-excel-o" onClick={exportExcel}> Export</i>
+              </Link>
+              <br />
+              <Link>
+              <i primary={true} class = "fa fa-file-pdf-o" onClick={handleExportWithComponent}>Export</i>
+              </Link>
+              
             </div>
 
             <PDFExport ref={pdfExportComponent} paperSize='auto'>

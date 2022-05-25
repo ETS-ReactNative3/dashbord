@@ -21,6 +21,20 @@ var typeTransaction = {
         }
   }
 
+  export async function getFullTransactions(){
+    const url = BASE_URL+`${route}/getTransactions/tableData`;
+    const response = await axios.get(url,{headers:HEADERS});
+    if (response.status === 200 )
+       { 
+  if( response.data.status === true)
+    {
+      console.log('****************response.data.data******************');
+      console.log(response.data.data);
+      return response.data.data;
+    }
+  }
+  }
+
   export async function getTransaction (id) {
     const url = BASE_URL+`${route}/${id}`;
     const response = await axios.get(url);

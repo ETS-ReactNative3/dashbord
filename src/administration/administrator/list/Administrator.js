@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import {
   Row, Col, Button, Table,
 } from 'reactstrap';
-import { Link, Route } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Widget from "../../../components/Widget";
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams} from "react-router-dom";
 import s from './Administrator.module.scss';
 import {deleteAdministrator} from "../../../controller/administrator";
 import TextField from "@mui/material/TextField";
@@ -107,7 +106,7 @@ function ListAdministrator () {
                   <tbody className="text-dark">
                     {
                       administrators.filter(administrators => searchTerm === "" || administrators.name.toLowerCase() === searchTerm.toLowerCase() || administrators.username.toLowerCase().includes(searchTerm.toLowerCase()) || administrators.name.toLowerCase().includes(searchTerm.toLowerCase())).map((administrator, index) => { 
-                        return ( 
+                        return (  
                           <tr key={index++}>
 
                             <td scope='row'>{index}</td>
@@ -116,9 +115,9 @@ function ListAdministrator () {
                             <td className={"pl-0 fw-normal text-center"}>{administrator.contact}</td>
                             <td className={"pl-0 fw-normal text-center"}>{administrator.level}</td>
                             <td className={"pl-0 fw-normal text-center"}>
-                            <Link to={`add?id=${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></Link>
-                              <button href="#" style={{fontSize:"20px", marginRight:"15px"}}><i class="text-warning fa fa-times-circle"></i></button>
-                              <button onClick={() => onDeleteUser(administrator.id)} refresh="true" style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></button>
+                            <Link to={`./add/Event/id=${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success fa fa-edit"></i></Link>
+                            <Link to={`./app/administration/administrator/list/ViewAdmin/id=${administrator.id}`} style={{fontSize:"20px", marginRight:"15px"}}><i class="text-success 	fa fa-plus-square"></i></Link>
+                            <Link onClick={() => onDeleteUser(administrator.id)} refresh="true" style={{fontSize:"20px"}}><i class="text-danger fa fa-trash-o"></i></Link>
                              
                             </td>                          
                           </tr>
